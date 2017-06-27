@@ -1,5 +1,7 @@
 # Open Tourism Platform
 
+[![Join the chat at https://gitter.im/open-tourism-platform/Lobby](https://badges.gitter.im/open-tourism-platform/Lobby.svg)](https://gitter.im/open-tourism-platform/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 If you want to get involved, checkout the [contributing file](./CONTRIBUTING.md).
 
 ## What?
