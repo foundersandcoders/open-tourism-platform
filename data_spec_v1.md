@@ -7,7 +7,7 @@ Provisional, as discussed 5/7/17
 - [Notes](#notes)
 - [User Roles](#user-roles)
 - [API Permissions](#api-permissions)
-- [Database schema](#database-schema)
+- [Data Model](#data-model)
 
 ## Intro
 The specification for the Nazareth open tourism platform v0.
@@ -28,11 +28,12 @@ Things not addressed in this file yet:
 ## User Roles
 Unless otherwise specified, the below roles have any permissions assigned to roles lower in the list below.
 
-- SUPER - OWNER of the open platform.
+- SUPER - Owner of the open platform.
 - ADMIN - moderator can create any data -> can assign ownership of content
+- OWNER - Specific to resource.
 - BASIC - can have ownership of organisations / their data / events / products
 
-## Data Model - Schema and Permissioning
+## Data Model
 
 ### Users
 
