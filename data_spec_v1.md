@@ -1,6 +1,6 @@
-# Initial specification
+# v1 specification
 
-Provisional, as discussed 5/7/17
+as discussed initially 5/7/17
 
 ## Contents
 - [Intro](#intro)
@@ -9,7 +9,7 @@ Provisional, as discussed 5/7/17
 - [Data Model](#data-model)
 
 ## Intro
-The specification for the Nazareth open tourism platform v0.
+The specification for the Nazareth open tourism platform v1.
 
 In essence it is an open data platform where anyone can add and view data on users, places, events, products.
 
