@@ -3,9 +3,9 @@ const mongoose = require('mongoose')
 // http://mongoosejs.com/docs/promises.html
 mongoose.Promise = global.Promise
 
-const dbUrl = 'mongodb://localhost/testdb'
+const dbURI = process.env.MONGODB_URI
 
-mongoose.connect(dbUrl, {
+mongoose.connect(dbURI, {
   useMongoClient: true
 })
 
@@ -13,7 +13,7 @@ mongoose.connection.on('error', err => {
   console.log('connection error: ' + err)
 })
 
-mongoose.connection.on('disconnected', () => {  
+mongoose.connection.on('disconnected', () => {
   console.log('Mongoose default connection disconnected.')
 })
 

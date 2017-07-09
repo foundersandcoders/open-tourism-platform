@@ -1,10 +1,12 @@
-const mongoose = require('mongoose')
 const server = require('./server.js')
+
+// load environment variables
+if (process.NODE_ENV !== 'production') require('dotenv').config()
+
+const port = process.env.PORT || 3000
 
 // connect to the db
 const dbConnection = require('../db/connect.js')
-
-const port = process.env.PORT || 3000
 
 dbConnection.once('open', () => {
   // we're connected to the database
