@@ -1,0 +1,23 @@
+{
+  "name": "open-tourism-platform",
+  "version": "1.0.0",
+  "description": "An open data platform for Nazareth tourism",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/start.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foundersandcoders/open-tourism-platform.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foundersandcoders/open-tourism-platform/issues"
+  },
+  "homepage": "https://github.com/foundersandcoders/open-tourism-platform#readme",
+  "dependencies": {
+    "express": "^4.15.3"
+  }
+}
