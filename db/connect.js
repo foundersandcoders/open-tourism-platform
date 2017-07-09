@@ -9,4 +9,12 @@ mongoose.connect(dbUrl, {
   useMongoClient: true
 })
 
+mongoose.connection.on('error', err => {
+  console.log('connection error: ' + err)
+})
+
+mongoose.connection.on('disconnected', () => {  
+  console.log('Mongoose default connection disconnected.')
+})
+
 module.exports = mongoose.connection
