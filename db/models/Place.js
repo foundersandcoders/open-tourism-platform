@@ -14,7 +14,7 @@ const placeSchema = mongoose.Schema(
     lng: Number,
     category: { type: [String], enum: categories },
     accessibilityOptions: { type: [String], enum: accesibilityOptions },
-    openingHours: ,
+    openingHours: String,
     imageUrl: String,
     website: String,
     phone: String,
