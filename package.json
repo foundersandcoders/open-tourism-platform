@@ -4,10 +4,10 @@
   "description": "An open data platform for Nazareth tourism",
   "main": "index.js",
   "scripts": {
-    "test": "tape tests/index.test.js | tap-spec",
+    "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
-    "dev": "nodemon src/start.js",
+    "dev": "NODE_ENV=development nodemon src/start.js",
     "coverage": "istanbul cover ./tests/index.test.js"
   },
   "pre-commit": [
