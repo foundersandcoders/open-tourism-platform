@@ -6,9 +6,13 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node src/start.js",
-    "lint": "./node_modules/.bin/standard src/*.js db/*.js",
-    "dev": "./node_modules/.bin/nodemon src/start.js"
+    "lint": "standard --verbose | snazzy",
+    "dev": "nodemon src/start.js"
   },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/foundersandcoders/open-tourism-platform.git"
@@ -27,6 +31,8 @@
   },
   "devDependencies": {
     "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2",
+    "snazzy": "^7.0.0",
     "standard": "^10.0.2"
   }
 }
