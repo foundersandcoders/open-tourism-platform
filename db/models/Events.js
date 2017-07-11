@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const categories = ['music', 'dining']
-const accessibilityOptions = ['braille menu', 'wheelchair-friendly']
+const accessibilityOptions = ['braille-menu', 'wheelchair-friendly']
 
 const eventSchema = mongoose.Schema(
   {
-    ownerId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+    ownerId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     name: { type: String, required: true },
     category: { type: [String], enum: categories, required: true },
     location: {type: mongoose.Schema.Types.ObjectId, ref: 'Place'},
@@ -13,7 +13,7 @@ const eventSchema = mongoose.Schema(
     startTime: Date,
     endTime: Date,
     description: String,
-    cost: String
+    cost: String,
     imageUrl: String
   },
   {
