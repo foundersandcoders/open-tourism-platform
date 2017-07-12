@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 // placeholders for now
 const categories = ['restaurant, cafe']
-const accesibilityOptions = ['braille menu', 'wheelchair-friendly']
+const accesibilityOptions = ['braille menu']
 
 const placeSchema = mongoose.Schema(
   {
@@ -13,7 +13,7 @@ const placeSchema = mongoose.Schema(
     lat: Number,
     lng: Number,
     category: { type: [String], enum: categories },
-    accessibilityOptions: { type: [String], enum: accesibilityOptions },
+    accessibilityOptions: [{ type: String, enum: accesibilityOptions }],
     openingHours: String,
     imageUrl: String,
     website: String,
