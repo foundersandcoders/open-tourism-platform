@@ -5,10 +5,10 @@ const accessibilityOptions = ['braille-menu', 'wheelchair-friendly']
 
 const eventSchema = mongoose.Schema(
   {
-    ownerId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
+    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     name: { type: String, required: true },
     category: { type: [String], enum: categories, required: true },
-    location: {type: mongoose.Schema.Types.ObjectId, ref: 'Place'},
+    location: { type: mongoose.Schema.Types.ObjectId, ref: 'Place'},
     accessibilityOptions: { type: [String], enum: accessibilityOptions, required: false },
     startTime: Date,
     endTime: Date,
