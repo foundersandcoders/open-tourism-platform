@@ -1,8 +1,6 @@
 const mongoose = require('mongoose')
 
-// placeholders for now
-const categories = ['restaurant, cafe']
-const accesibilityOptions = ['braille menu']
+const { placeCategories, accessibilityOptions } = require('../constants.json')
 
 const placeSchema = mongoose.Schema(
   {
@@ -12,8 +10,8 @@ const placeSchema = mongoose.Schema(
     address: String,
     lat: Number,
     lng: Number,
-    category: { type: [String], enum: categories },
-    accessibilityOptions: [{ type: String, enum: accesibilityOptions }],
+    category: [{ type: String, enum: placeCategories }],
+    accessibilityOptions: [{ type: String, enum: accessibilityOptions }],
     openingHours: String,
     imageUrl: String,
     website: String,
