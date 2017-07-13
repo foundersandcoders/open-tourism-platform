@@ -5,18 +5,16 @@ const dbConnection = require('../db/connect.js')
 // const supertest = require('supertest')
 // const Users = require('../db/models/User.js')
 // ^ will use these in the futue
-test('Check tape is working before db connection', t => {
-  t.equal(1, 1, 'One is one')
-  t.end()
-})
 
-test('Check db connection', t => {
-  dbConnection.once('open', () => {
-    t.pass('Connected to database')
-    t.end()
+dbConnection.once('open', () => {
+  require('./test_1.test.js')
+  require('./test_2.test.js')
+
+  test.onFinish(() => {
+    dbConnection.close()
   })
 })
 
-test.onFinish(() => {
-  dbConnection.close()
+dbConnection.on('error', err => {
+  throw err
 })
