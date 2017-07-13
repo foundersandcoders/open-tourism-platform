@@ -1,13 +1,12 @@
 const mongoose = require('mongoose')
 
-const categories = ['music', 'dining']
-const accessibilityOptions = ['braille-menu', 'wheelchair-friendly']
+const { eventCategories, accessibilityOptions } = require('../constants.json')
 
 const eventSchema = mongoose.Schema(
   {
     ownerId: {type: mongoose.Schema.Types.ObjectId, ref: 'User'},
     name: { type: String, required: true },
-    category: { type: [String], enum: categories, required: true },
+    category: { type: [String], enum: eventCategories, required: true },
     location: {type: mongoose.Schema.Types.ObjectId, ref: 'Place'},
     accessibilityOptions: { type: [String], enum: accessibilityOptions, required: false },
     startTime: Date,
