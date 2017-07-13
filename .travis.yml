@@ -3,3 +3,5 @@ node_js:
   - "v6"
 services:
   - mongodb
+env:
+  - MONGODB_URI=mongodb://127.0.0.1/
