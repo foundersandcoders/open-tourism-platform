@@ -8,7 +8,7 @@
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
     "dev": "NODE_ENV=development nodemon src/start.js",
-    "coverage": "istanbul cover ./tests/index.test.js"
+    "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js"
   },
   "pre-commit": [
     "lint",
