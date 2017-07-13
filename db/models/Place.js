@@ -5,7 +5,7 @@ const { placeCategories, accessibilityOptions } = require('../constants.json')
 const placeSchema = mongoose.Schema(
   {
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    name: String,
+    name: { type: String, required: true },
     description: String,
     address: String,
     lat: Number,
