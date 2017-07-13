@@ -1,0 +1,17 @@
+{
+   "accessibilityOptions": [
+      "braille-menu",
+      "wheelchair-friendly"
+   ],
+   "placeCategories": [
+      "restaurant",
+      "cafe"
+   ],
+   "eventCategories": [
+      "music",
+      "dining"
+   ],
+   "productCategories": [
+      "handicraft"
+   ]
+}
