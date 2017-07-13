@@ -1,7 +1,7 @@
-const server = require('./server.js')
-
 // load environment variables
-if (process.NODE_ENV !== 'production') require('dotenv').config()
+require('../config.js')
+
+const server = require('./server.js')
 
 const port = process.env.PORT || 3000
 

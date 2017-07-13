@@ -10,8 +10,34 @@ An open backend to help support and facilitate the creation of apps and websites
 Primarily, and during initial phases, this will be an open database of places, products, services, events and reviews.
 
 ## Local install instructions
-```bash
-git clone https://github.com/foundersandcoders/open-tourism-platform.git
+
+**Requirements**: MongoDB
+
+```
+git clone https://github.com/foundersandcoders/open-tourism-platform.git && cd open-tourism-platform
 npm i
-npm start
+```
+
+Create a .env file containing two variables in the root directory:
+```
+MONGODB_URI_DEV=mongodb://localhost/open-platform-dev
+MONGODB_URI_TEST=mongodb://localhost/open-platform-test
+```
+
+Ensure mongodb is running.
+
+**Run a dev server**
+
+```
+npm run dev
+```
+
+**Test scripts**
+
+```bash
+# To run the tests:
+npm test
+
+# To run the istanbul coverage:
+npm run coverage 
 ```
