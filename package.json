@@ -4,10 +4,11 @@
   "description": "An open data platform for Nazareth tourism",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
-    "dev": "nodemon src/start.js"
+    "dev": "NODE_ENV=development nodemon src/start.js",
+    "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js"
   },
   "pre-commit": [
     "lint",
@@ -30,9 +31,13 @@
     "mongoose": "^4.11.1"
   },
   "devDependencies": {
+    "istanbul": "^0.4.5",
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
     "snazzy": "^7.0.0",
-    "standard": "^10.0.2"
+    "standard": "^10.0.2",
+    "supertest": "^3.0.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.7.0"
   }
 }
