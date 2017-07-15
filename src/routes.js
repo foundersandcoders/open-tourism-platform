@@ -1,6 +1,6 @@
-const usersHandlers = require('./handlers/user')
+const usersHandlers = require('./handlers/users')
 
-const router = require('express').Router();
+const router = require('express').Router()
 
 // user routes
 router.get('/users', usersHandlers.get)
