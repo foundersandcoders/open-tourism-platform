@@ -2,14 +2,42 @@
 
 [![Join the chat at https://gitter.im/open-tourism-platform/Lobby](https://badges.gitter.im/open-tourism-platform/Lobby.svg)](https://gitter.im/open-tourism-platform/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-If you want to get involved, checkout the [contributing file](./CONTRIBUTING.md).
+If you want to get involved, check out the [contributing file](./CONTRIBUTING.md).
 
 ## What?
-An open backend to help support and facilitate the creation of apps and websites aimed at developing tourism.
+An open backend to help support and facilitate the creation of apps and websites aimed at developing tourism in Nazareth.
 
 Primarily, and during initial phases, this will be an open database of places, products, services, events and reviews.
 
-## Next steps
+## Local install instructions
 
-#### Requirement gathering
-A good place to start would be to gather the requirements of the apps build for the Nazareth tourism accelerator, from there we can start to spec out a version 1.
+**Requirements**: MongoDB
+
+```
+git clone https://github.com/foundersandcoders/open-tourism-platform.git && cd open-tourism-platform
+npm i
+```
+
+Create a .env file containing two variables in the root directory:
+```
+MONGODB_URI_DEV=mongodb://localhost/open-platform-dev
+MONGODB_URI_TEST=mongodb://localhost/open-platform-test
+```
+
+Ensure mongodb is running.
+
+**Run a dev server**
+
+```
+npm run dev
+```
+
+**Test scripts**
+
+```bash
+# To run the tests:
+npm test
+
+# To run the istanbul coverage:
+npm run coverage 
+```

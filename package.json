@@ -1,0 +1,43 @@
+{
+  "name": "open-tourism-platform",
+  "version": "1.0.0",
+  "description": "An open data platform for Nazareth tourism",
+  "main": "index.js",
+  "scripts": {
+    "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
+    "start": "node src/start.js",
+    "lint": "standard --verbose | snazzy",
+    "dev": "NODE_ENV=development nodemon src/start.js",
+    "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js"
+  },
+  "pre-commit": [
+    "lint",
+    "test"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foundersandcoders/open-tourism-platform.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foundersandcoders/open-tourism-platform/issues"
+  },
+  "homepage": "https://github.com/foundersandcoders/open-tourism-platform#readme",
+  "dependencies": {
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "mongodb": "^2.2.30",
+    "mongoose": "^4.11.1"
+  },
+  "devDependencies": {
+    "istanbul": "^0.4.5",
+    "nodemon": "^1.11.0",
+    "pre-commit": "^1.2.2",
+    "snazzy": "^7.0.0",
+    "standard": "^10.0.2",
+    "supertest": "^3.0.0",
+    "tap-spec": "^4.1.1",
+    "tape": "^4.7.0"
+  }
+}
