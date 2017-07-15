@@ -55,7 +55,6 @@ dbConnection.once('open', () => {
       dbConnection.close()
     })
     .catch(err => console.log(err))
-
   })
 })
 
