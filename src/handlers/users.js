@@ -1,10 +1,11 @@
-const User = require('../../db/models/User')
+// const User = require('../../db/models/User')
 
 const usersHandlers = module.exports = {}
 
 usersHandlers.get = (req, res) => {
   // sends back array of users, filtered by queries
   // status codes: 200 (success)
+  res.send([])
 }
 
 usersHandlers.getById = (req, res) => {
