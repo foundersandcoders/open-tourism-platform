@@ -16,20 +16,19 @@ const dropCollectionAndEnd = (myCollection, t) => {
 }
 
 dbConnection.once('open', () => {
-  tape('Correct users returned', (t) => {
+  tape('test /users when nothing in database', (t) => {
     supertest(server)
       .get('/users')
       .expect(200)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) t.fail(err)
-        const actual = res.body
-        t.equal(actual.length, 0, 'Initially return empty array')
+        t.equal(res.body.length, 0, 'should initially return empty array')
         dropCollectionAndEnd(User, t)
       })
   })
 
-  tape('/users successfully returns list of users when one has been added', t => {
+  tape('test /users when one user in database', t => {
     // add mock user to database using mongoose ORM
     const mockUser = new User(testData.a_user)
     mockUser.save()
@@ -47,10 +46,10 @@ dbConnection.once('open', () => {
             dropCollectionAndEnd(User, t)
           })
       })
-      .catch(err => t.fail(err))
+      .catch(err => t.end(err))
   })
 
-  tape('check /users GET returns longer list', t => {
+  tape('test /users GET returns longer list', t => {
     User.create(testData.a_user, testData.another_user)
       .then(() => {
         supertest(server)
@@ -66,7 +65,7 @@ dbConnection.once('open', () => {
             dropCollectionAndEnd(User, t)
           })
       })
-      .catch(err => t.fail(err))
+      .catch(err => t.end(err))
   })
 
   tape('testing adding user using POST requests to /users route', t => {
