@@ -6,21 +6,26 @@ const supertest = require('supertest')
 const User = require('../db/models/User.js')
 const testData = require('./fixtures/users.json')
 
-dbConnection.once('open', () => {
-  // require('./test_1.test.js')
-  // require('./test_2.test.js')
+// function to drop collection and end the tests
+const dropCollectionAndEnd = (myCollection, t) => {
+  myCollection.collection.drop()
+    .then(() => {
+      t.end()
+    })
+    .catch(err => t.end(err))
+}
 
-  tape('Correct users returned', function (t) {
+dbConnection.once('open', () => {
+  tape('Correct users returned', (t) => {
     supertest(server)
       .get('/users')
       .expect(200)
       .expect('Content-Type', /json/)
       .end((err, res) => {
         if (err) t.fail(err)
-        const expected = []
         const actual = res.body
-        t.deepEqual(actual, expected, 'Initially return empty object')
-        t.end()
+        t.equal(actual.length, 0, 'Initially return empty array')
+        dropCollectionAndEnd(User, t)
       })
   })
 
@@ -30,61 +35,61 @@ dbConnection.once('open', () => {
     mockUser.save()
       .then(() => {
         supertest(server)
-        .get('/users')
-        .expect(200)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          // check our get path returns that user correctly
-          t.ok(res.body.length, 'response body should have length property')
-          t.equal(res.body.length, 1, 'response body should be an array with length 1')
-          t.equal(res.body[0].username, testData.a_user.username, 'correct username is returned')
-          t.end()
-        })
+          .get('/users')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err, res) => {
+            if (err) t.fail(err)
+            // check our get path returns that user correctly
+            t.ok(res.body.length, 'response body should have length property')
+            t.equal(res.body.length, 1, 'response body should be an array with length 1')
+            t.equal(res.body[0].username, testData.a_user.username, 'correct username is returned')
+            dropCollectionAndEnd(User, t)
+          })
       })
       .catch(err => t.fail(err))
   })
 
   tape('check /users GET returns longer list', t => {
-    const anotherUser = User(testData.another_user)
-    anotherUser.save()
+    User.create(testData.a_user, testData.another_user)
       .then(() => {
         supertest(server)
           .get('/users')
           .expect(200)
+          .expect('Content-Type', /json/)
           .end((err, res) => {
             if (err) t.fail(err)
             // check our get path returns that user correctly
             t.equal(res.body.length, 2, 'response body should be an array with length 1')
             t.equal(res.body[0].username, testData.a_user.username, 'correct username is returned')
             t.equal(res.body[1].username, testData.another_user.username, 'correct username is returned')
-            t.end()
+            dropCollectionAndEnd(User, t)
           })
       })
       .catch(err => t.fail(err))
   })
 
   tape('testing adding user using POST requests to /users route', t => {
-    const newUser = testData.third_user
-
-    supertest(server)
-      .post('/users')
-      .send(newUser)
-      .expect(200)
-      .end((err, res) => {
-        if (err) t.fail(err)
-        // check post request returns object that was added
-        t.deepEqual(res.body, testData.third_user, 'New user object was returned')
-        t.end()
+    const mockUser = new User(testData.a_user)
+    mockUser.save()
+      .then(() => {
+        const newUser = testData.third_user
+        supertest(server)
+          .post('/users')
+          .send(newUser)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end((err, res) => {
+            if (err) t.fail(err)
+            // check post request returns object that was added
+            t.deepEqual(res.body, testData.third_user, 'New user object was returned')
+            dropCollectionAndEnd(User, t)
+          })
       })
   })
 
   tape.onFinish(() => {
-    // clear collection
-    User.collection.drop()
-    .then(() => {
-      dbConnection.close()
-    })
-    .catch(err => console.log(err))
+    dbConnection.close()
   })
 })
 
