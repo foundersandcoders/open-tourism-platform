@@ -15,7 +15,7 @@ dbConnection.once('open', () => {
       .get('/users')
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
+      .end((err, res) => {
         if (err) t.fail(err)
         const expected = []
         const actual = res.body
@@ -32,7 +32,7 @@ dbConnection.once('open', () => {
         supertest(server)
         .get('/users')
         .expect(200)
-        .end(function (err, res) {
+        .end((err, res) => {
           if (err) t.fail(err)
           // check our get path returns that user correctly
           t.ok(res.body.length, 'response body should have length property')
@@ -51,7 +51,7 @@ dbConnection.once('open', () => {
         supertest(server)
           .get('/users')
           .expect(200)
-          .end(function (err, res) {
+          .end((err, res) => {
             if (err) t.fail(err)
             // check our get path returns that user correctly
             t.equal(res.body.length, 2, 'response body should be an array with length 1')
