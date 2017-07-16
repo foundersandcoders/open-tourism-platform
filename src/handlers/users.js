@@ -24,6 +24,7 @@ usersHandlers.post = (req, res) => {
   // receives json for user in body
   // adds to db
   // status codes: 201 (created), 400 (bad request)
+  res.send()
 }
 
 usersHandlers.update = (req, res) => {
