@@ -1,4 +1,5 @@
 {
-   "a_user": {"username":"mattlub","password":"pword","name":"matt","email":"xxx","role":"SUPER","isPublic":false}
+   "a_user": {"username":"mattlub","password":"pword","name":"matt","email":"xxx","role":"SUPER","isPublic":false},
+   "another_user": {"username":"m4v15","password":"pword","name":"matt","email":"xxx","role":"SUPER","isPublic":false}
 }
 
