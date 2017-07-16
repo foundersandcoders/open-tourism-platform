@@ -9,6 +9,9 @@ usersHandlers.get = (req, res) => {
   .then((users) => {
     res.send(users)
   })
+  .catch(err => {
+    res.status(500).send(`Database Error: ${err}`)
+  })
 }
 
 usersHandlers.getById = (req, res) => {
