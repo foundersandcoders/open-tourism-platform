@@ -34,8 +34,10 @@ dbConnection.once('open', () => {
         .expect(200)
         .end(function (err, res) {
           if (err) t.fail(err)
+          // check our get path returns that user correctly
           t.ok(res.body.length, 'response body should have length property')
           t.equal(res.body.length, 1, 'response body should be an array with length 1')
+          t.equal(res.body[0].username, testData.a_user.username, 'correct user is returned')
           t.end()
         })
       })
