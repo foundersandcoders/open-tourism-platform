@@ -4,6 +4,7 @@ const dbConnection = require('../db/connect.js')
 const server = require('../src/server.js')
 const supertest = require('supertest')
 const User = require('../db/models/User.js')
+const testData = require('./fixtures/users.json')
 
 dbConnection.once('open', () => {
   // require('./test_1.test.js')
@@ -24,15 +25,8 @@ dbConnection.once('open', () => {
   })
 
   tape('/users successfully returns list of users when one has been added', t => {
-    const mockUser = new User({
-      username: 'mattlub',
-      password: 'pword',
-      name: 'matt',
-      email: 'xxx',
-      role: 'SUPER',
-      isPublic: false
-    })
-
+    // add mock user to database using mongoose ORM
+    const mockUser = new User(testData.a_user)
     mockUser.save()
       .then(() => {
         supertest(server)
