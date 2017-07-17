@@ -1,4 +1,4 @@
-const User = require('../../db/models/User')
+const User = require('../models/User')
 
 const usersHandlers = module.exports = {}
 
@@ -6,12 +6,12 @@ usersHandlers.get = (req, res) => {
   // sends back array of users, filtered by queries
   // status codes: 200 (success)
   User.find()
-  .then((users) => {
-    res.send(users)
-  })
-  .catch(err => {
-    res.status(500).send(`Database Error: ${err}`)
-  })
+    .then((users) => {
+      res.send(users)
+    })
+    .catch(err => {
+      res.status(500).send(`Database Error: ${err}`)
+    })
 }
 
 usersHandlers.getById = (req, res) => {

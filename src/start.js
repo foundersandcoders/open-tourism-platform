@@ -6,7 +6,7 @@ const server = require('./server.js')
 const port = process.env.PORT || 3000
 
 // connect to the db
-const dbConnection = require('../db/connect.js')
+const dbConnection = require('./db/connect.js')
 
 dbConnection.once('open', () => {
   // we're connected to the database

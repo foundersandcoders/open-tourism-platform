@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { eventCategories, accessibilityOptions } = require('../constants.json')
+const { eventCategories, accessibilityOptions } = require('./constants.json')
 
 const eventSchema = mongoose.Schema(
   {

@@ -1,12 +1,14 @@
-const usersHandlers = require('./handlers/users')
+const usersControllers = require('./controllers/users')
 
 const router = require('express').Router()
 
 // user routes
-router.get('/users', usersHandlers.get)
-router.get('/users/:id', usersHandlers.getById)
-router.post('/users', usersHandlers.post)
-router.put('/users/:id', usersHandlers.update)
-router.delete('/users/:id', usersHandlers.delete)
+router.route('/users')
+  .get(usersControllers.get)
+  .post(usersControllers.post)
+router.route('/users/:id')
+  .get(usersControllers.getById)
+  .put(usersControllers.update)
+  .delete(usersControllers.delete)
 
 module.exports = router
