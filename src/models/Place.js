@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { placeCategories, accessibilityOptions } = require('../constants.json')
+const { placeCategories, accessibilityOptions } = require('./constants.json')
 
 const placeSchema = mongoose.Schema(
   {
