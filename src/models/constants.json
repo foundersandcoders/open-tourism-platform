@@ -1,6 +1,6 @@
 {
    "roles":[
-      "USER",
+      "BASIC",
       "ADMIN",
       "SUPER"
    ],
