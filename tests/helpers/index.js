@@ -1,7 +1,7 @@
 const helpers = module.exports = {}
 
 helpers.dropCollectionAndEnd = (myCollection, t) => {
-  myCollection.collection.drop()
+  myCollection.remove({})
     .then(() => {
       t.end()
     })
