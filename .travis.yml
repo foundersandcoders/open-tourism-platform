@@ -5,3 +5,5 @@ services:
   - mongodb
 env:
   - MONGODB_URI=mongodb://127.0.0.1/
+after_success: 'npm run coverage && npm run coveralls'
+

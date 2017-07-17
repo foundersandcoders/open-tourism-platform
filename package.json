@@ -8,7 +8,8 @@
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
     "dev": "NODE_ENV=development nodemon src/start.js",
-    "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js"
+    "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js",
+    "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
   },
   "pre-commit": [
     "lint",
@@ -32,6 +33,7 @@
     "mongoose": "^4.11.1"
   },
   "devDependencies": {
+    "coveralls": "^2.13.1",
     "istanbul": "^0.4.5",
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
