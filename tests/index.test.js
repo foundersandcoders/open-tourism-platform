@@ -68,25 +68,6 @@ dbConnection.once('open', () => {
       .catch(err => t.end(err))
   })
 
-  tape('testing adding user using POST requests to /users route', t => {
-    const mockUser = new User(testData.a_user)
-    mockUser.save()
-      .then(() => {
-        const newUser = testData.third_user
-        supertest(server)
-          .post('/users')
-          .send(newUser)
-          .expect(200)
-          .expect('Content-Type', /json/)
-          .end((err, res) => {
-            if (err) t.fail(err)
-            // check post request returns object that was added
-            t.deepEqual(res.body, testData.third_user, 'New user object was returned')
-            dropCollectionAndEnd(User, t)
-          })
-      })
-  })
-
   tape.onFinish(() => {
     dbConnection.close()
   })
