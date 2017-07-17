@@ -2,6 +2,7 @@
 
 [![Join the chat at https://gitter.im/open-tourism-platform/Lobby](https://badges.gitter.im/open-tourism-platform/Lobby.svg)](https://gitter.im/open-tourism-platform/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://travis-ci.org/foundersandcoders/open-tourism-platform.svg?branch=master)](https://travis-ci.org/foundersandcoders/open-tourism-platform)
+[![Coverage Status](https://coveralls.io/repos/github/foundersandcoders/open-tourism-platform/badge.svg?branch=user-endpoints)](https://coveralls.io/github/foundersandcoders/open-tourism-platform?branch=user-endpoints)
 
 If you want to get involved, check out the [contributing file](./CONTRIBUTING.md).
 
