@@ -6,11 +6,12 @@ usersHandlers.get = (req, res) => {
   // sends back array of users, filtered by queries
   // status codes: 200 (success)
   User.find()
-    .then((users) => {
+    .then(users => {
       res.send(users)
     })
-    .catch(err => {
-      res.status(500).send(`Database Error: ${err}`)
+    .catch(() => {
+      const errorObj = { message: 'Database error' }
+      res.status(500).send(errorObj)
     })
 }
 
@@ -24,7 +25,6 @@ usersHandlers.post = (req, res) => {
   // receives json for user in body
   // adds to db
   // status codes: 201 (created), 400 (bad request)
-  res.send()
 }
 
 usersHandlers.update = (req, res) => {
