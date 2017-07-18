@@ -41,6 +41,19 @@ tape('test /users GET returns list of users', t => {
 
 // Tests for: POST /users
 
+tape('testing adding user using POST requests to /users route', t => {
+  supertest(server)
+    .post('/users')
+    .send(validUser1)
+    .expect(200)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.deepEqual(res.body, validUser1, 'Respond with object that was added')
+      dropCollectionAndEnd(User, t)
+    })
+})
+
 // Tests for: PUT /users/:id
 
 // Tests for: DELETE /users/:id
