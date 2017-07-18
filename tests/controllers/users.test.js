@@ -42,18 +42,18 @@ tape('test /users GET returns list of users', t => {
 // Tests for: POST /users
 
 // Tests for: PUT /users/:id
-// tape('test PUT request to /users/:id with id of something not in the database', (t) => {
-//   supertest(server)
-//     .put('/users/invalidId')
-//     .send(validUser1)
-//     .expect(400)
-//     .expect('Content-Type', /json/)
-//     .end((err, res) => {
-//       if (err) t.fail(err)
+tape('test PUT request to /users/:id with id of something not in the database', (t) => {
+  supertest(server)
+    .put('/users/invalidId')
+    .send(validUser1)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
 
-//       dropCollectionAndEnd(User, t)
-//     })
-// })
+      dropCollectionAndEnd(User, t)
+    })
+})
 
 // tape('test PUT request to /users/:id with valid id and valid new user data', (t) => {
 //   User.create(validUser1)

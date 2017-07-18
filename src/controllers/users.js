@@ -33,7 +33,9 @@ userControllers.update = (req, res) => {
   // receives updated json for user in body
   // amends db record
   // status codes: 200 (success), 400 (bad request)
-  res.send('todo')
+  const id = req.params.id
+  const errorObj = { message: 'Database error' }
+  res.status(400).send(errorObj)
 }
 
 userControllers.delete = (req, res) => {
