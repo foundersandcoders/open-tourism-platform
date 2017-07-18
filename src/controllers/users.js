@@ -38,5 +38,12 @@ userControllers.delete = (req, res) => {
   // receives id in url
   // deletes
   // status codes: 200 (success), 400 (bad request)
-  res.send()
+  User.findOneAndRemove({ _id: req.params.id })
+    .then(removedUser => {
+      res.send(removedUser)
+    })
+    .catch((err) => {
+      const errorObj = { message: `Bad Request: ${err.message}` }
+      res.status(400).send(errorObj)
+    })
 }
