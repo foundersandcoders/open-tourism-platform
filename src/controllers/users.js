@@ -34,8 +34,12 @@ userControllers.update = (req, res) => {
   // amends db record
   // status codes: 200 (success), 400 (bad request)
   const id = req.params.id
-  const errorObj = { message: 'Database error' }
-  res.status(400).send(errorObj)
+  User.findByIdAndUpdate(id, req.body, { new: true })
+    .then(updatedUser => res.send(updatedUser))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(400).send(errorObj)
+    })
 }
 
 userControllers.delete = (req, res) => {
