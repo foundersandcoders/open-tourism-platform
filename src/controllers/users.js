@@ -42,7 +42,7 @@ userControllers.delete = (req, res) => {
     .then(removedUser => {
       res.send(removedUser)
     })
-    .catch((err) => {
+    .catch(err => {
       const errorObj = { message: `Bad Request: ${err.message}` }
       res.status(400).send(errorObj)
     })

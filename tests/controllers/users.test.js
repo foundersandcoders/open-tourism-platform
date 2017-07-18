@@ -60,7 +60,7 @@ tape('test /users/:id DELETE returns error with wrong ID', t => {
 
 tape('test /users/:id DELETE with good ID', t => {
   User.create(validUser1, validUser2)
-    .then((addedUser) => {
+    .then(addedUser => {
       supertest(server)
         .delete(`/users/${addedUser.id}`)
         .expect(200)
