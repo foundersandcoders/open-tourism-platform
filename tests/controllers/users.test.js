@@ -48,12 +48,33 @@ tape('test /users GET returns list of users', t => {
 tape('test /users/:id DELETE returns error with wrong ID', t => {
   supertest(server)
     .delete('/users/123456789')
-    .expect('400')
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Message sent back')
-      t.equal(res.body.message, 'Bad Request: no user with id=123456789', 'Correct message sent back')
+      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
       t.end()
     })
+})
+
+tape('test /users/:id DELETE with good ID', t => {
+  User.create(validUser1, validUser2)
+    .then((addedUser) => {
+      supertest(server)
+        .delete(`/users/${addedUser.id}`)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.name, addedUser.name, 'response body should be the user that has been removed')
+          // check our database now has one fewer user
+          User.find()
+            .then(users => {
+              t.equal(users.length, 1, 'Users should now be length 1')
+              dropCollectionAndEnd(User, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
 })
