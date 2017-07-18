@@ -19,6 +19,7 @@ userControllers.getById = (req, res) => {
   // receives id in url
   // sends back one user
   // status codes: 200 (success), 404 (not found)
+  res.send('todo')
 }
 
 userControllers.create = (req, res) => {
@@ -32,6 +33,7 @@ userControllers.update = (req, res) => {
   // receives updated json for user in body
   // amends db record
   // status codes: 200 (success), 400 (bad request)
+  res.send('todo')
 }
 
 userControllers.delete = (req, res) => {
