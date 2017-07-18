@@ -6,7 +6,7 @@ usersHandlers.get = (req, res) => {
   // sends back array of users, filtered by queries
   // status codes: 200 (success)
   User.find()
-    .then((users) => {
+    .then(users => {
       res.send(users)
     })
     .catch(err => {
@@ -18,7 +18,15 @@ usersHandlers.getById = (req, res) => {
   // receives id in url
   // sends back one user
   // status codes: 200 (success), 404 (not found)
-  res.send('todo')
+  const id = req.params.id
+  User.findById(id, (err, user) => {
+    // err could be for invalid id or user not found
+    if (err) {
+      const errorObj = { message: `Cannot find user with id=${id}` }
+      return res.status(404).send(errorObj)
+    }
+    res.send(user)
+  })
 }
 
 usersHandlers.post = (req, res) => {

@@ -66,7 +66,7 @@ tape('test /users/:id with id of something not in the database', (t) => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      // t.equal(res.message, '...')
+      t.equal(res.body.message, 'Cannot find user with id=10', 'response message should be "Cannot find user with id=10"')
       dropCollectionAndEnd(User, t)
     })
 })
@@ -80,7 +80,7 @@ tape('test /users/:id with id of something in the database', (t) => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.username, validUser1.username, 'should get user with correct username.')
+          t.equal(res.body.username, validUser1.username, 'should get user with correct username.')
           dropCollectionAndEnd(User, t)
         })
     })
