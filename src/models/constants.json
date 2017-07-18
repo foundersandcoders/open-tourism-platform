@@ -1,4 +1,9 @@
 {
+   "roles":[
+      "BASIC",
+      "ADMIN",
+      "SUPER"
+   ],
    "accessibilityOptions": [
       "braille-menu",
       "wheelchair-friendly"

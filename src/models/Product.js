@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const { productCategories } = require('../constants.json')
+const { productCategories } = require('./constants.json')
 
 const productSchema = mongoose.Schema(
   {

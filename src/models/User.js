@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const roles = ['BASIC', 'ADMIN', 'SUPER']
+const { roles } = require('./constants.json')
 
 const userSchema = mongoose.Schema(
   {
