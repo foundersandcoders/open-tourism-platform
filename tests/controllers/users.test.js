@@ -5,6 +5,7 @@ const User = require('../../src/models/User.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validUser1, validUser2 } = require('../fixtures/users.json')
 
+// Tests for: GET /users
 tape('test /users when nothing in database', (t) => {
   supertest(server)
     .get('/users')
@@ -17,28 +18,7 @@ tape('test /users when nothing in database', (t) => {
     })
 })
 
-tape('test /users when one user in database', t => {
-  // add mock user to database using mongoose ORM
-  const mockUser = new User(validUser1)
-  mockUser.save()
-    .then(() => {
-      supertest(server)
-        .get('/users')
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          // check our get path returns that user correctly
-          t.ok(res.body.length, 'response body should have length property')
-          t.equal(res.body.length, 1, 'response body should be an array with length 1')
-          t.equal(res.body[0].username, validUser1.username, 'correct username is returned')
-          dropCollectionAndEnd(User, t)
-        })
-    })
-    .catch(err => t.end(err))
-})
-
-tape('test /users GET returns longer list', t => {
+tape('test /users GET returns list of users', t => {
   User.create(validUser1, validUser2)
     .then(() => {
       supertest(server)
@@ -56,3 +36,11 @@ tape('test /users GET returns longer list', t => {
     })
     .catch(err => t.end(err))
 })
+
+// Tests for: GET /users/:id
+
+// Tests for: POST /users
+
+// Tests for: PUT /users/:id
+
+// Tests for: DELETE /users/:id
