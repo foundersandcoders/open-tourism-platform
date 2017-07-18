@@ -44,3 +44,16 @@ tape('test /users GET returns list of users', t => {
 // Tests for: PUT /users/:id
 
 // Tests for: DELETE /users/:id
+
+tape('test /users/:id DELETE returns error with wrong ID', t => {
+  supertest(server)
+    .delete('/users/123456789')
+    .expect('400')
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.equal(res.body.message, 'Bad Request: no user with id=123456789', 'Correct message sent back')
+      t.end()
+    })
+})

@@ -38,4 +38,5 @@ userControllers.delete = (req, res) => {
   // receives id in url
   // deletes
   // status codes: 200 (success), 400 (bad request)
+  res.send()
 }
