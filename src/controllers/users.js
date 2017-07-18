@@ -19,7 +19,6 @@ userControllers.getById = (req, res) => {
   // receives id in url
   // sends back one user
   // status codes: 200 (success), 404 (not found)
-  res.send('todo')
 }
 
 userControllers.create = (req, res) => {
