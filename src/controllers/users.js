@@ -9,8 +9,8 @@ userControllers.getAll = (req, res) => {
     .then(users => {
       res.send(users)
     })
-    .catch((err) => {
-      const errorObj = { message: `Database Error: ${err.message}` }
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
       res.status(500).send(errorObj)
     })
 }
@@ -31,7 +31,17 @@ userControllers.getById = (req, res) => {
 userControllers.create = (req, res) => {
   // receives json for user in body
   // adds to db
-  // status codes: 201 (created), 400 (bad request)
+  // status codes: 201 (created), 500 (server error)
+  const newUser = new User(req.body)
+  newUser.save()
+    .then(user => {
+      res.status(201).send(user)
+    })
+    .catch(err => {
+      // Sending back 500 error, may need changing when we think about how we validate
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(500).send(errorObj)
+    })
 }
 
 userControllers.update = (req, res) => {
