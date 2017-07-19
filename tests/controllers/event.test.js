@@ -4,7 +4,6 @@ const server = require('../../src/server.js')
 const Event = require('../../src/models/Event.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validEvent1, validEvent2, validEvent3, invalidEvent1 } = require('../fixtures/events.json')
-console.log(validEvent2)
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
