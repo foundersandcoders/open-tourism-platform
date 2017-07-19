@@ -45,7 +45,7 @@ tape('test /users/:id GET with id of something not in the database', (t) => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.message, 'Cannot find user with id=10', 'response message should be "Cannot find user with id=10"')
+      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
       dropCollectionAndEnd(User, t)
     })
 })
