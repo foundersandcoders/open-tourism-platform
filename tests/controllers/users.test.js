@@ -71,6 +71,35 @@ tape('test /users/:id GET with id of something in the database', (t) => {
 // Tests for: POST /users
 
 // Tests for: PUT /users/:id
+tape('test PUT request to /users/:id with id of something not in the database', (t) => {
+  supertest(server)
+    .put('/users/invalidId')
+    .send(validUser1)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      dropCollectionAndEnd(User, t)
+    })
+})
+
+tape('test PUT request to /users/:id with valid id and valid new user data', (t) => {
+  User.create(validUser1)
+    .then(createdUser => {
+      supertest(server)
+        .put(`/users/${createdUser.id}`)
+        .send(validUser2)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.username, validUser2.username, 'user should be correctly updated, and the updated user returned')
+          dropCollectionAndEnd(User, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
 
 // Tests for: DELETE /users/:id
 
