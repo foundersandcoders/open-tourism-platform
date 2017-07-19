@@ -116,7 +116,7 @@ tape('POST /events adding valid event', t => {
 })
 
 // Tests for: PUT /events/:id
-tape('PUT /events/:id with invalid id', (t) => {
+tape('PUT /events/:id with invalid id', t => {
   supertest(server)
     .put('/events/invalidId')
     .send(validEvent1)
@@ -129,7 +129,7 @@ tape('PUT /events/:id with invalid id', (t) => {
     })
 })
 
-tape('PUT /events/:id with valid id and valid new event data', (t) => {
+tape('PUT /events/:id with valid id and valid new event data', t => {
   Event.create(validEvent1)
     .then(createdEvent => {
       supertest(server)
