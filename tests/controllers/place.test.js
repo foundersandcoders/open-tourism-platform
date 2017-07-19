@@ -115,5 +115,44 @@ tape('POST /places with invalid place data', t => {
 })
 
 // Tests for: PUT /places/:id
+tape('PUT /places/:id with id of something not in the database', (t) => {
+  supertest(server)
+    .put('/places/invalidId')
+    .send(validPlace1)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      dropCollectionAndEnd(Place, t)
+    })
+})
+
+tape('PUT /places/:id with valid id and valid new place data', (t) => {
+  Place.create(validPlace1)
+    .then(createdPlace => {
+      supertest(server)
+        .put(`/places/${createdPlace.id}`)
+        .send(validPlace2)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.name, validPlace2.name, 'place should be correctly updated, and the updated place returned')
+          // check place was updated in db
+          Place.findById(createdPlace.id)
+            .then(place => {
+              t.equal(place.name, validPlace2.name, 'Place has been updated in the database')
+              dropCollectionAndEnd(Place, t)
+            })
+            .catch(err => {
+              t.fail(err)
+              dropCollectionAndEnd(Place, t)
+            })
+        })
+
+    })
+    .catch(err => t.end(err))
+})
 
 // Tests for: DELETE /places/:id

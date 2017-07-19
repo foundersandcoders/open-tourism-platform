@@ -45,7 +45,17 @@ placeController.create = (req, res) => {
 }
 
 placeController.update = (req, res) => {
-
+  // receives id in url
+  // receives updated json for place in body
+  // amends db record
+  // status codes: 200 (success), 400 (bad request)
+  const id = req.params.id
+  Place.findByIdAndUpdate(id, req.body, { new: true })
+    .then(updatedPlace => res.send(updatedPlace))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(400).send(errorObj)
+    })
 }
 
 placeController.delete = (req, res) => {
