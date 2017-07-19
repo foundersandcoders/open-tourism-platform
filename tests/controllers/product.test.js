@@ -153,3 +153,40 @@ tape('PUT /products/:id with valid id and valid new product data', t => {
 })
 
 // Tests for: DELETE /products/:id
+tape('DELETE /products/:id returns error with wrong ID', t => {
+  supertest(server)
+    .delete('/products/123456789')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.end()
+    })
+})
+
+tape('DELETE /products/:id with good ID', t => {
+  Product.create(validProduct1, validProduct2)
+    .then(productToBeDeleted => {
+      supertest(server)
+        .delete(`/products/${productToBeDeleted.id}`)
+        .expect(204)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+          // check our database now has one fewer product
+          Product.find()
+            .then(productsAfterDeletion => {
+              t.equal(productsAfterDeletion.length, 1, 'Products should now be length 1')
+              t.ok(productsAfterDeletion[0].id !== productToBeDeleted.id, 'deleted product should no longer be in the database')
+              dropCollectionAndEnd(Product, t)
+            })
+            .catch(err => {
+              t.fail(err)
+              dropCollectionAndEnd(Product, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
+})

@@ -58,5 +58,15 @@ productController.update = (req, res) => {
 }
 
 productController.delete = (req, res) => {
-
+  // receives id in url
+  // deletes
+  // status codes: 204 (success), 400 (bad request)
+  Product.findByIdAndRemove(req.params.id)
+    .then(() => {
+      res.status(204).send()
+    })
+    .catch(err => {
+      const errorObj = { message: `Bad Request: ${err.message}` }
+      res.status(400).send(errorObj)
+    })
 }
