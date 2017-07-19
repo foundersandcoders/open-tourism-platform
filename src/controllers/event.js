@@ -17,7 +17,7 @@ eventController.getAll = (req, res) => {
 
 eventController.getById = (req, res) => {
   // receives id in url
-  // sends back one user
+  // sends back one event
   // status codes: 200 (success), 404 (not found)
   const id = req.params.id
   Event.findById(id)
@@ -29,7 +29,19 @@ eventController.getById = (req, res) => {
 }
 
 eventController.create = (req, res) => {
-
+  // receives json for event in body
+  // adds to db
+  // status codes: 201 (created), 500 (server error)
+  const newEvent = new Event(req.body)
+  newEvent.save()
+    .then(event => {
+      res.status(201).send(event)
+    })
+    .catch(err => {
+      // Sending back 500 error, may need changing when we think about how we validate
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(500).send(errorObj)
+    })
 }
 
 eventController.update = (req, res) => {

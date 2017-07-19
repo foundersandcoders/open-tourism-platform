@@ -28,7 +28,7 @@ tape('GET /events, with and without query parameters', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          // check our get path returns that user correctly
+          // check our get path returns that event correctly
           t.equal(res.body.length, 3, 'response body should be an array with length 3')
           t.ok(res.body.map(event => event.name).includes(validEvent1.name), 'first event has been added')
           t.ok(res.body.map(event => event.name).includes(validEvent2.name), 'second event has been added')
@@ -40,7 +40,7 @@ tape('GET /events, with and without query parameters', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          // check our get path returns that user correctly
+          // check our get path returns that event correctly
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
           t.equal(res.body[0].name, validEvent2.name, 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(Event, t)
@@ -79,6 +79,42 @@ tape('GET /events/:id with id of something in the database', t => {
 })
 
 // Tests for: POST /events
+tape('POST /events adding valid event', t => {
+  supertest(server)
+    .post('/events')
+    .send(validEvent1)
+    .expect(201)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.name, validEvent1.name, 'Correct object is added')
+      t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
+      // Now check whether it is in the database
+      Event.findById(res.body._id)
+        .then(event => {
+          t.equal(event.email, res.body.email, 'Event is in the database')
+          dropCollectionAndEnd(Event, t)
+        })
+        .catch(err => {
+          t.fail(err)
+          dropCollectionAndEnd(Event, t)
+        })
+    })
+})
+
+tape('POST /events adding invalid event', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent1)
+    .expect(500)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
 
 // Tests for: PUT /events/:id
 
