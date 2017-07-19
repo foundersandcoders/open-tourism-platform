@@ -19,6 +19,13 @@ userControllers.getById = (req, res) => {
   // receives id in url
   // sends back one user
   // status codes: 200 (success), 404 (not found)
+  const id = req.params.id
+  User.findById(id)
+    .then(user => res.send(user))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(404).send(errorObj)
+    })
 }
 
 userControllers.create = (req, res) => {

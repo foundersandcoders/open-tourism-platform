@@ -29,8 +29,37 @@ tape('test /users GET returns list of users', t => {
           if (err) t.fail(err)
           // check our get path returns that user correctly
           t.equal(res.body.length, 2, 'response body should be an array with length 1')
-          t.ok(res.body.map((user) => user.username).includes(validUser1.username), 'mattlub has been added')
-          t.ok(res.body.map((user) => user.username).includes(validUser2.username), 'm4v15 has been added')
+          t.ok(res.body.map(user => user.username).includes(validUser1.username), 'mattlub has been added')
+          t.ok(res.body.map(user => user.username).includes(validUser2.username), 'm4v15 has been added')
+          dropCollectionAndEnd(User, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
+
+// GET /users/:id
+tape('test /users/:id GET with id of something not in the database', (t) => {
+  supertest(server)
+    .get('/users/10')
+    .expect(404)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      dropCollectionAndEnd(User, t)
+    })
+})
+
+tape('test /users/:id GET with id of something in the database', (t) => {
+  User.create(validUser1)
+    .then(result => {
+      supertest(server)
+        .get(`/users/${result.id}`)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.username, validUser1.username, 'should get user with correct username.')
           dropCollectionAndEnd(User, t)
         })
     })
