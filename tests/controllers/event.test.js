@@ -42,7 +42,7 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
-          t.equal(res.body[0].name, validEvent2.name, 'results should be filtered correctly by url query parameters')
+          t.ok(res.body.map(event => event.name).includes(validEvent2.name), 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(Event, t)
         })
     })
@@ -119,3 +119,40 @@ tape('POST /events adding invalid event', t => {
 // Tests for: PUT /events/:id
 
 // Tests for: DELETE /events/:id
+tape('DELETE /events/:id with invalid ID', t => {
+  supertest(server)
+    .delete('/events/123456789')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Error message sent back')
+      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.end()
+    })
+})
+
+tape('DELETE /events/:id with valid ID', t => {
+  Event.create(validEvent1, validEvent2)
+    .then(eventToBeDeleted => {
+      supertest(server)
+        .delete(`/events/${eventToBeDeleted.id}`)
+        .expect(204)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+          // check our database now has one fewer event
+          Event.find()
+            .then(events => {
+              t.equal(events.length, 1, 'Events should now be length 1')
+              t.ok(events[0].id !== eventToBeDeleted.id, 'deleted event no longer in DB')
+              dropCollectionAndEnd(Event, t)
+            })
+            .catch(err => {
+              t.fail(err)
+              dropCollectionAndEnd(Event, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
+})
