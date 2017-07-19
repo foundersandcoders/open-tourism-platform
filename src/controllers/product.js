@@ -45,7 +45,16 @@ productController.create = (req, res) => {
 }
 
 productController.update = (req, res) => {
-
+  // receives id in url, updated json for product in body
+  // amends db record
+  // status codes: 200 (success), 400 (bad request)
+  const id = req.params.id
+  Product.findByIdAndUpdate(id, req.body, { new: true })
+    .then(updatedProduct => res.send(updatedProduct))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(400).send(errorObj)
+    })
 }
 
 productController.delete = (req, res) => {

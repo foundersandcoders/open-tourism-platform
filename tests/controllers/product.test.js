@@ -46,7 +46,7 @@ tape('GET /products, with and without query parameters', t => {
 })
 
 // Tests for: GET /products/:id
-tape('GET /products/:id with id of something not in the database', (t) => {
+tape('GET /products/:id with id of something not in the database', t => {
   supertest(server)
     .get('/products/10')
     .expect(404)
@@ -58,7 +58,7 @@ tape('GET /products/:id with id of something not in the database', (t) => {
     })
 })
 
-tape('GET /products/:id with id of something in the database', (t) => {
+tape('GET /products/:id with id of something in the database', t => {
   Product.create(validProduct1)
     .then(result => {
       supertest(server)
@@ -113,5 +113,43 @@ tape('POST /products with invalid product data', t => {
 })
 
 // Tests for: PUT /products/:id
+tape('PUT /products/:id with id of something not in the database', t => {
+  supertest(server)
+    .put('/products/invalidId')
+    .send(validProduct1)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      dropCollectionAndEnd(Product, t)
+    })
+})
+
+tape('PUT /products/:id with valid id and valid new product data', t => {
+  Product.create(validProduct1)
+    .then(createdProduct => {
+      supertest(server)
+        .put(`/products/${createdProduct.id}`)
+        .send(validProduct2)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.name, validProduct2.name, 'Product should be correctly updated, and the updated product returned')
+          // Now check whether it is updated in the database
+          Product.findById(res.body._id)
+            .then(product => {
+              t.equal(product.name, validProduct2.name, 'Product is updated in the database')
+              dropCollectionAndEnd(Product, t)
+            })
+            .catch(err => {
+              t.fail(err)
+              dropCollectionAndEnd(Product, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
+})
 
 // Tests for: DELETE /products/:id
