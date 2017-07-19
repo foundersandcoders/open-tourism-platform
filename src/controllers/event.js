@@ -16,7 +16,16 @@ eventController.getAll = (req, res) => {
 }
 
 eventController.getById = (req, res) => {
-
+  // receives id in url
+  // sends back one user
+  // status codes: 200 (success), 404 (not found)
+  const id = req.params.id
+  Event.findById(id)
+    .then(event => res.send(event))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(404).send(errorObj)
+    })
 }
 
 eventController.create = (req, res) => {

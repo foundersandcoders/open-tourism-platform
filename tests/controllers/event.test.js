@@ -7,7 +7,7 @@ const { validEvent1, validEvent2, validEvent3, invalidEvent1 } = require('../fix
 console.log(validEvent2)
 
 // Tests for: GET /events
-tape('GET /events when nothing in database', (t) => {
+tape('GET /events when nothing in database', t => {
   supertest(server)
     .get('/events')
     .expect(200)
@@ -50,6 +50,33 @@ tape('GET /events, with and without query parameters', t => {
 })
 
 // Tests for: GET /events/:id
+tape('GET /events/:id with id of something not in the database', t => {
+  supertest(server)
+    .get('/events/10')
+    .expect(404)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('GET /events/:id with id of something in the database', t => {
+  Event.create(validEvent1)
+    .then(result => {
+      supertest(server)
+        .get(`/events/${result.id}`)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.name, validEvent1.name, 'should get event with correct name.')
+          dropCollectionAndEnd(Event, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
 
 // Tests for: POST /events
 
