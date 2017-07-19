@@ -50,7 +50,7 @@ tape('GET /events, with and without query parameters', t => {
 })
 
 // Tests for: GET /events/:id
-tape('GET /events/:id with id of something not in the database', t => {
+tape('GET /events/:id with invalid id', t => {
   supertest(server)
     .get('/events/10')
     .expect(404)
@@ -62,7 +62,7 @@ tape('GET /events/:id with id of something not in the database', t => {
     })
 })
 
-tape('GET /events/:id with id of something in the database', t => {
+tape('GET /events/:id with valid id', t => {
   Event.create(validEvent1)
     .then(result => {
       supertest(server)
@@ -79,29 +79,6 @@ tape('GET /events/:id with id of something in the database', t => {
 })
 
 // Tests for: POST /events
-tape('POST /events adding valid event', t => {
-  supertest(server)
-    .post('/events')
-    .send(validEvent1)
-    .expect(201)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.equal(res.body.name, validEvent1.name, 'Correct object is added')
-      t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
-      // Now check whether it is in the database
-      Event.findById(res.body._id)
-        .then(event => {
-          t.equal(event.email, res.body.email, 'Event is in the database')
-          dropCollectionAndEnd(Event, t)
-        })
-        .catch(err => {
-          t.fail(err)
-          dropCollectionAndEnd(Event, t)
-        })
-    })
-})
-
 tape('POST /events adding invalid event', t => {
   supertest(server)
     .post('/events')
@@ -116,7 +93,68 @@ tape('POST /events adding invalid event', t => {
     })
 })
 
+tape('POST /events adding valid event', t => {
+  supertest(server)
+    .post('/events')
+    .send(validEvent1)
+    .expect(201)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.name, validEvent1.name, 'Correct object is added')
+      t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
+      // Now check whether it is in the database
+      Event.findById(res.body._id)
+        .then(event => {
+          t.equal(event.category[0], res.body.category[0], 'Event is in the database')
+          dropCollectionAndEnd(Event, t)
+        })
+        .catch(err => {
+          t.fail(err)
+          dropCollectionAndEnd(Event, t)
+        })
+    })
+})
+
 // Tests for: PUT /events/:id
+tape('PUT /events/:id with invalid id', (t) => {
+  supertest(server)
+    .put('/events/invalidId')
+    .send(validEvent1)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('PUT /events/:id with valid id and valid new event data', (t) => {
+  Event.create(validEvent1)
+    .then(createdEvent => {
+      supertest(server)
+        .put(`/events/${createdEvent.id}`)
+        .send(validEvent2)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.name, validEvent2.name, 'event should be correctly updated, and the updated event returned')
+          // check event has been updated
+          Event.findById(res.body._id)
+            .then(event => {
+              t.equal(event.category[0], res.body.category[0], 'Event is in the database')
+              dropCollectionAndEnd(Event, t)
+            })
+            .catch(err => {
+              t.fail(err)
+              dropCollectionAndEnd(Event, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
+})
 
 // Tests for: DELETE /events/:id
 tape('DELETE /events/:id with invalid ID', t => {

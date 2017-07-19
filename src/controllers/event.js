@@ -45,7 +45,17 @@ eventController.create = (req, res) => {
 }
 
 eventController.update = (req, res) => {
-
+  // receives id in url
+  // receives updated json for event in body
+  // amends db record
+  // status codes: 200 (success), 400 (bad request)
+  const id = req.params.id
+  Event.findByIdAndUpdate(id, req.body, { new: true })
+    .then(updatedEvent => res.send(updatedEvent))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(400).send(errorObj)
+    })
 }
 
 eventController.delete = (req, res) => {
