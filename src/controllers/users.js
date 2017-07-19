@@ -22,10 +22,10 @@ userControllers.getById = (req, res) => {
   const id = req.params.id
   User.findById(id)
     .then(user => res.send(user))
-    .catch(() => {
+    .catch(err => {
       // probably change this error soon to use the message from the db error
-      const errorObj = { message: `Cannot find user with id=${id}` }
-      return res.status(404).send(errorObj)
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(404).send(errorObj)
     })
 }
 
