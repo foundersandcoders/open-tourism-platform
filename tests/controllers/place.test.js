@@ -150,9 +150,45 @@ tape('PUT /places/:id with valid id and valid new place data', (t) => {
               dropCollectionAndEnd(Place, t)
             })
         })
-
     })
     .catch(err => t.end(err))
 })
 
 // Tests for: DELETE /places/:id
+tape('DELETE /places/:id returns error with wrong ID', t => {
+  supertest(server)
+    .delete('/places/123456789')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.end()
+    })
+})
+
+tape('DELETE /places/:id with good ID', t => {
+  Place.create(validPlace1, validPlace2)
+    .then(placeToBeDeleted => {
+      supertest(server)
+        .delete(`/places/${placeToBeDeleted.id}`)
+        .expect(204)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+          // check our database now has one fewer place
+          Place.find()
+            .then(placesAfterDeletion => {
+              t.equal(placesAfterDeletion.length, 1, 'Places should now be length 1')
+              t.ok(placesAfterDeletion[0].id !== placeToBeDeleted.id, 'deleted place should no longer be in the database')
+              dropCollectionAndEnd(Place, t)
+            })
+            .catch(err => {
+              t.fail(err)
+              dropCollectionAndEnd(Place, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
+})
