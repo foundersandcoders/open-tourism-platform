@@ -4,6 +4,9 @@ const dbConnection = require('../src/db/connect.js')
 
 dbConnection.once('open', () => {
   require('./controllers/users.test.js')
+  require('./controllers/place.test.js')
+  require('./controllers/event.test.js')
+  require('./controllers/product.test.js')
   tape.onFinish(() => {
     dbConnection.close()
   })
