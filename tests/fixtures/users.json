@@ -1,5 +1,7 @@
 {
    "validUser1": {"username":"mattlub","password":"pword","name":"matt","email":"xxx","role":"SUPER","isPublic":false},
-   "validUser2": {"username":"m4v15","password":"pword","name":"matt","email":"xxx","role":"SUPER","isPublic":false}
+   "validUser2": {"username":"m4v15","password":"pword","name":"matt","email":"xxx","role":"SUPER","isPublic":false},
+   "invalidUser1": {"username":"des-des"}
+
 }
 
