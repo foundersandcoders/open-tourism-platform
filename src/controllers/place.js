@@ -29,7 +29,19 @@ placeController.getById = (req, res) => {
 }
 
 placeController.create = (req, res) => {
-
+  // receives json for place in body
+  // adds to db
+  // status codes: 201 (created), 500 (server error)
+  const newPlace = new Place(req.body)
+  newPlace.save()
+    .then(place => {
+      res.status(201).send(place)
+    })
+    .catch(err => {
+      // Sending back 500 error, may need changing when we think about how we validate
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(500).send(errorObj)
+    })
 }
 
 placeController.update = (req, res) => {

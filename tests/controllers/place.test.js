@@ -48,7 +48,7 @@ tape('GET /places, with and without query parameters', t => {
 })
 
 // Tests for: GET /places/:id
-tape('test /places/:id GET with id of something not in the database', (t) => {
+tape('GET /places/:id with id of something not in the database', (t) => {
   supertest(server)
     .get('/places/10')
     .expect(404)
@@ -60,7 +60,7 @@ tape('test /places/:id GET with id of something not in the database', (t) => {
     })
 })
 
-tape('test /places/:id GET with id of something in the database', (t) => {
+tape('GET /places/:id with id of something in the database', (t) => {
   Place.create(validPlace1)
     .then(result => {
       supertest(server)
@@ -77,6 +77,42 @@ tape('test /places/:id GET with id of something in the database', (t) => {
 })
 
 // Tests for: POST /places
+tape('POST /places with valid place data', t => {
+  supertest(server)
+    .post('/places')
+    .send(validPlace1)
+    .expect(201)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.name, validPlace1.name, 'Correct object is added')
+      t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
+      // Now check whether it is in the database
+      Place.findById(res.body._id)
+        .then(place => {
+          t.equal(place.name, res.body.name, 'Place is in the database')
+          dropCollectionAndEnd(Place, t)
+        })
+        .catch(err => {
+          t.fail(err)
+          dropCollectionAndEnd(Place, t)
+        })
+    })
+})
+
+tape('POST /places with invalid place data', t => {
+  supertest(server)
+    .post('/places')
+    .send(invalidPlace1)
+    .expect(500)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      dropCollectionAndEnd(Place, t)
+    })
+})
 
 // Tests for: PUT /places/:id
 
