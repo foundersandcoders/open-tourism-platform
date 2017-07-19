@@ -44,3 +44,36 @@ tape('test /users GET returns list of users', t => {
 // Tests for: PUT /users/:id
 
 // Tests for: DELETE /users/:id
+
+tape('test /users/:id DELETE returns error with wrong ID', t => {
+  supertest(server)
+    .delete('/users/123456789')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.end()
+    })
+})
+
+tape('test /users/:id DELETE with good ID', t => {
+  User.create(validUser1, validUser2)
+    .then(addedUser => {
+      supertest(server)
+        .delete(`/users/${addedUser.id}`)
+        .expect(204)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+          // check our database now has one fewer user
+          User.find()
+            .then(users => {
+              t.equal(users.length, 1, 'Users should now be length 1')
+              dropCollectionAndEnd(User, t)
+            })
+        })
+    })
+    .catch(err => t.end(err))
+})
