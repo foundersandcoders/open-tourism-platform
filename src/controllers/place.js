@@ -16,7 +16,16 @@ placeController.getAll = (req, res) => {
 }
 
 placeController.getById = (req, res) => {
-
+  // receives id in url
+  // sends back one place
+  // status codes: 200 (success), 404 (not found)
+  const id = req.params.id
+  Place.findById(id)
+    .then(place => res.send(place))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(404).send(errorObj)
+    })
 }
 
 placeController.create = (req, res) => {

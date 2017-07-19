@@ -48,6 +48,33 @@ tape('GET /places, with and without query parameters', t => {
 })
 
 // Tests for: GET /places/:id
+tape('test /places/:id GET with id of something not in the database', (t) => {
+  supertest(server)
+    .get('/places/10')
+    .expect(404)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      dropCollectionAndEnd(Place, t)
+    })
+})
+
+tape('test /places/:id GET with id of something in the database', (t) => {
+  Place.create(validPlace1)
+    .then(result => {
+      supertest(server)
+        .get(`/places/${result.id}`)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.name, validPlace1.name, 'should get place with correct name.')
+          dropCollectionAndEnd(Place, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
 
 // Tests for: POST /places
 
