@@ -16,7 +16,16 @@ productController.getAll = (req, res) => {
 }
 
 productController.getById = (req, res) => {
-
+  // receives id in url
+  // sends back one user
+  // status codes: 200 (success), 404 (not found)
+  const id = req.params.id
+  Product.findById(id)
+    .then(product => res.send(product))
+    .catch(err => {
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(404).send(errorObj)
+    })
 }
 
 productController.create = (req, res) => {
