@@ -74,7 +74,6 @@ tape('testing adding user using POST requests to /users route', t => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
       t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
-
       dropCollectionAndEnd(User, t)
     })
 })
