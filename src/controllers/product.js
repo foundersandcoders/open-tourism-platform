@@ -17,7 +17,7 @@ productController.getAll = (req, res) => {
 
 productController.getById = (req, res) => {
   // receives id in url
-  // sends back one user
+  // sends back one product
   // status codes: 200 (success), 404 (not found)
   const id = req.params.id
   Product.findById(id)
@@ -29,7 +29,19 @@ productController.getById = (req, res) => {
 }
 
 productController.create = (req, res) => {
-
+  // receives json for product in body
+  // adds to db
+  // status codes: 201 (created), 500 (server error)
+  const newProduct = new Product(req.body)
+  newProduct.save()
+    .then(product => {
+      res.status(201).send(product)
+    })
+    .catch(err => {
+      // Sending back 500 error, may need changing when we think about how we validate
+      const errorObj = { message: `Database error: ${err.message}` }
+      res.status(500).send(errorObj)
+    })
 }
 
 productController.update = (req, res) => {

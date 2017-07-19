@@ -75,6 +75,42 @@ tape('GET /products/:id with id of something in the database', (t) => {
 })
 
 // Tests for: POST /products
+tape('POST /products with valid product data', t => {
+  supertest(server)
+    .post('/products')
+    .send(validProduct1)
+    .expect(201)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.name, validProduct1.name, 'Correct object is added')
+      t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
+      // Now check whether it is in the database
+      Product.findById(res.body._id)
+        .then(product => {
+          t.equal(product.name, res.body.name, 'Product is in the database')
+          dropCollectionAndEnd(Product, t)
+        })
+        .catch(err => {
+          t.fail(err)
+          dropCollectionAndEnd(Product, t)
+        })
+    })
+})
+
+tape('POST /products with invalid product data', t => {
+  supertest(server)
+    .post('/products')
+    .send(invalidProduct1)
+    .expect(500)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      dropCollectionAndEnd(Product, t)
+    })
+})
 
 // Tests for: PUT /products/:id
 
