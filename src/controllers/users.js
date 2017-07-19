@@ -24,7 +24,7 @@ userControllers.getById = (req, res) => {
 userControllers.create = (req, res) => {
   // receives json for user in body
   // adds to db
-  // status codes: 201 (created), 400 (bad request)
+  // status codes: 201 (created), 500 (server error)
   const newUser = new User(req.body)
   newUser.save()
     .then(user => {
