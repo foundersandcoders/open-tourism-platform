@@ -3,7 +3,7 @@ const tape = require('tape')
 const dbConnection = require('../src/db/connect.js')
 
 dbConnection.once('open', () => {
-  require('./controllers/users.test.js')
+  require('./controllers/user.test.js')
   tape.onFinish(() => {
     dbConnection.close()
   })
