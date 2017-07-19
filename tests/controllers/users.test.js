@@ -63,11 +63,10 @@ tape('test /users/:id DELETE with good ID', t => {
     .then(addedUser => {
       supertest(server)
         .delete(`/users/${addedUser.id}`)
-        .expect(200)
-        .expect('Content-Type', /json/)
+        .expect(204)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, addedUser.name, 'response body should be the user that has been removed')
+          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
           // check our database now has one fewer user
           User.find()
             .then(users => {
