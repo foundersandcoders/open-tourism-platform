@@ -5,7 +5,7 @@ const { productCategories } = require('./constants.json')
 const productSchema = mongoose.Schema(
   {
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    name: String,
+    name: { type: String, required: true },
     category: [{ type: String, enum: productCategories }],
     description: String,
     imageUrl: String,
