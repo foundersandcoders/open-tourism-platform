@@ -18,7 +18,7 @@ tape('test /users when nothing in database', (t) => {
     })
 })
 
-tape('test /users GET returns list of users', t => {
+tape('test GET request to /users, with and without query parameters', t => {
   User.create(validUser1, validUser2)
     .then(() => {
       supertest(server)
@@ -28,9 +28,19 @@ tape('test /users GET returns list of users', t => {
         .end((err, res) => {
           if (err) t.fail(err)
           // check our get path returns that user correctly
-          t.equal(res.body.length, 2, 'response body should be an array with length 1')
-          t.ok(res.body.map(user => user.username).includes(validUser1.username), 'mattlub has been added')
-          t.ok(res.body.map(user => user.username).includes(validUser2.username), 'm4v15 has been added')
+          t.equal(res.body.length, 2, 'response body should be an array with length 2')
+          t.ok(res.body.map((user) => user.username).includes(validUser1.username), 'mattlub has been added')
+          t.ok(res.body.map((user) => user.username).includes(validUser2.username), 'm4v15 has been added')
+        })
+      supertest(server)
+        .get('/users?username=mattlub')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          // check our get path returns that user correctly
+          t.equal(res.body.length, 1, 'query response body should be an array with length 1')
+          t.equal(res.body[0].username, 'mattlub', 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(User, t)
         })
     })
