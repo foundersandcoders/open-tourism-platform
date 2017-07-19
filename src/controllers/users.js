@@ -23,7 +23,6 @@ userControllers.getById = (req, res) => {
   User.findById(id)
     .then(user => res.send(user))
     .catch(err => {
-      // probably change this error soon to use the message from the db error
       const errorObj = { message: `Database error: ${err.message}` }
       res.status(404).send(errorObj)
     })
