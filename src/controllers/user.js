@@ -1,11 +1,11 @@
 const User = require('../models/User')
 
-const userControllers = module.exports = {}
+const userController = module.exports = {}
 
-userControllers.getAll = (req, res) => {
+userController.getAll = (req, res) => {
   // sends back array of users, filtered by queries
-  // status codes: 200 (success), 500 (database error)
-  User.find()
+  // status codes: 200 (success)
+  User.find(req.query)
     .then(users => {
       res.send(users)
     })
@@ -15,7 +15,7 @@ userControllers.getAll = (req, res) => {
     })
 }
 
-userControllers.getById = (req, res) => {
+userController.getById = (req, res) => {
   // receives id in url
   // sends back one user
   // status codes: 200 (success), 404 (not found)
@@ -28,7 +28,7 @@ userControllers.getById = (req, res) => {
     })
 }
 
-userControllers.create = (req, res) => {
+userController.create = (req, res) => {
   // receives json for user in body
   // adds to db
   // status codes: 201 (created), 500 (server error)
@@ -44,7 +44,7 @@ userControllers.create = (req, res) => {
     })
 }
 
-userControllers.update = (req, res) => {
+userController.update = (req, res) => {
   // receives id in url
   // receives updated json for user in body
   // amends db record
@@ -58,7 +58,7 @@ userControllers.update = (req, res) => {
     })
 }
 
-userControllers.delete = (req, res) => {
+userController.delete = (req, res) => {
   // receives id in url
   // deletes
   // status codes: 204 (success), 400 (bad request)
