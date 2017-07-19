@@ -1,5 +1,5 @@
 {
-   "validPlace1": {},
-   "validPlace2": {},
-   "invalidPlace1": {}
+   "validPlace1": {"name":"Basilica", "description":"biggest church in the middle east"},
+   "validPlace2": {"name":"Khan El Basha"},
+   "invalidPlace1": {"description":"The best place in Nazareth!"}
 }
