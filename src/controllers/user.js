@@ -28,7 +28,7 @@ userController.getById = (req, res) => {
     })
 }
 
-userController.create = (req, res) => {
+userController.create = (req, res, next) => {
   // receives json for user in body
   // adds to db
   // status codes: 201 (created), 500 (server error)
@@ -37,11 +37,7 @@ userController.create = (req, res) => {
     .then(user => {
       res.status(201).send(user)
     })
-    .catch(err => {
-      // Sending back 500 error, may need changing when we think about how we validate
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(500).send(errorObj)
-    })
+    .catch(next)
 }
 
 userController.update = (req, res) => {
