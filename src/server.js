@@ -3,7 +3,7 @@ const router = require('./routes')
 const bodyParser = require('body-parser')
 const boom = require('express-boom')
 
-const { mongoError, mongooseError } = require('./errorHandler.js')
+const { mongoError, mongooseError, customError } = require('./errorHandler.js')
 
 const server = express()
 
@@ -14,6 +14,7 @@ server.use(boom())
 server.use(router)
 
 server.use(mongoError)
+server.use(customError)
 server.use(mongooseError)
 
 module.exports = server

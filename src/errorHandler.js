@@ -5,6 +5,16 @@ errorHandlers.mongoError = (err, req, res, next) => {
     return next(err)
   }
   console.log('mongo other error')
+  return res.boom.badImplementation('An internal mongo server error occurred')
+}
+
+errorHandlers.customError = (err, req, res, next) => {
+  if (err.name !== 'Custom DB error') {
+    return next(err)
+  }
+  if (err.message === 'No document matching that id') {
+    return res.boom.notFound(err.message)
+  }
   return res.boom.badImplementation('An internal server error occurred')
 }
 
@@ -13,9 +23,6 @@ errorHandlers.mongooseError = (err, req, res, next) => {
     return res.boom.badRequest('Validation Failed', err.ValidationError) // adding more info as data (See boom docs)
   } else if (err.name === 'CastError') {
     return res.boom.badRequest('Invalid id', err.CastError)
-  } else if (err.message === 'No document matching that id') {
-    return res.boom.notFound(err.message)
   }
-  console.log('mongoose other error')
-  return res.boom.badImplementation('An internal server error occurred')
+  return res.boom.badImplementation('An internal mongoose server error occurred')
 }

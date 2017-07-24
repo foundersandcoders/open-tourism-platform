@@ -19,12 +19,15 @@ const userSchema = mongoose.Schema(
   }
 )
 
+// Our own static method in order to make it throw an error when it doesn't find something matching a valid ID
 userSchema.statics.findByIdOrError = function (id) {
   return new Promise((resolve, reject) => {
     this.findById(id)
       .then(user => {
         if (!user) {
-          return reject(new Error('No document matching that id'))
+          const noIdErr = new Error('No document matching that id')
+          noIdErr.name = 'Custom DB error'
+          return reject(noIdErr)
         }
         resolve(user)
       })
