@@ -19,4 +19,17 @@ const userSchema = mongoose.Schema(
   }
 )
 
+userSchema.statics.findByIdOrError = function (id) {
+  return new Promise((resolve, reject) => {
+    this.findById(id)
+      .then(user => {
+        if (!user) {
+          return reject(new Error('No document matching that id'))
+        }
+        resolve(user)
+      })
+      .catch(reject)
+  })
+}
+
 module.exports = mongoose.model('User', userSchema)
