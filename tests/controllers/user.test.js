@@ -6,7 +6,7 @@ const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validUser1, validUser2, invalidUser1 } = require('../fixtures/users.json')
 
 // Tests for: GET /users
-tape('test /users when nothing in database', (t) => {
+tape('GET /users when nothing in database', t => {
   supertest(server)
     .get('/users')
     .expect(200)
@@ -18,7 +18,7 @@ tape('test /users when nothing in database', (t) => {
     })
 })
 
-tape('test GET request to /users, with and without query parameters', t => {
+tape('GET /users, with and without query parameters', t => {
   User.create(validUser1, validUser2)
     .then(() => {
       supertest(server)
@@ -48,19 +48,19 @@ tape('test GET request to /users, with and without query parameters', t => {
 })
 
 // GET /users/:id
-tape('test /users/:id GET with id of something not in the database', (t) => {
+tape('GET /users/:id with valid id of something not in the database', (t) => {
   supertest(server)
-    .get('/users/10')
+    .get('/users/507f1f77bcf86cd799439011')
     .expect(404)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      t.equal(res.body.message, 'No document matching that id', 'response message is correct"')
       dropCollectionAndEnd(User, t)
     })
 })
 
-tape('test /users/:id GET with id of something in the database', (t) => {
+tape('GET /users/:id with id of something in the database', (t) => {
   User.create(validUser1)
     .then(result => {
       supertest(server)
@@ -76,11 +76,9 @@ tape('test /users/:id GET with id of something in the database', (t) => {
     .catch(err => t.end(err))
 })
 
-// Tests for: GET /users/:id
-
 // Tests for: POST /users
 
-tape('testing adding user using POST requests to /users route', t => {
+tape('POST /users adding user', t => {
   supertest(server)
     .post('/users')
     .send(validUser1)
@@ -103,7 +101,7 @@ tape('testing adding user using POST requests to /users route', t => {
     })
 })
 
-tape('testing adding user using POST requests to /users route', t => {
+tape('POST /users invalid attempt', t => {
   supertest(server)
     .post('/users')
     .send(invalidUser1)
@@ -118,20 +116,20 @@ tape('testing adding user using POST requests to /users route', t => {
 })
 
 // Tests for: PUT /users/:id
-tape('test PUT request to /users/:id with id of something not in the database', (t) => {
+tape('PUT /users/:id with invalid id', (t) => {
   supertest(server)
-    .put('/users/invalidId')
+    .put('/users/invalidid')
     .send(validUser1)
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
       dropCollectionAndEnd(User, t)
     })
 })
 
-tape('test PUT request to /users/:id with valid id and valid new user data', (t) => {
+tape('PUT /users/:id with valid id and valid new user data', (t) => {
   User.create(validUser1)
     .then(createdUser => {
       supertest(server)
@@ -150,20 +148,20 @@ tape('test PUT request to /users/:id with valid id and valid new user data', (t)
 
 // Tests for: DELETE /users/:id
 
-tape('test /users/:id DELETE returns error with wrong ID', t => {
+tape('DELETE /users/:id returns error with invalid ID', t => {
   supertest(server)
-    .delete('/users/123456789')
+    .delete('/users/invalid')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Message sent back')
-      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
       t.end()
     })
 })
 
-tape('test /users/:id DELETE with good ID', t => {
+tape('DELETE /users/:id with good ID', t => {
   User.create(validUser1, validUser2)
     .then(addedUser => {
       supertest(server)
