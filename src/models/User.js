@@ -43,7 +43,7 @@ const findByIdAndUpdateOrError = function (id, data, options) {
     this.findByIdAndUpdate(id, data, options)
       .then(user => {
         if (!user) {
-          return reject(customDbError('No document matching that id'))
+          return reject(customDbError('Cannot find document to update'))
         }
         resolve(user)
       })

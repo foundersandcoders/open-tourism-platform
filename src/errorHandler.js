@@ -7,6 +7,9 @@ errorHandlers.customDbError = (err, req, res, next) => {
   if (err.message === 'No document matching that id') {
     return res.boom.notFound(err.message)
   }
+  if (err.message === 'Cannot find document to update') {
+    return res.boom.badRequest(err.message)
+  }
   return res.boom.badImplementation('An internal server error occurred')
 }
 
@@ -14,7 +17,6 @@ errorHandlers.mongoError = (err, req, res, next) => {
   if (err.name !== 'MongoError') {
     return next(err)
   }
-  console.log('mongo other error')
   return res.boom.badImplementation('An internal mongo server error occurred')
 }
 
