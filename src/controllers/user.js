@@ -4,18 +4,14 @@ const userController = module.exports = {}
 
 userController.getAll = (req, res, next) => {
   // sends back array of users, filtered by queries
-  // status codes: 200 (success)
   User.find(req.query)
-    .then(users => {
-      res.send(users)
-    })
+    .then(users => res.send(users))
     .catch(next)
 }
 
 userController.getById = (req, res, next) => {
   // receives id in url
-  // sends back one user
-  // status codes: 200 (success), 404 (not found)
+  // sends back one user or errors
   const id = req.params.id
   User.findByIdOrError(id)
     .then(user => res.send(user))
@@ -24,13 +20,10 @@ userController.getById = (req, res, next) => {
 
 userController.create = (req, res, next) => {
   // receives json for user in body
-  // adds to db
   // status codes: 201 (created), 500 (server error)
   const newUser = new User(req.body)
   newUser.save()
-    .then(user => {
-      res.status(201).send(user)
-    })
+    .then(user => res.status(201).send(user))
     .catch(next)
 }
 
@@ -40,7 +33,7 @@ userController.update = (req, res, next) => {
   // amends db record
   // status codes: 200 (success), 400 (bad request)
   const id = req.params.id
-  User.findByIdAndUpdate(id, req.body, { new: true })
+  User.findByIdAndUpdateOrError(id, req.body, { new: true })
     .then(updatedUser => res.send(updatedUser))
     .catch(next)
 }

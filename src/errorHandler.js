@@ -1,21 +1,21 @@
 const errorHandlers = module.exports = {}
 
-errorHandlers.mongoError = (err, req, res, next) => {
-  if (err.name !== 'MongoError') {
-    return next(err)
-  }
-  console.log('mongo other error')
-  return res.boom.badImplementation('An internal mongo server error occurred')
-}
-
-errorHandlers.customError = (err, req, res, next) => {
-  if (err.name !== 'Custom DB error') {
+errorHandlers.customDbError = (err, req, res, next) => {
+  if (err.name !== 'CustomDbError') {
     return next(err)
   }
   if (err.message === 'No document matching that id') {
     return res.boom.notFound(err.message)
   }
   return res.boom.badImplementation('An internal server error occurred')
+}
+
+errorHandlers.mongoError = (err, req, res, next) => {
+  if (err.name !== 'MongoError') {
+    return next(err)
+  }
+  console.log('mongo other error')
+  return res.boom.badImplementation('An internal mongo server error occurred')
 }
 
 errorHandlers.mongooseError = (err, req, res, next) => {
