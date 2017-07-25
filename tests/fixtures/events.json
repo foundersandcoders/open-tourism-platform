@@ -1,6 +1,6 @@
 {
-   "validEvent1": { "name": "Party at the Guesthouse", "category": "music" },
-   "validEvent2": { "name": "Dinner at Liwan", "category": "dining" },
-   "validEvent3": { "name": "MG fails at flipping pancakes", "category": "dining" },
+   "validEvent1": { "en":{"name": "Party at the Guesthouse"}, "category": "music" },
+   "validEvent2": { "en":{"name": "Dinner at Liwan"}, "category": "dining" },
+   "validEvent3": { "en":{"name": "MG fails at flipping pancakes"}, "category": "dining" },
    "invalidEvent1": {}
 }

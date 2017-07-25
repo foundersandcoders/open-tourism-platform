@@ -29,9 +29,9 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 3, 'response body should be an array with length 3')
-          t.ok(res.body.map(event => event.name).includes(validEvent1.name), 'first event has been added')
-          t.ok(res.body.map(event => event.name).includes(validEvent2.name), 'second event has been added')
-          t.ok(res.body.map(event => event.name).includes(validEvent3.name), 'third event has been added')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent1.en.name), 'first event has been added')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'second event has been added')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent3.en.name), 'third event has been added')
         })
       supertest(server)
         .get('/events?category=dining')
@@ -41,7 +41,7 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
-          t.ok(res.body.map(event => event.name).includes(validEvent2.name), 'results should be filtered correctly by url query parameters')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(Event, t)
         })
     })
@@ -70,7 +70,7 @@ tape('GET /events/:id with valid id', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, validEvent1.name, 'should get event with correct name.')
+          t.equal(res.body.en.name, validEvent1.en.name, 'should get event with correct name.')
           dropCollectionAndEnd(Event, t)
         })
     })
@@ -100,7 +100,7 @@ tape('POST /events adding valid event', t => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.name, validEvent1.name, 'Correct object is added')
+      t.equal(res.body.en.name, validEvent1.en.name, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
       Event.findById(res.body._id)
@@ -139,7 +139,7 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, validEvent2.name, 'event should be correctly updated, and the updated event returned')
+          t.equal(res.body.en.name, validEvent2.en.name, 'event should be correctly updated, and the updated event returned')
           // check event has been updated
           Event.findById(res.body._id)
             .then(event => {
