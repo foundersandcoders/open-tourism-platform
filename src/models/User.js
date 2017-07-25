@@ -51,8 +51,22 @@ const findByIdAndUpdateOrError = function (id, data, options) {
   })
 }
 
-// Our own static method in order to make it throw an error when it doesn't find something matching a valid ID
+const findByIdAndRemoveOrError = function (id, data, options) {
+  return new Promise((resolve, reject) => {
+    this.findByIdAndRemove(id)
+      .then(user => {
+        if (!user) {
+          return reject(customDbError('Cannot find document to delete'))
+        }
+        resolve(user)
+      })
+      .catch(reject)
+  })
+}
+
+// Our own static methods in order to make mongoose throw errors when it doesn't find something matching a valid ID
 userSchema.statics.findByIdOrError = findByIdOrError
 userSchema.statics.findByIdAndUpdateOrError = findByIdAndUpdateOrError
+userSchema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
 
 module.exports = mongoose.model('User', userSchema)
