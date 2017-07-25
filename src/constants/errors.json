@@ -1,10 +1,20 @@
 {
   "names": {
-    "CUSTOM": "CustomDbError"
+    "CUSTOM": "CustomDbError",
+    "MONGO": "MongoError",
+    "MONGOOSE_VALIDATION": "ValidationError",
+    "MONGOOSE_CAST": "CastError"
   },
   "messages": {
     "GET_ID_NOT_FOUND": "No document matching that id",
     "UPDATE_ID_NOT_FOUND": "Cannot find document to update",
-    "DELETE_ID_NOT_FOUND": "Cannot find document to delete"
+    "DELETE_ID_NOT_FOUND": "Cannot find document to delete",
+
+    "VALIDATION_FAILED": "Validation Failed",
+    "INVALID_ID": "Invalid id",
+
+    "UNHANDLED_CUSTOM": "An internal server error occurred",
+    "UNHANDLED_MONGO": "An internal mongo server error occurred",
+    "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred"
   }
 }

@@ -15,7 +15,6 @@ const findByIdOrError = function (id) {
       }
       return Promise.resolve(res)
     })
-    .catch(err => Promise.reject(err))
 }
 
 // static method for Mongoose schema
@@ -27,7 +26,6 @@ const findByIdAndUpdateOrError = function (id, data, options) {
       }
       return Promise.resolve(res)
     })
-    .catch(err => Promise.reject(err))
 }
 
 // static method for Mongoose schema
@@ -39,7 +37,6 @@ const findByIdAndRemoveOrError = function (id, data, options) {
       }
       Promise.resolve(res)
     })
-    .catch(err => Promise.reject(err))
 }
 
 const addStaticSchemaMethods = schema => {
@@ -48,6 +45,14 @@ const addStaticSchemaMethods = schema => {
   schema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
 }
 
+const customRequireValidator = function (next) {
+  if (!this.en && !this.ar) {
+    this.invalidate('(en, ar)', 'one of Path `en` or Path `ar` required')
+  }
+  next()
+}
+
 module.exports = {
-  addStaticSchemaMethods
+  addStaticSchemaMethods,
+  customRequireValidator
 }
