@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { productCategories } = require('./constants.json')
+const { addStaticSchemaMethods } = require('../db/utils')
 
 const productSchema = mongoose.Schema(
   {
@@ -15,5 +16,8 @@ const productSchema = mongoose.Schema(
     timestamps: true
   }
 )
+
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(productSchema)
 
 module.exports = mongoose.model('Product', productSchema)

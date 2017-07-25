@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { eventCategories, accessibilityOptions } = require('./constants.json')
+const { addStaticSchemaMethods } = require('../db/utils')
 
 const eventSchema = mongoose.Schema(
   {
@@ -19,5 +20,8 @@ const eventSchema = mongoose.Schema(
     timestamps: true
   }
 )
+
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(eventSchema)
 
 module.exports = mongoose.model('Event', eventSchema)

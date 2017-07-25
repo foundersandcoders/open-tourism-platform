@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { roles } = require('./constants.json')
-const { customRequireValidator } = require('../db/utils')
+const { addStaticSchemaMethods, customRequireValidator } = require('../db/utils')
 
 const userTranslatedFieldsSchema = mongoose.Schema(
   {
@@ -28,5 +28,7 @@ const userSchema = mongoose.Schema(
 )
 
 userSchema.pre('validate', customRequireValidator)
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(userSchema)
 
 module.exports = mongoose.model('User', userSchema)
