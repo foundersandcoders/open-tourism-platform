@@ -129,6 +129,19 @@ tape('PUT /users/:id with invalid id', (t) => {
     })
 })
 
+tape('PUT /users/:id with id of something not in the database', (t) => {
+  supertest(server)
+    .put('/users/507f1f77bcf86cd799439011')
+    .send(validUser1)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.message, 'Cannot find document to update', 'Correct message is sent back')
+      dropCollectionAndEnd(User, t)
+    })
+})
+
 tape('PUT /users/:id with valid id and valid new user data', (t) => {
   User.create(validUser1)
     .then(createdUser => {
