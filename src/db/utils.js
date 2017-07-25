@@ -1,6 +1,8 @@
+const { messages: errMessages, names: errNames } = require('../constants/errors')
+
 const createCustomDbError = message => {
   const err = new Error(message)
-  err.name = 'CustomDbError'
+  err.name = errNames.CUSTOM
   return err
 }
 
@@ -9,7 +11,7 @@ const findByIdOrError = function (id) {
   return this.findById(id)
     .then(res => {
       if (res === null) {
-        return Promise.reject(createCustomDbError('No document matching that id'))
+        return Promise.reject(createCustomDbError(errMessages.GET_ID_NOT_FOUND))
       }
       return Promise.resolve(res)
     })
@@ -21,7 +23,7 @@ const findByIdAndUpdateOrError = function (id, data, options) {
   return this.findByIdAndUpdate(id, data, options)
     .then(res => {
       if (res === null) {
-        return Promise.reject(createCustomDbError('Cannot find document to update'))
+        return Promise.reject(createCustomDbError(errMessages.UPDATE_ID_NOT_FOUND))
       }
       return Promise.resolve(res)
     })
@@ -33,7 +35,7 @@ const findByIdAndRemoveOrError = function (id, data, options) {
   return this.findByIdAndRemove(id)
     .then(res => {
       if (res === null) {
-        return Promise.reject(createCustomDbError('Cannot find document to delete'))
+        return Promise.reject(createCustomDbError(errMessages.DELETE_ID_NOT_FOUND))
       }
       Promise.resolve(res)
     })
