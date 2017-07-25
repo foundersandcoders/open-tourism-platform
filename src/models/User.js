@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { roles } = require('./constants.json')
+const { customRequireValidator } = require('../db/utils')
 
 const UserTranslatedFieldsSchema = mongoose.Schema(
   {
@@ -25,5 +26,7 @@ const userSchema = mongoose.Schema(
     timestamps: true
   }
 )
+
+userSchema.pre('validate', customRequireValidator)
 
 module.exports = mongoose.model('User', userSchema)
