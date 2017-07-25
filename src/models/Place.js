@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { placeCategories, accessibilityOptions } = require('./constants.json')
+const { findByIdOrError, findByIdAndUpdateOrError, findByIdAndRemoveOrError } = require('../db/utils')
 
 const placeSchema = mongoose.Schema(
   {
@@ -21,5 +22,10 @@ const placeSchema = mongoose.Schema(
     timestamps: true
   }
 )
+
+// methods which throw errors when there's nothing matching the given id
+placeSchema.statics.findByIdOrError = findByIdOrError
+placeSchema.statics.findByIdAndUpdateOrError = findByIdAndUpdateOrError
+placeSchema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
 
 module.exports = mongoose.model('Place', placeSchema)
