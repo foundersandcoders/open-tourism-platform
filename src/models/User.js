@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const { roles } = require('./constants.json')
 const { customRequireValidator } = require('../db/utils')
 
-const UserTranslatedFieldsSchema = mongoose.Schema(
+const userTranslatedFieldsSchema = mongoose.Schema(
   {
     name: { type: String, required: true },
     organisationName: String,
