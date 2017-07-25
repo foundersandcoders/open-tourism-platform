@@ -46,14 +46,14 @@ tape('GET /products, with and without query parameters', t => {
 })
 
 // Tests for: GET /products/:id
-tape('GET /products/:id with id of something not in the database', t => {
+tape('GET /products/:id with invalid id', t => {
   supertest(server)
     .get('/products/10')
-    .expect(404)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      // t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
       dropCollectionAndEnd(Product, t)
     })
 })
@@ -102,12 +102,12 @@ tape('POST /products with invalid product data', t => {
   supertest(server)
     .post('/products')
     .send(invalidProduct1)
-    .expect(500)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
-      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      // t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
       dropCollectionAndEnd(Product, t)
     })
 })
@@ -115,13 +115,13 @@ tape('POST /products with invalid product data', t => {
 // Tests for: PUT /products/:id
 tape('PUT /products/:id with id of something not in the database', t => {
   supertest(server)
-    .put('/products/invalidId')
+    .put('/products/507f1f77bcf86cd799439011')
     .send(validProduct1)
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      t.equal(res.body.message, 'Cannot find document to update', 'Correct message is sent back')
       dropCollectionAndEnd(Product, t)
     })
 })
@@ -153,15 +153,15 @@ tape('PUT /products/:id with valid id and valid new product data', t => {
 })
 
 // Tests for: DELETE /products/:id
-tape('DELETE /products/:id returns error with wrong ID', t => {
+tape('DELETE /products/:id with id of something not in the database', t => {
   supertest(server)
-    .delete('/products/123456789')
+    .delete('/products/507f1f77bcf86cd799439011')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Message sent back')
-      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
       t.end()
     })
 })
