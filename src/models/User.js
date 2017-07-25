@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { roles } = require('./constants.json')
+const { findByIdOrError, findByIdAndUpdateOrError, findByIdAndRemoveOrError } = require('../db/utils')
 
 const userSchema = mongoose.Schema(
   {
@@ -18,5 +19,10 @@ const userSchema = mongoose.Schema(
     timestamps: true
   }
 )
+
+// methods which throw errors when there's nothing matching the given id
+userSchema.statics.findByIdOrError = findByIdOrError
+userSchema.statics.findByIdAndUpdateOrError = findByIdAndUpdateOrError
+userSchema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
 
 module.exports = mongoose.model('User', userSchema)
