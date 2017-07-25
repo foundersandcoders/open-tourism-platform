@@ -1,6 +1,6 @@
-const errorHandlers = module.exports = {}
+const dbErrorHandlers = module.exports = {}
 
-errorHandlers.customDbError = (err, req, res, next) => {
+dbErrorHandlers.custom = (err, req, res, next) => {
   if (err.name !== 'CustomDbError') {
     return next(err)
   }
@@ -13,14 +13,14 @@ errorHandlers.customDbError = (err, req, res, next) => {
   return res.boom.badImplementation('An internal server error occurred')
 }
 
-errorHandlers.mongoError = (err, req, res, next) => {
+dbErrorHandlers.mongo = (err, req, res, next) => {
   if (err.name !== 'MongoError') {
     return next(err)
   }
   return res.boom.badImplementation('An internal mongo server error occurred')
 }
 
-errorHandlers.mongooseError = (err, req, res, next) => {
+dbErrorHandlers.mongoose = (err, req, res, next) => {
   if (err.name === 'ValidationError') {
     return res.boom.badRequest('Validation Failed', err.ValidationError) // adding more info as data (See boom docs)
   } else if (err.name === 'CastError') {
