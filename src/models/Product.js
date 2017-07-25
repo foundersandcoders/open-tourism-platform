@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { productCategories } = require('./constants.json')
-const { customRequireValidator } = require('../db/utils')
+const { addStaticSchemaMethods, customRequireValidator } = require('../db/utils')
 
 const productTranslatedFieldsSchema = mongoose.Schema(
   {
@@ -24,6 +24,9 @@ const productSchema = mongoose.Schema(
   }
 )
 
+// add custom validation
 productSchema.pre('validate', customRequireValidator)
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(productSchema)
 
 module.exports = mongoose.model('Product', productSchema)

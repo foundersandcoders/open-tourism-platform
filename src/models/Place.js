@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { placeCategories, accessibilityOptions } = require('./constants.json')
-const { customRequireValidator } = require('../db/utils')
+const { addStaticSchemaMethods, customRequireValidator } = require('../db/utils')
 
 const placeTranslatedFieldsSchema = mongoose.Schema(
   {
@@ -30,6 +30,9 @@ const placeSchema = mongoose.Schema(
   }
 )
 
+// add custom validation
 placeSchema.pre('validate', customRequireValidator)
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(placeSchema)
 
 module.exports = mongoose.model('Place', placeSchema)

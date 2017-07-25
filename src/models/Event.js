@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { eventCategories, accessibilityOptions } = require('./constants.json')
-const { customRequireValidator } = require('../db/utils')
+const { addStaticSchemaMethods, customRequireValidator } = require('../db/utils')
 
 const eventTranslatedFieldsSchema = mongoose.Schema(
   {
@@ -28,6 +28,9 @@ const eventSchema = mongoose.Schema(
   }
 )
 
+// add custom validation
 eventSchema.pre('validate', customRequireValidator)
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(eventSchema)
 
 module.exports = mongoose.model('Event', eventSchema)
