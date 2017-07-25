@@ -160,7 +160,6 @@ tape('PUT /users/:id with valid id and valid new user data', (t) => {
 })
 
 // Tests for: DELETE /users/:id
-
 tape('DELETE /users/:id returns error with invalid ID', t => {
   supertest(server)
     .delete('/users/invalid')
@@ -170,6 +169,19 @@ tape('DELETE /users/:id returns error with invalid ID', t => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Message sent back')
       t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
+      t.end()
+    })
+})
+
+tape('DELETE /users/:id returns error with id of something not in the database', t => {
+  supertest(server)
+    .delete('/users/507f1f77bcf86cd799439011')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
       t.end()
     })
 })
