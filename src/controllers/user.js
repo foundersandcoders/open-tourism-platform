@@ -11,8 +11,8 @@ userController.getAll = (req, res, next) => {
 
 userController.getById = (req, res, next) => {
   // receives id in url
-  const id = req.params.id
   // sends back one user or errors
+  const id = req.params.id
   User.findByIdOrError(id)
     .then(user => res.status(200).send(user))
     .catch(next)
@@ -29,9 +29,9 @@ userController.create = (req, res, next) => {
 
 userController.update = (req, res, next) => {
   // receives id in url
-  const id = req.params.id
   // receives updated json for user in body
   // updates or errors
+  const id = req.params.id
   User.findByIdAndUpdateOrError(id, req.body, { new: true })
     .then(updatedUser => res.status(200).send(updatedUser))
     .catch(next)
@@ -39,8 +39,8 @@ userController.update = (req, res, next) => {
 
 userController.delete = (req, res, next) => {
   // receives id in url
-  const id = req.params.id
   // deletes or errors
+  const id = req.params.id
   User.findByIdAndRemoveOrError(id)
     .then(() => res.status(204).send())
     .catch(next)
