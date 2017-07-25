@@ -6,44 +6,38 @@ const createCustomDbError = message => {
 
 // static method for Mongoose schema
 const findByIdOrError = function (id) {
-  return new Promise((resolve, reject) => {
-    this.findById(id)
-      .then(user => {
-        if (!user) {
-          return reject(createCustomDbError('No document matching that id'))
-        }
-        resolve(user)
-      })
-      .catch(reject)
-  })
+  return this.findById(id)
+    .then(res => {
+      if (!res) {
+        return Promise.reject(createCustomDbError('No document matching that id'))
+      }
+      return Promise.resolve(res)
+    })
+    .catch(err => Promise.reject(err))
 }
 
 // static method for Mongoose schema
 const findByIdAndUpdateOrError = function (id, data, options) {
-  return new Promise((resolve, reject) => {
-    this.findByIdAndUpdate(id, data, options)
-      .then(user => {
-        if (!user) {
-          return reject(createCustomDbError('Cannot find document to update'))
-        }
-        resolve(user)
-      })
-      .catch(reject)
-  })
+  return this.findByIdAndUpdate(id, data, options)
+    .then(res => {
+      if (!res) {
+        return Promise.reject(createCustomDbError('Cannot find document to update'))
+      }
+      return Promise.resolve(res)
+    })
+    .catch(err => Promise.reject(err))
 }
 
 // static method for Mongoose schema
 const findByIdAndRemoveOrError = function (id, data, options) {
-  return new Promise((resolve, reject) => {
-    this.findByIdAndRemove(id)
-      .then(user => {
-        if (!user) {
-          return reject(createCustomDbError('Cannot find document to delete'))
-        }
-        resolve(user)
-      })
-      .catch(reject)
-  })
+  return this.findByIdAndRemove(id)
+    .then(res => {
+      if (!res) {
+        return Promise.reject(createCustomDbError('Cannot find document to delete'))
+      }
+      Promise.resolve(res)
+    })
+    .catch(err => Promise.reject(err))
 }
 
 module.exports = {
