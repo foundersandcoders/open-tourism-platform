@@ -5,6 +5,6 @@
   "messages": {
     "GET_ID_NOT_FOUND": "No document matching that id",
     "UPDATE_ID_NOT_FOUND": "Cannot find document to update",
-    "DELETE_ID_NOT_FOUND": "Cannot find document to delete",
+    "DELETE_ID_NOT_FOUND": "Cannot find document to delete"
   }
 }
