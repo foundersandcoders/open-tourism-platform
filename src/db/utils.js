@@ -8,7 +8,7 @@ const createCustomDbError = message => {
 const findByIdOrError = function (id) {
   return this.findById(id)
     .then(res => {
-      if (!res) {
+      if (res === null) {
         return Promise.reject(createCustomDbError('No document matching that id'))
       }
       return Promise.resolve(res)
@@ -20,7 +20,7 @@ const findByIdOrError = function (id) {
 const findByIdAndUpdateOrError = function (id, data, options) {
   return this.findByIdAndUpdate(id, data, options)
     .then(res => {
-      if (!res) {
+      if (res === null) {
         return Promise.reject(createCustomDbError('Cannot find document to update'))
       }
       return Promise.resolve(res)
@@ -32,7 +32,7 @@ const findByIdAndUpdateOrError = function (id, data, options) {
 const findByIdAndRemoveOrError = function (id, data, options) {
   return this.findByIdAndRemove(id)
     .then(res => {
-      if (!res) {
+      if (res === null) {
         return Promise.reject(createCustomDbError('Cannot find document to delete'))
       }
       Promise.resolve(res)
