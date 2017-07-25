@@ -19,8 +19,8 @@ const userSchema = mongoose.Schema(
     role: { type: String, enum: roles, required: true },
     isPublic: { type: Boolean, required: true, default: true },
     imageUrl: String,
-    en: UserTranslatedFieldsSchema,
-    ar: UserTranslatedFieldsSchema
+    en: userTranslatedFieldsSchema,
+    ar: userTranslatedFieldsSchema
   },
   {
     timestamps: true
