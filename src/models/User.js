@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { roles } = require('./constants.json')
-const { findByIdOrError, findByIdAndUpdateOrError, findByIdAndRemoveOrError } = require('../db/utils')
+const { addStaticSchemaMethods } = require('../db/utils')
 
 const userSchema = mongoose.Schema(
   {
@@ -20,9 +20,7 @@ const userSchema = mongoose.Schema(
   }
 )
 
-// methods which throw errors when there's nothing matching the given id
-userSchema.statics.findByIdOrError = findByIdOrError
-userSchema.statics.findByIdAndUpdateOrError = findByIdAndUpdateOrError
-userSchema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(userSchema)
 
 module.exports = mongoose.model('User', userSchema)

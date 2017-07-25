@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const { productCategories } = require('./constants.json')
-const { findByIdOrError, findByIdAndUpdateOrError, findByIdAndRemoveOrError } = require('../db/utils')
+const { addStaticSchemaMethods } = require('../db/utils')
 
 const productSchema = mongoose.Schema(
   {
@@ -17,9 +17,7 @@ const productSchema = mongoose.Schema(
   }
 )
 
-// methods which throw errors when there's nothing matching the given id
-productSchema.statics.findByIdOrError = findByIdOrError
-productSchema.statics.findByIdAndUpdateOrError = findByIdAndUpdateOrError
-productSchema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(productSchema)
 
 module.exports = mongoose.model('Product', productSchema)

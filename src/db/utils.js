@@ -40,8 +40,12 @@ const findByIdAndRemoveOrError = function (id, data, options) {
     .catch(err => Promise.reject(err))
 }
 
+const addStaticSchemaMethods = schema => {
+  schema.statics.findByIdOrError = findByIdOrError
+  schema.statics.findByIdAndUpdateOrError = findByIdAndUpdateOrError
+  schema.statics.findByIdAndRemoveOrError = findByIdAndRemoveOrError
+}
+
 module.exports = {
-  findByIdOrError,
-  findByIdAndUpdateOrError,
-  findByIdAndRemoveOrError
+  addStaticSchemaMethods
 }
