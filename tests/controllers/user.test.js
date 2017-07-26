@@ -48,19 +48,19 @@ tape('GET /users, with and without query parameters', t => {
 })
 
 // GET /users/:id
-tape('GET /users/:id with valid id of something not in the database', (t) => {
+tape('GET /users/:id with valid id of something not in the database', t => {
   supertest(server)
     .get('/users/507f1f77bcf86cd799439011')
     .expect(404)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.message, 'No document matching that id', 'response message is correct"')
+      t.equal(res.body.message, 'No document matching that id', 'response message is correct')
       dropCollectionAndEnd(User, t)
     })
 })
 
-tape('GET /users/:id with id of something in the database', (t) => {
+tape('GET /users/:id with id of something in the database', t => {
   User.create(validUser1)
     .then(result => {
       supertest(server)
@@ -77,7 +77,6 @@ tape('GET /users/:id with id of something in the database', (t) => {
 })
 
 // Tests for: POST /users
-
 tape('POST /users adding user', t => {
   supertest(server)
     .post('/users')
@@ -101,7 +100,7 @@ tape('POST /users adding user', t => {
     })
 })
 
-tape('POST /users invalid attempt', t => {
+tape('POST /users adding invalid user', t => {
   supertest(server)
     .post('/users')
     .send(invalidUser1)
@@ -116,7 +115,7 @@ tape('POST /users invalid attempt', t => {
 })
 
 // Tests for: PUT /users/:id
-tape('PUT /users/:id with invalid id', (t) => {
+tape('PUT /users/:id with invalid id', t => {
   supertest(server)
     .put('/users/invalidid')
     .send(validUser1)
@@ -129,7 +128,7 @@ tape('PUT /users/:id with invalid id', (t) => {
     })
 })
 
-tape('PUT /users/:id with id of something not in the database', (t) => {
+tape('PUT /users/:id with id of something not in the database', t => {
   supertest(server)
     .put('/users/507f1f77bcf86cd799439011')
     .send(validUser1)
@@ -142,7 +141,7 @@ tape('PUT /users/:id with id of something not in the database', (t) => {
     })
 })
 
-tape('PUT /users/:id with valid id and valid new user data', (t) => {
+tape('PUT /users/:id with valid id and valid new user data', t => {
   User.create(validUser1)
     .then(createdUser => {
       supertest(server)
@@ -160,7 +159,7 @@ tape('PUT /users/:id with valid id and valid new user data', (t) => {
 })
 
 // Tests for: DELETE /users/:id
-tape('DELETE /users/:id returns error with invalid ID', t => {
+tape('DELETE /users/:id with invalid id', t => {
   supertest(server)
     .delete('/users/invalid')
     .expect(400)
