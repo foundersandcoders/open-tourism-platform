@@ -38,6 +38,7 @@
     "istanbul": "^0.4.5",
     "nodemon": "^1.11.0",
     "pre-commit": "^1.2.2",
+    "sinon": "^2.3.8",
     "snazzy": "^7.0.0",
     "standard": "^10.0.2",
     "supertest": "^3.0.0",

@@ -54,5 +54,6 @@ const customRequireValidator = function (next) {
 
 module.exports = {
   addStaticSchemaMethods,
-  customRequireValidator
+  customRequireValidator,
+  createCustomDbError
 }

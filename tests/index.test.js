@@ -3,10 +3,13 @@ const tape = require('tape')
 const dbConnection = require('../src/db/connect.js')
 
 dbConnection.once('open', () => {
-  require('./controllers/user.test.js')
-  require('./controllers/place.test.js')
-  require('./controllers/event.test.js')
-  require('./controllers/product.test.js')
+  // require('./controllers/user.test.js')
+  // require('./controllers/place.test.js')
+  // require('./controllers/event.test.js')
+  // require('./controllers/product.test.js')
+
+  // test the error handlers
+  require('./dbErrorHandlers.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
