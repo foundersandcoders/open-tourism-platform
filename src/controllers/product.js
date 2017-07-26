@@ -2,71 +2,46 @@ const Product = require('../models/Product')
 
 const productController = module.exports = {}
 
-productController.getAll = (req, res) => {
+productController.getAll = (req, res, next) => {
   // sends back array of products, filtered by queries
-  // status codes: 200 (success), 500 (db error)
   Product.find(req.query)
-    .then(products => {
-      res.send(products)
-    })
-    .catch(err => {
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(500).send(errorObj)
-    })
+    .then(products => res.status(200).send(products))
+    .catch(next)
 }
 
-productController.getById = (req, res) => {
+productController.getById = (req, res, next) => {
   // receives id in url
-  // sends back one product
-  // status codes: 200 (success), 404 (not found)
+  // sends back one product or errors
   const id = req.params.id
-  Product.findById(id)
-    .then(product => res.send(product))
-    .catch(err => {
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(404).send(errorObj)
-    })
+  Product.findByIdOrError(id)
+    .then(product => res.status(200).send(product))
+    .catch(next)
 }
 
-productController.create = (req, res) => {
+productController.create = (req, res, next) => {
   // receives json for product in body
-  // adds to db
-  // status codes: 201 (created), 500 (server error)
+  // sends back created product
   const newProduct = new Product(req.body)
   newProduct.save()
-    .then(product => {
-      res.status(201).send(product)
-    })
-    .catch(err => {
-      // Sending back 500 error, may need changing when we think about how we validate
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(500).send(errorObj)
-    })
+    .then(product => res.status(201).send(product))
+    .catch(next)
 }
 
-productController.update = (req, res) => {
-  // receives id in url, updated json for product in body
-  // amends db record
-  // status codes: 200 (success), 400 (bad request)
-  const id = req.params.id
-  Product.findByIdAndUpdate(id, req.body, { new: true })
-    .then(updatedProduct => res.send(updatedProduct))
-    .catch(err => {
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(400).send(errorObj)
-    })
-}
-
-productController.delete = (req, res) => {
+productController.update = (req, res, next) => {
   // receives id in url
-  // deletes
-  // status codes: 204 (success), 400 (bad request)
-  Product.findByIdAndRemove(req.params.id)
-    .then(() => {
-      res.status(204).send()
-    })
-    .catch(err => {
-      const errorObj = { message: `Bad Request: ${err.message}` }
-      res.status(400).send(errorObj)
-    })
+  // receives updated json for product in body
+  // updates or errors
+  const id = req.params.id
+  Product.findByIdAndUpdateOrError(id, req.body, { new: true })
+    .then(updatedProduct => res.status(200).send(updatedProduct))
+    .catch(next)
+}
+
+productController.delete = (req, res, next) => {
+  // receives id in url
+  // deletes or errors
+  const id = req.params.id
+  Product.findByIdAndRemoveOrError(id)
+    .then(() => res.status(204).send())
+    .catch(next)
 }

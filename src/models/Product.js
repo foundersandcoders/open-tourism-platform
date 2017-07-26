@@ -1,22 +1,31 @@
 const mongoose = require('mongoose')
 
 const { productCategories } = require('./constants.json')
-const { addStaticSchemaMethods } = require('../db/utils')
+const { addStaticSchemaMethods, customRequireValidator } = require('../db/utils')
+
+const productTranslatedFieldsSchema = mongoose.Schema(
+  {
+    name: { type: String, required: true },
+    description: String
+  }
+)
 
 const productSchema = mongoose.Schema(
   {
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    name: { type: String, required: true },
     category: [{ type: String, enum: productCategories }],
-    description: String,
     imageUrl: String,
-    cost: Number
+    cost: Number,
+    en: productTranslatedFieldsSchema,
+    ar: productTranslatedFieldsSchema
   },
   {
     timestamps: true
   }
 )
 
+// add custom validation
+productSchema.pre('validate', customRequireValidator)
 // add methods which throw errors when there's nothing matching the given id
 addStaticSchemaMethods(productSchema)
 

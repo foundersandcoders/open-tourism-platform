@@ -5,12 +5,16 @@
     "MONGOOSE_VALIDATION": "ValidationError",
     "MONGOOSE_CAST": "CastError"
   },
+  "codes": {
+    "MONGO_DUPLICATE_KEY": 11000
+  },
   "messages": {
     "GET_ID_NOT_FOUND": "No document matching that id",
     "UPDATE_ID_NOT_FOUND": "Cannot find document to update",
     "DELETE_ID_NOT_FOUND": "Cannot find document to delete",
 
     "VALIDATION_FAILED": "Validation Failed",
+    "DUPLICATE_KEY": "Data violates unique constraints validation",
     "INVALID_ID": "Invalid id",
 
     "UNHANDLED_CUSTOM": "An internal server error occurred",

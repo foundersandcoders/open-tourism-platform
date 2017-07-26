@@ -29,9 +29,9 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 3, 'response body should be an array with length 3')
-          t.ok(res.body.map(event => event.name).includes(validEvent1.name), 'first event has been added')
-          t.ok(res.body.map(event => event.name).includes(validEvent2.name), 'second event has been added')
-          t.ok(res.body.map(event => event.name).includes(validEvent3.name), 'third event has been added')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent1.en.name), 'first event has been added')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'second event has been added')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent3.en.name), 'third event has been added')
         })
       supertest(server)
         .get('/events?category=dining')
@@ -41,7 +41,7 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
-          t.ok(res.body.map(event => event.name).includes(validEvent2.name), 'results should be filtered correctly by url query parameters')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(Event, t)
         })
     })
@@ -52,11 +52,23 @@ tape('GET /events, with and without query parameters', t => {
 tape('GET /events/:id with invalid id', t => {
   supertest(server)
     .get('/events/10')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.message, 'Invalid id', 'response message is correct')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('GET /events/:id with valid id of something not in the database', t => {
+  supertest(server)
+    .get('/events/507f1f77bcf86cd799439011')
     .expect(404)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      t.equal(res.body.message, 'No document matching that id', 'response message is correct')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -70,7 +82,7 @@ tape('GET /events/:id with valid id', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, validEvent1.name, 'should get event with correct name.')
+          t.equal(res.body.en.name, validEvent1.en.name, 'should get event with correct name.')
           dropCollectionAndEnd(Event, t)
         })
     })
@@ -82,12 +94,12 @@ tape('POST /events adding invalid event', t => {
   supertest(server)
     .post('/events')
     .send(invalidEvent1)
-    .expect(500)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
-      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -100,7 +112,7 @@ tape('POST /events adding valid event', t => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.name, validEvent1.name, 'Correct object is added')
+      t.equal(res.body.en.name, validEvent1.en.name, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
       Event.findById(res.body._id)
@@ -124,7 +136,7 @@ tape('PUT /events/:id with invalid id', t => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -139,7 +151,7 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, validEvent2.name, 'event should be correctly updated, and the updated event returned')
+          t.equal(res.body.en.name, validEvent2.en.name, 'event should be correctly updated, and the updated event returned')
           // check event has been updated
           Event.findById(res.body._id)
             .then(event => {
@@ -156,15 +168,28 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
 })
 
 // Tests for: DELETE /events/:id
-tape('DELETE /events/:id with invalid ID', t => {
+tape('DELETE /events/:id with invalid id', t => {
   supertest(server)
-    .delete('/events/123456789')
+    .delete('/events/invalid')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Error message sent back')
-      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
+      t.end()
+    })
+})
+
+tape('DELETE /users/:id with id of something not in the database', t => {
+  supertest(server)
+    .delete('/users/507f1f77bcf86cd799439011')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
       t.end()
     })
 })
