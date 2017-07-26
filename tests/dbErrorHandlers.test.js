@@ -1,5 +1,5 @@
 const dbErrorHandlers = require('../src/dbErrorHandlers.js')
-const { messages: errMessages, names: errNames } = require('../src/constants/errors.json')
+const { messages: errMessages, names: errNames, codes: errCodes } = require('../src/constants/errors.json')
 const { buildNextSpyTest, buildBoomSpyTest } = require('./helpers/index.js')
 
 const tape = require('tape')
@@ -26,6 +26,10 @@ tape('dbErrorHandlers.custom with UNHANDLED', t => {
 
 tape('dbErrorHandlers.mongo with non mongo error', t => {
   buildNextSpyTest(t, dbErrorHandlers.mongo, 'test error message', 'not a mongo error')
+})
+
+tape('dbErrorHandlers.mongo with MONGO_DUPLICATE_KEY', t => {
+  buildBoomSpyTest(t, dbErrorHandlers.mongo, errMessages.DUPLICATE_KEY, 'badRequest', errNames.MONGO, errCodes.MONGO_DUPLICATE_KEY)
 })
 
 tape('dbErrorHandlers.mongo with UNHANDLED', t => {

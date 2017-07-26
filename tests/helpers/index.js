@@ -24,9 +24,10 @@ const buildResponseObj = method => {
 
 // make the arguments for testing whether a res.boom method is getting called, call the function we're testing
 // then generate the tests
-helpers.buildBoomSpyTest = (tester, functionToTest, errorMessage, boomFunction, errorName) => {
+helpers.buildBoomSpyTest = (tester, functionToTest, errorMessage, boomFunction, errorName, errorCode) => {
   const testError = new Error(errorMessage)
   testError.name = errorName
+  testError.code = errorCode
   const req = {}
   const res = buildResponseObj(boomFunction)
   const resSpy = sinon.spy(res.boom, boomFunction)
