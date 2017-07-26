@@ -52,11 +52,23 @@ tape('GET /events, with and without query parameters', t => {
 tape('GET /events/:id with invalid id', t => {
   supertest(server)
     .get('/events/10')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.equal(res.body.message, 'Invalid id', 'response message is correct')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('GET /events/:id with valid id of something not in the database', t => {
+  supertest(server)
+    .get('/events/507f1f77bcf86cd799439011')
     .expect(404)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      t.equal(res.body.message, 'No document matching that id', 'response message is correct')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -82,12 +94,12 @@ tape('POST /events adding invalid event', t => {
   supertest(server)
     .post('/events')
     .send(invalidEvent1)
-    .expect(500)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
-      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -124,7 +136,7 @@ tape('PUT /events/:id with invalid id', t => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -156,15 +168,28 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
 })
 
 // Tests for: DELETE /events/:id
-tape('DELETE /events/:id with invalid ID', t => {
+tape('DELETE /events/:id with invalid id', t => {
   supertest(server)
-    .delete('/events/123456789')
+    .delete('/events/invalid')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Error message sent back')
-      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
+      t.end()
+    })
+})
+
+tape('DELETE /users/:id with id of something not in the database', t => {
+  supertest(server)
+    .delete('/users/507f1f77bcf86cd799439011')
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'Message sent back')
+      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
       t.end()
     })
 })

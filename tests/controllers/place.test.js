@@ -6,7 +6,7 @@ const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validPlace1, validPlace2, invalidPlace1 } = require('../fixtures/places.json')
 
 // Tests for: GET /places
-tape('GET /places when nothing in database', (t) => {
+tape('GET /places when nothing in database', t => {
   supertest(server)
     .get('/places')
     .expect(200)
@@ -48,19 +48,19 @@ tape('GET /places, with and without query parameters', t => {
 })
 
 // Tests for: GET /places/:id
-tape('GET /places/:id with id of something not in the database', (t) => {
+tape('GET /places/:id with invalid id', t => {
   supertest(server)
     .get('/places/10')
-    .expect(404)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'response message should contain "Database error"')
+      t.equal(res.body.message, 'Invalid id', 'should return correct error message.')
       dropCollectionAndEnd(Place, t)
     })
 })
 
-tape('GET /places/:id with id of something in the database', (t) => {
+tape('GET /places/:id with id of something in the database', t => {
   Place.create(validPlace1)
     .then(result => {
       supertest(server)
@@ -104,31 +104,31 @@ tape('POST /places with invalid place data', t => {
   supertest(server)
     .post('/places')
     .send(invalidPlace1)
-    .expect(500)
+    .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
-      t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
+      t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       dropCollectionAndEnd(Place, t)
     })
 })
 
 // Tests for: PUT /places/:id
-tape('PUT /places/:id with id of something not in the database', (t) => {
+tape('PUT /places/:id with id of something not in the database', t => {
   supertest(server)
-    .put('/places/invalidId')
+    .put('/places/507f1f77bcf86cd799439011')
     .send(validPlace1)
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.ok(res.body.message.includes('Database error'), 'error message should contain "Database error"')
+      t.equal(res.body.message, 'Cannot find document to update', 'Correct message is sent back')
       dropCollectionAndEnd(Place, t)
     })
 })
 
-tape('PUT /places/:id with valid id and valid new place data', (t) => {
+tape('PUT /places/:id with valid id and valid new place data', t => {
   Place.create(validPlace1)
     .then(createdPlace => {
       supertest(server)
@@ -155,15 +155,15 @@ tape('PUT /places/:id with valid id and valid new place data', (t) => {
 })
 
 // Tests for: DELETE /places/:id
-tape('DELETE /places/:id returns error with wrong ID', t => {
+tape('DELETE /places/:id with id of something not in the database', t => {
   supertest(server)
-    .delete('/places/123456789')
+    .delete('/places/507f1f77bcf86cd799439011')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'Message sent back')
-      t.ok(res.body.message.includes('Bad Request'), 'Correct message sent back')
+      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
       t.end()
     })
 })

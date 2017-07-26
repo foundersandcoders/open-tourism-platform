@@ -2,72 +2,46 @@ const User = require('../models/User')
 
 const userController = module.exports = {}
 
-userController.getAll = (req, res) => {
+userController.getAll = (req, res, next) => {
   // sends back array of users, filtered by queries
-  // status codes: 200 (success)
   User.find(req.query)
-    .then(users => {
-      res.send(users)
-    })
-    .catch(err => {
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(500).send(errorObj)
-    })
+    .then(users => res.status(200).send(users))
+    .catch(next)
 }
 
-userController.getById = (req, res) => {
+userController.getById = (req, res, next) => {
   // receives id in url
-  // sends back one user
-  // status codes: 200 (success), 404 (not found)
+  // sends back one user or errors
   const id = req.params.id
-  User.findById(id)
-    .then(user => res.send(user))
-    .catch(err => {
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(404).send(errorObj)
-    })
+  User.findByIdOrError(id)
+    .then(user => res.status(200).send(user))
+    .catch(next)
 }
 
-userController.create = (req, res) => {
+userController.create = (req, res, next) => {
   // receives json for user in body
-  // adds to db
-  // status codes: 201 (created), 500 (server error)
+  // sends back created user
   const newUser = new User(req.body)
   newUser.save()
-    .then(user => {
-      res.status(201).send(user)
-    })
-    .catch(err => {
-      // Sending back 500 error, may need changing when we think about how we validate
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(500).send(errorObj)
-    })
+    .then(user => res.status(201).send(user))
+    .catch(next)
 }
 
-userController.update = (req, res) => {
+userController.update = (req, res, next) => {
   // receives id in url
   // receives updated json for user in body
-  // amends db record
-  // status codes: 200 (success), 400 (bad request)
+  // updates or errors
   const id = req.params.id
-  User.findByIdAndUpdate(id, req.body, { new: true })
-    .then(updatedUser => res.send(updatedUser))
-    .catch(err => {
-      const errorObj = { message: `Database error: ${err.message}` }
-      res.status(400).send(errorObj)
-    })
+  User.findByIdAndUpdateOrError(id, req.body, { new: true })
+    .then(updatedUser => res.status(200).send(updatedUser))
+    .catch(next)
 }
 
-userController.delete = (req, res) => {
+userController.delete = (req, res, next) => {
   // receives id in url
-  // deletes
-  // status codes: 204 (success), 400 (bad request)
-  User.findByIdAndRemove(req.params.id)
-    .then(() => {
-      res.status(204).send()
-    })
-    .catch(err => {
-      const errorObj = { message: `Bad Request: ${err.message}` }
-      res.status(400).send(errorObj)
-    })
+  // deletes or errors
+  const id = req.params.id
+  User.findByIdAndRemoveOrError(id)
+    .then(() => res.status(204).send())
+    .catch(next)
 }
