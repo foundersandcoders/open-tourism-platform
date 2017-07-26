@@ -114,6 +114,23 @@ tape('POST /users adding invalid user', t => {
     })
 })
 
+tape('POST /users/ with user violating unique username constraint', t => {
+  User.create(validUser1)
+    .then(() => {
+      supertest(server)
+        .post('/users')
+        .send(validUser1)
+        .expect(400)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.message, 'Data violates unique constraints validation', 'Correct message is sent back')
+          dropCollectionAndEnd(User, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
+
 // Tests for: PUT /users/:id
 tape('PUT /users/:id with invalid id', t => {
   supertest(server)
