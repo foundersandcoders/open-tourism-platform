@@ -27,6 +27,7 @@ const userSchema = mongoose.Schema(
   }
 )
 
+// add custom validation
 userSchema.pre('validate', customRequireValidator)
 // add methods which throw errors when there's nothing matching the given id
 addStaticSchemaMethods(userSchema)

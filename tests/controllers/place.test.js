@@ -29,18 +29,18 @@ tape('GET /places, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that place correctly
           t.equal(res.body.length, 2, 'response body should be an array with length 2')
-          t.ok(res.body.map(place => place.name).includes(validPlace1.name), 'first place has been added')
-          t.ok(res.body.map(place => place.name).includes(validPlace2.name), 'second place has been added')
+          t.ok(res.body.map(place => place.en.name).includes(validPlace1.en.name), 'first place has been added')
+          t.ok(res.body.map(place => place.en.name).includes(validPlace2.en.name), 'second place has been added')
         })
       supertest(server)
-        .get('/places?name=Basilica')
+        .get('/places?en.name=Basilica')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
           // check our get path returns that place correctly
           t.equal(res.body.length, 1, 'filtered response body should be an array with length 1')
-          t.equal(res.body[0].name, 'Basilica', 'results should be filtered correctly by url query parameters')
+          t.equal(res.body[0].en.name, 'Basilica', 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(Place, t)
         })
     })
@@ -69,7 +69,7 @@ tape('GET /places/:id with id of something in the database', (t) => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, validPlace1.name, 'should get place with correct name.')
+          t.equal(res.body.en.name, validPlace1.en.name, 'should get place with correct name.')
           dropCollectionAndEnd(Place, t)
         })
     })
@@ -85,12 +85,12 @@ tape('POST /places with valid place data', t => {
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.name, validPlace1.name, 'Correct object is added')
+      t.equal(res.body.en.name, validPlace1.en.name, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
       Place.findById(res.body._id)
         .then(place => {
-          t.equal(place.name, res.body.name, 'Place is in the database')
+          t.equal(place.en.name, res.body.en.name, 'Place is in the database')
           dropCollectionAndEnd(Place, t)
         })
         .catch(err => {
@@ -138,11 +138,11 @@ tape('PUT /places/:id with valid id and valid new place data', (t) => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(res.body.name, validPlace2.name, 'place should be correctly updated, and the updated place returned')
+          t.equal(res.body.en.name, validPlace2.en.name, 'place should be correctly updated, and the updated place returned')
           // check place was updated in db
           Place.findById(createdPlace.id)
             .then(place => {
-              t.equal(place.name, validPlace2.name, 'Place has been updated in the database')
+              t.equal(place.en.name, validPlace2.en.name, 'Place has been updated in the database')
               dropCollectionAndEnd(Place, t)
             })
             .catch(err => {
