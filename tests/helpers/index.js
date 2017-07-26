@@ -2,17 +2,17 @@ const sinon = require('sinon')
 
 const helpers = module.exports = {}
 
-helpers.dropCollectionAndEnd = (myCollection, t) => {
+helpers.dropCollectionAndEnd = (myCollection, assert) => {
   myCollection.remove({})
-    .then(() => t.end())
-    .catch(err => t.end(err))
+    .then(() => assert.end())
+    .catch(err => assert.end(err))
 }
 
 // Generate the tests and messages for checking a function has been called and with the correct argument
-const buildSpyTest = (t, comparator, functionToCheck, spy) => {
-  t.ok(spy.called, `${functionToCheck} was called`)
-  t.equal(spy.args[0][0], comparator, `${functionToCheck} was called with the correct error message`)
-  t.end()
+const buildSpyTest = (assert, comparator, functionToCheck, spy) => {
+  assert.ok(spy.called, `${functionToCheck} was called`)
+  assert.equal(spy.args[0][0], comparator, `${functionToCheck} was called with the correct error message`)
+  assert.end()
 }
 
 // build a res.boom object with a method we give it (i.e. the method we are checking is getting called)
@@ -24,7 +24,7 @@ const buildResponseObj = method => {
 
 // make the arguments for testing whether a res.boom method is getting called, call the function we're testing
 // then generate the tests
-helpers.buildBoomSpyTest = (tester, functionToTest, errorMessage, boomFunction, errorName, errorCode) => {
+helpers.buildBoomSpyTest = (assert, functionToTest, errorMessage, boomFunction, errorName, errorCode) => {
   const testError = new Error(errorMessage)
   testError.name = errorName
   testError.code = errorCode
@@ -36,10 +36,10 @@ helpers.buildBoomSpyTest = (tester, functionToTest, errorMessage, boomFunction, 
   functionToTest(testError, req, res)
 
   // build tests
-  buildSpyTest(tester, errorMessage, boomFunction, resSpy)
+  buildSpyTest(assert, errorMessage, boomFunction, resSpy)
 }
 
-helpers.buildNextSpyTest = (tester, functionToTest, errorMessage, errorName) => {
+helpers.buildNextSpyTest = (assert, functionToTest, errorMessage, errorName) => {
   const testError = new Error(errorMessage)
   testError.name = errorName
   const req = {}
@@ -50,5 +50,5 @@ helpers.buildNextSpyTest = (tester, functionToTest, errorMessage, errorName) => 
   functionToTest(testError, req, res, nextSpy)
 
   // build tests
-  buildSpyTest(tester, testError, 'next', nextSpy)
+  buildSpyTest(assert, testError, 'next', nextSpy)
 }
