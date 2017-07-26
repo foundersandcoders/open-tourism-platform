@@ -1,45 +1,53 @@
+const { names: errNames, messages: errMessages } = require('./constants/errors')
+
 const dbErrorHandlers = module.exports = {}
 
 dbErrorHandlers.custom = (err, req, res, next) => {
-  if (err.name !== 'CustomDbError') {
+  if (err.name !== errNames.CUSTOM) {
     return next(err)
   }
   switch (err.message) {
-    case 'No document matching that id':
+    case errMessages.GET_ID_NOT_FOUND:
       res.boom.notFound(err.message)
       break
-    case 'Cannot find document to update':
+    case errMessages.UPDATE_ID_NOT_FOUND:
       res.boom.badRequest(err.message)
       break
-    case 'Cannot find document to delete':
+    case errMessages.DELETE_ID_NOT_FOUND:
       res.boom.badRequest(err.message)
       break
 
     // unhandled custom error
     default:
-      res.boom.badImplementation('An internal server error occurred')
+      res.boom.badImplementation(errMessages.UNHANDLED_CUSTOM)
   }
 }
 
 dbErrorHandlers.mongo = (err, req, res, next) => {
-  if (err.name !== 'MongoError') {
+  if (err.name !== errNames.MONGO) {
     return next(err)
   }
   // unhandled mongo error
-  res.boom.badImplementation('An internal mongo server error occurred')
+  res.boom.badImplementation(errMessages.UNHANDLED_MONGO)
 }
 
 dbErrorHandlers.mongoose = (err, req, res, next) => {
+  // Mongoose errors have specific names, and more info is stored under the key with the error name
+  // e.g. err = {
+  //   name: 'ValidationError',
+  //   ValidationError: ...,
+  //   ...
+  // }
   switch (err.name) {
-    case 'ValidationError':
-      res.boom.badRequest('Validation Failed', err.ValidationError) // trying to add more info as 'data' (See boom docs)
+    case errNames.MONGOOSE_VALIDATION:
+      res.boom.badRequest(errMessages.VALIDATION_FAILED, err[err.name]) // trying to add more info as 'data' (See boom docs)
       break
-    case 'CastError':
-      res.boom.badRequest('Invalid id', err.CastError)
+    case errNames.MONGOOSE_CAST:
+      res.boom.badRequest(errMessages.INVALID_ID, err[err.name])
       break
 
     // unhandled mongoose error
     default:
-      res.boom.badImplementation('An internal mongoose server error occurred')
+      res.boom.badImplementation(errMessages.UNHANDLED_MONGOOSE)
   }
 }
