@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const { placeCategories, accessibilityOptions } = require('./constants.json')
+const { addStaticSchemaMethods } = require('../db/utils')
 
 const placeSchema = mongoose.Schema(
   {
@@ -21,5 +22,8 @@ const placeSchema = mongoose.Schema(
     timestamps: true
   }
 )
+
+// add methods which throw errors when there's nothing matching the given id
+addStaticSchemaMethods(placeSchema)
 
 module.exports = mongoose.model('Place', placeSchema)
