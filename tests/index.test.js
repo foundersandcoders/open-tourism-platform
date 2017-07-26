@@ -9,7 +9,7 @@ dbConnection.once('open', () => {
   // require('./controllers/product.test.js')
 
   // test the error handlers
-  require('./errorHandlers.test.js')
+  require('./dbErrorHandlers.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
