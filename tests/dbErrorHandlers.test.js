@@ -5,78 +5,57 @@ const { messages: errMessages, names: errNames } = require('../src/constants/err
 
 const tape = require('tape')
 
+// Generate the tests and messages for checking a function has been called and with the correct argument
+const buildSpyTest = (t, errMessage, testFunction, spy) => {
+  t.ok(spy.called, `${testFunction} was called`)
+  t.equal(spy.args[0][0], errMessage, `${testFunction} was called with the correct error message`)
+  t.end()
+}
+
+// build a res.boom object with a method we give it (i.e. the method we are checking is getting called)
+const buildResObj = method => {
+  const res = {boom: {}}
+  res.boom[method] = function () {}
+  return res
+}
+
+// make the arguments for testing whether a res.boom method is getting called, then generate the tests
+const buildBoomSpyTest = (t, errMessage, boomFunction) => {
+  const testError = createCustomDbError(errMessage)
+  const req = {}
+  const res = buildResObj(boomFunction)
+  const resSpy = sinon.spy(res.boom, boomFunction)
+
+  // call the function we're testing
+  dbErrorHandlers.custom(testError, req, res)
+
+  buildSpyTest(t, errMessage, boomFunction, resSpy)
+}
+
 tape('dbErrorHandlers.custom with non custom error', t => {
   // construct arguments
   const testError = new Error('test error')
   testError.name = 'Not a custom Error'
-  const req = {}
-  const res = {}
   const nextSpy = sinon.spy()
 
   // call the function we're testing
-  dbErrorHandlers.custom(testError, req, res, nextSpy)
+  dbErrorHandlers.custom(testError, {}, {}, nextSpy)
 
-  t.ok(nextSpy.called, 'next was called')
-  t.equal(nextSpy.args[0][0], testError, 'next was called with the error')
-  t.end()
+  buildSpyTest(t, testError, 'next', nextSpy)
 })
 
 tape('dbErrorHandlers.custom with GET_ID_NOT_FOUND', t => {
-  // construct arguments
-  const testError = createCustomDbError(errMessages.GET_ID_NOT_FOUND)
-  const req = {}
-  const res = {boom: { notFound: function () {} }}
-  const resSpy = sinon.spy(res.boom, 'notFound')
-
-  // call the function we're testing
-  dbErrorHandlers.custom(testError, req, res)
-
-  t.ok(resSpy.called, 'res.boom.notFound was called')
-  t.equal(resSpy.args[0][0], errMessages.GET_ID_NOT_FOUND, 'res.boom.notFound was called with the correct error message')
-  t.end()
+  buildBoomSpyTest(t, errMessages.GET_ID_NOT_FOUND, 'notFound')
 })
 
 tape('dbErrorHandlers.custom with UPDATE_ID_NOT_FOUND', t => {
-  // construct arguments
-  const testError = createCustomDbError(errMessages.UPDATE_ID_NOT_FOUND)
-  const req = {}
-  const res = {boom: { badRequest: function () {} }}
-  const resSpy = sinon.spy(res.boom, 'badRequest')
-
-  // call the function we're testing
-  dbErrorHandlers.custom(testError, req, res)
-
-  t.ok(resSpy.called, 'res.boom.badRequest was called')
-  t.equal(resSpy.args[0][0], errMessages.UPDATE_ID_NOT_FOUND, 'res.boom.badRequest was called with the correct error message')
-  t.end()
+  buildBoomSpyTest(t, errMessages.UPDATE_ID_NOT_FOUND, 'badRequest')
 })
 
 tape('dbErrorHandlers.custom with DELETE_ID_NOT_FOUND', t => {
-  // construct arguments
-  const testError = createCustomDbError(errMessages.DELETE_ID_NOT_FOUND)
-  const req = {}
-  const res = {boom: { badRequest: function () {} }}
-  const resSpy = sinon.spy(res.boom, 'badRequest')
-
-  // call the function we're testing
-  dbErrorHandlers.custom(testError, req, res)
-
-  t.ok(resSpy.called, 'res.boom.badRequest was called')
-  t.equal(resSpy.args[0][0], errMessages.DELETE_ID_NOT_FOUND, 'res.boom.badRequest was called with the correct error message')
-  t.end()
+  buildBoomSpyTest(t, errMessages.DELETE_ID_NOT_FOUND, 'badRequest')
 })
 
 tape('dbErrorHandlers.custom with UNHANDLED', t => {
-  // construct arguments
-  const testError = createCustomDbError('UNHANDLED')
-  const req = {}
-  const res = {boom: { badImplementation: function () {} }}
-  const resSpy = sinon.spy(res.boom, 'badImplementation')
-
-  // call the function we're testing
-  dbErrorHandlers.custom(testError, req, res)
-
-  t.ok(resSpy.called, 'res.boom.badImplementation was called')
-  t.equal(resSpy.args[0][0], errMessages.UNHANDLED_CUSTOM, 'res.boom.badImplementation was called with the correct error message')
-  t.end()
+  buildBoomSpyTest(t, errMessages.UNHANDLED_CUSTOM, 'badImplementation')
 })
