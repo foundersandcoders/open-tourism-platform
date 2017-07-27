@@ -3,7 +3,9 @@ const router = require('./routes')
 const bodyParser = require('body-parser')
 const boom = require('express-boom')
 
-const dbErrorHandlers = require('./dbErrorHandlers')
+const customErrorHandler = require('./middleware/customErrorHandler')
+const mongoErrorHandler = require('./middleware/mongoErrorHandler')
+const mongooseErrorHandler = require('./middleware/mongooseErrorHandler')
 
 const server = express()
 
@@ -13,8 +15,8 @@ server.use(boom())
 
 server.use(router)
 
-server.use(dbErrorHandlers.custom)
-server.use(dbErrorHandlers.mongo)
-server.use(dbErrorHandlers.mongoose)
+server.use(customErrorHandler)
+server.use(mongoErrorHandler)
+server.use(mongooseErrorHandler)
 
 module.exports = server

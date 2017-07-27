@@ -10,7 +10,9 @@ dbConnection.once('open', () => {
   require('./controllers/product.test.js')
 
   // test error handlers
-  require('./dbErrorHandlers.test.js')
+  require('./middleware/customErrorHandler.test.js')
+  require('./middleware/mongoErrorHandler.test.js')
+  require('./middleware/mongooseErrorHandler.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
