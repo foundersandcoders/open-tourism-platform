@@ -55,14 +55,23 @@ dbErrorHandlers.mongoose = (err, req, res, next) => {
   // }
   switch (err.name) {
     case errNames.MONGOOSE_VALIDATION:
-      res.boom.badRequest(errMessages.VALIDATION_FAILED, err[err.name]) // trying to add more info as 'data' (See boom docs)
+      const reasons = extractMongooseMessages(err)
+      res.boom.badRequest(errMessages.VALIDATION_FAILED, { reasons })//, {errorMessages}) // trying to add more info as 'data' (See boom docs)
       break
     case errNames.MONGOOSE_CAST:
-      res.boom.badRequest(errMessages.INVALID_ID, err[err.name])
+      res.boom.badRequest(errMessages.INVALID_ID)//, {errorMessages})
       break
 
     // unhandled mongoose error
     default:
       res.boom.badImplementation(errMessages.UNHANDLED_MONGOOSE)
   }
+}
+
+const extractMongooseMessages = (mongooseErr) => {
+  const errorMessages = []
+  Object.keys(mongooseErr.errors).forEach((singleError) => {
+    errorMessages.push(mongooseErr.errors[singleError].message)
+  })
+  return errorMessages
 }
