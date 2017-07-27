@@ -8,17 +8,21 @@ helpers.dropCollectionAndEnd = (myCollection, assert) => {
     .catch(err => assert.end(err))
 }
 
-// build a res.boom object with a function we give it (i.e. the function we are checking is getting called)
-const buildResponseObj = (functionToSpyOn) => {
-  const res = {boom: {}}
-  res.boom[functionToSpyOn] = function () {}
-  const resSpy = sinon.spy(res.boom, functionToSpyOn)
-  return { res, resSpy }
+// build a res.boom object with the functions that might get called as spies
+const buildResponseObj = () => {
+  const resSpy = {
+    boom: {
+      badRequest: sinon.spy(),
+      notFound: sinon.spy(),
+      badImplementation: sinon.spy()
+    }
+  }
+  return resSpy
 }
 
-helpers.spyGeneratorErrorMiddlewareCaller = errorMiddleware => (error, functionToSpyOn) => {
-  const { res, resSpy } = buildResponseObj(functionToSpyOn)
+helpers.spyGeneratorErrorMiddlewareCaller = errorMiddleware => (error) => {
+  const resSpy = buildResponseObj()
   const nextSpy = sinon.spy()
-  errorMiddleware(error, undefined, res, nextSpy)
+  errorMiddleware(error, undefined, resSpy, nextSpy)
   return { resSpy, nextSpy }
 }
