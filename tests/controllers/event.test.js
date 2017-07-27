@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const Event = require('../../src/models/Event.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
-const { validEvent1, validEvent2, validEvent3, invalidEvent1 } = require('../fixtures/events.json')
+const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2 } = require('../fixtures/events.json')
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
@@ -124,6 +124,20 @@ tape('POST /events adding valid event', t => {
           t.fail(err)
           dropCollectionAndEnd(Event, t)
         })
+    })
+})
+
+tape('POST /events adding event with invalid category', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent2)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.reasons[0], '`eating` is not a valid enum value for path `category`.', 'Correct message is sent back')
+      dropCollectionAndEnd(Event, t)
     })
 })
 

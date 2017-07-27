@@ -2,5 +2,6 @@
    "validEvent1": { "en":{"name": "Party at the Guesthouse"}, "category": "music" },
    "validEvent2": { "en":{"name": "Dinner at Liwan"}, "category": "dining" },
    "validEvent3": { "en":{"name": "MG fails at flipping pancakes"}, "category": "dining" },
-   "invalidEvent1": {}
+   "invalidEvent1": {},
+   "invalidEvent2": { "en":{"name": "Dinner at Alreda"}, "category": ["eating"] }
 }
