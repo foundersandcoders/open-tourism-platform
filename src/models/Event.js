@@ -13,7 +13,7 @@ const eventTranslatedFieldsSchema = mongoose.Schema(
 const eventSchema = mongoose.Schema(
   {
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-    category: [{ type: String, enum: eventCategories, required: true }],
+    category: { type: [{ type: String, enum: eventCategories }], required: true },
     location: { type: mongoose.Schema.Types.ObjectId, ref: 'Place' },
     accessibilityOptions: [{ type: String, enum: accessibilityOptions, required: false }],
     startTime: Date,
