@@ -11,7 +11,7 @@ An API providing data for the four apps on the Nazareth Open Tourism Platform, b
 
 ## Events
 
-#### Get all events
+### Get all events
 `GET /events`
 
 **Response**
@@ -40,7 +40,7 @@ Status: 200 OK
 ]
 ```
 
-#### Get event by id
+### Get event by id
 `GET /events/:id`
 
 **Response**
@@ -67,7 +67,7 @@ Status: 200 OK
 }
 ```
 
-#### Create event
+### Create event
 `POST /events`
 
 **Input**
@@ -107,7 +107,7 @@ Status: 201 Created
 }
 ```
 
-#### Update event
+### Update event
 `PUT /events/:id`
 
 **Input**
@@ -147,7 +147,7 @@ Status: 200 OK
 }
 ```
 
-#### Delete event
+### Delete event
 `DELETE /events/:id`
 
 **Response**
