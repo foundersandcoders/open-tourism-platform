@@ -10,10 +10,10 @@ module.exports = (err, req, res, next) => {
   switch (err.name) {
     case errNames.MONGOOSE_VALIDATION:
       const reasons = extractMongooseMessages(err)
-      res.boom.badRequest(errMessages.VALIDATION_FAILED, { reasons })//, {errorMessages}) // trying to add more info as 'data' (See boom docs)
+      res.boom.badRequest(errMessages.VALIDATION_FAILED, { reasons })// add more info as 'data' (See boom docs)
       break
     case errNames.MONGOOSE_CAST:
-      res.boom.badRequest(errMessages.INVALID_ID)//, {errorMessages})
+      res.boom.badRequest(errMessages.INVALID_ID)
       break
 
     // unhandled mongoose error
