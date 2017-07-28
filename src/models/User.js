@@ -8,7 +8,8 @@ const userTranslatedFieldsSchema = mongoose.Schema(
     name: { type: String, required: true },
     organisationName: String,
     organisationDescription: String
-  }
+  },
+  { _id: false }
 )
 
 const userSchema = mongoose.Schema(
