@@ -13,9 +13,13 @@ const eventTranslatedFieldsSchema = mongoose.Schema(
 
 const eventSchema = mongoose.Schema(
   {
+    // id of owner in user table
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    // categories can be an array of one or more strings from the enum, is required here
     categories: { type: [{ type: String, enum: eventCategories }], required: true },
-    locationId: { type: mongoose.Schema.Types.ObjectId, ref: 'Place' },
+    // id of place in place table
+    placeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Place' },
+    // accessibilityOptions can be an array of one or more strings from the enum
     accessibilityOptions: { type: [{ type: String, enum: accessibilityOptions }] },
     startTime: Date,
     endTime: Date,
