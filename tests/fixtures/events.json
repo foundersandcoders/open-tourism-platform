@@ -1,9 +1,9 @@
 {
-   "validEvent1": { "en":{"name": "Party at the Guesthouse"}, "category": "music" },
-   "validEvent2": { "en":{"name": "Dinner at Liwan"}, "category": "dining" },
-   "validEvent3": { "en":{"name": "MG fails at flipping pancakes"}, "category": "dining" },
+   "validEvent1": { "en":{"name": "Party at the Guesthouse"}, "categories": "music" },
+   "validEvent2": { "en":{"name": "Dinner at Liwan"}, "categories": "dining" },
+   "validEvent3": { "en":{"name": "MG fails at flipping pancakes"}, "categories": "dining" },
    "invalidEvent1": {},
-   "invalidEvent2": { "en":{"name": "Dinner at Alreda"}, "category": ["eating"] },
-   "invalidEvent3": { "en":{"name": "Dinner at Alreda"}, "category": [null, "dining"] },
-   "invalidEvent4": { "en":{"name": "Dinner at Alreda"}, "category": []}
+   "invalidEvent2": { "en":{"name": "Dinner at Alreda"}, "categories": ["eating"] },
+   "invalidEvent3": { "en":{"name": "Dinner at Alreda"}, "categories": [null, "dining"] },
+   "invalidEvent4": { "en":{"name": "Dinner at Alreda"}, "categories": []}
 }
