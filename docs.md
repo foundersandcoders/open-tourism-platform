@@ -3,11 +3,11 @@ An API providing data for the four apps on the Nazareth Open Tourism Platform, b
 
 ## Contents
 **Events**
-- [Get all events](#Get all events)
-- [Get event by id](#Get event by id)
-- [Create event](#Create event)
-- [Update event](#Update event)
-- [Delete event](#Delete event)
+- [Get all events](#get-all-events)
+- [Get event by id](#get-event-by-id)
+- [Create event](#create-event)
+- [Update event](#update-event)
+- [Delete event](#delete-event)
 
 ## Events
 
