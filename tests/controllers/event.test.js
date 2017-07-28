@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const Event = require('../../src/models/Event.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
-const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2 } = require('../fixtures/events.json')
+const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
@@ -100,6 +100,7 @@ tape('POST /events adding invalid event', t => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
+      t.equal(res.body.reasons[0], 'one of Path `en` or Path `ar` required', 'Correct reason is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -127,7 +128,7 @@ tape('POST /events adding valid event', t => {
     })
 })
 
-tape('POST /events adding event with invalid category', t => {
+tape('POST /events adding events with invalid category - wrong category', t => {
   supertest(server)
     .post('/events')
     .send(invalidEvent2)
@@ -136,7 +137,35 @@ tape('POST /events adding event with invalid category', t => {
     .end((err, res) => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
-      t.equal(res.body.reasons[0], '`eating` is not a valid enum value for path `category`.', 'Correct message is sent back')
+      t.equal(res.body.reasons[0], '`eating` is not a valid enum value for path `category`.', 'Correct reason is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('POST /events adding events with invalid category - null in array', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent3)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.reasons[0], '`null` is not a valid enum value for path `category`.', 'Correct reason is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('POST /events adding events with invalid category - empty array', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent4)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.reasons[0], 'Path `category` is required.', 'Correct message is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
