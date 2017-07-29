@@ -89,7 +89,7 @@ Status: 200 OK
 Name | Type | Description
 ---|---|---
 ownerId | mongoose ObjectId | id of event owner.
-category | array of strings | **Required**. Event [ categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+category | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 location | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
@@ -138,7 +138,7 @@ Status: 201 Created
 Name | Type | Description
 ---|---|---
 ownerId | mongoose ObjectId | id of event owner.
-category | array of strings | **Required**. Event [ categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+category | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 location | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
