@@ -21,21 +21,28 @@ Status: 200 OK
 [
   {
     "__v": 0,
-    "updatedAt": "2017-07-27T09:50:49.414Z",
-    "createdAt": "2017-07-27T09:50:49.414Z",
-    "name": "Liwan concert",
-    "startTime": "2001-01-01T00:00:00.000Z",
-    "endTime": "2002-02-02T00:00:00.000Z",
-    "description": "Oud concert",
-    "cost": "Cheap",
-    "imageUrl": "imgIsHere.com/12345",
-    "_id": "5979b779ed693f0011b17b57",
+    "_id": "597b363ae05960001124583b",
+    "updatedAt": "2017-07-28T13:03:54.818Z",
+    "createdAt": "2017-07-28T13:03:54.818Z",
+    "ownerId": "8496873ea34958810182138c",
+    "category": [
+      "music",
+      "dining"
+    ],
+    "location": "9348293df12398123885930a",
     "accessibilityOptions": [
+      "braille-menu",
       "wheelchair-friendly"
     ],
-    "category": [
-      "music"
-    ]
+    "startTime": "2001-01-01T00:00:00.000Z",
+    "endTime": "2002-02-02T00:00:00.000Z",
+    "cost": "1000 shekels",
+    "imageUrl": "imgIsHere.com/12345"
+    "en": {
+      "name": "Party at the guesthouse",
+      "description": "Sick party dudes"
+    },
+    "ar": { }
   }
 ]
 ```
@@ -49,21 +56,28 @@ Status: 200 OK
 
 {
   "__v": 0,
-  "updatedAt": "2017-07-27T09:50:49.414Z",
-  "createdAt": "2017-07-27T09:50:49.414Z",
-  "name": "Liwan concert",
-  "startTime": "2001-01-01T00:00:00.000Z",
-  "endTime": "2002-02-02T00:00:00.000Z",
-  "description": "Oud concert",
-  "cost": "Cheap",
-  "imageUrl": "imgIsHere.com/12345",
-  "_id": "5979b779ed693f0011b17b57",
+  "_id": "597b363ae05960001124583b",
+  "updatedAt": "2017-07-28T13:03:54.818Z",
+  "createdAt": "2017-07-28T13:03:54.818Z",
+  "ownerId": "8496873ea34958810182138c",
+  "category": [
+    "music",
+    "dining"
+  ],
+  "location": "9348293df12398123885930a",
   "accessibilityOptions": [
+    "braille-menu",
     "wheelchair-friendly"
   ],
-  "category": [
-    "music"
-  ]
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "1000 shekels",
+  "imageUrl": "imgIsHere.com/12345"
+  "en": {
+    "name": "Party at the guesthouse",
+    "description": "Sick party dudes"
+  },
+  "ar": { }
 }
 ```
 
@@ -74,14 +88,16 @@ Status: 200 OK
 
 Name | Type | Description
 ---|---|---
-name | string | **Required**. The name of the event.
-category | array of strings | **Required**. The event category / categories.
-accessibilityOptions | array of strings | Event accessibility options.
+ownerId | mongoose ObjectId | id of event owner.
+category | array of strings | **Required**. Event [ categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+location | mongoose ObjectId | id of event location.
+accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
-description | string | More information about the event.
-cost | string | Rough estimation of the cost of the event.
-imageUrl | string | Link to image of the event.
+cost | string | Rough estimation of event cost.
+imageUrl | string | Link to image of event.
+name | string | **Required**. Name of event.
+description | string | More information about event.
 
 **Response**
 ```
@@ -89,21 +105,28 @@ Status: 201 Created
 
 {
   "__v": 0,
-  "updatedAt": "2017-07-27T09:50:49.414Z",
-  "createdAt": "2017-07-27T09:50:49.414Z",
-  "name": "Liwan concert",
-  "startTime": "2001-01-01T00:00:00.000Z",
-  "endTime": "2002-02-02T00:00:00.000Z",
-  "description": "Oud concert",
-  "cost": "Cheap",
-  "imageUrl": "imgIsHere.com/12345",
-  "_id": "5979b779ed693f0011b17b57",
+  "_id": "597b363ae05960001124583b",
+  "updatedAt": "2017-07-28T13:03:54.818Z",
+  "createdAt": "2017-07-28T13:03:54.818Z",
+  "ownerId": "8496873ea34958810182138c",
+  "category": [
+    "music",
+    "dining"
+  ],
+  "location": "9348293df12398123885930a",
   "accessibilityOptions": [
+    "braille-menu",
     "wheelchair-friendly"
   ],
-  "category": [
-    "music"
-  ]
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "1000 shekels",
+  "imageUrl": "imgIsHere.com/12345"
+  "en": {
+    "name": "Party at the guesthouse",
+    "description": "Sick party dudes"
+  },
+  "ar": { }
 }
 ```
 
@@ -114,36 +137,45 @@ Status: 201 Created
 
 Name | Type | Description
 ---|---|---
-name | string | The name of the event.
-category | array of strings | The event category / categories.
-accessibilityOptions | array of strings | Event accessibility options.
+ownerId | mongoose ObjectId | id of event owner.
+category | array of strings | **Required**. Event [ categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+location | mongoose ObjectId | id of event location.
+accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
-description | string | More information about the event.
-cost | string | Rough estimation of the cost of the event.
-imageUrl | string | Link to image of the event.
+cost | string | Rough estimation of event cost.
+imageUrl | string | Link to image of event.
+name | string | **Required**. Name of event.
+description | string | More information about event.
 
 **Response**
 ```
 Status: 200 OK
 
 {
-  "__v": 0,
-  "updatedAt": "2017-07-27T09:50:49.414Z",
-  "createdAt": "2017-07-27T09:50:49.414Z",
-  "name": "Liwan concert V2",
-  "startTime": "2001-01-01T00:00:00.000Z",
-  "endTime": "2002-02-02T00:00:00.000Z",
-  "description": "Oud concert",
-  "cost": "Cheap",
-  "imageUrl": "imgIsHere.com/12345",
-  "_id": "5979b779ed693f0011b17b57",
+  "__v": 1,
+  "_id": "597b363ae05960001124583b",
+  "updatedAt": "2017-07-28T13:03:54.818Z",
+  "createdAt": "2017-07-28T13:03:54.818Z",
+  "ownerId": "8496873ea34958810182138c",
+  "category": [
+    "music",
+    "dining"
+  ],
+  "location": "9348293df12398123885930a",
   "accessibilityOptions": [
+    "braille-menu",
     "wheelchair-friendly"
   ],
-  "category": [
-    "music"
-  ]
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "1000 shekels",
+  "imageUrl": "imgIsHere.com/12345"
+  "en": {
+    "name": "Party at the guesthouse V2",
+    "description": "Sick party dudes"
+  },
+  "ar": { }
 }
 ```
 
