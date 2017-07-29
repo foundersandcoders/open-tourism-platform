@@ -28,10 +28,6 @@ module.exports = (err, req, res, next) => {
   }
 }
 
-const extractMongooseMessages = (mongooseErr) => {
-  const errorMessages = []
-  Object.keys(mongooseErr.errors).forEach((singleError) => {
-    errorMessages.push(mongooseErr.errors[singleError].message)
-  })
-  return errorMessages
+const extractMongooseValidationMessages = mongooseErr => {
+  return Object.keys(mongooseErr.errors).map(singleError => mongooseErr.errors[singleError].message)
 }
