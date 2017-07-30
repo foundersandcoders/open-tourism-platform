@@ -25,11 +25,11 @@ Status: 200 OK
     "updatedAt": "2017-07-28T13:03:54.818Z",
     "createdAt": "2017-07-28T13:03:54.818Z",
     "ownerId": "8496873ea34958810182138c",
-    "category": [
+    "categories": [
       "music",
       "dining"
     ],
-    "location": "9348293df12398123885930a",
+    "placeId": "9348293df12398123885930a",
     "accessibilityOptions": [
       "braille-menu",
       "wheelchair-friendly"
@@ -60,11 +60,11 @@ Status: 200 OK
   "updatedAt": "2017-07-28T13:03:54.818Z",
   "createdAt": "2017-07-28T13:03:54.818Z",
   "ownerId": "8496873ea34958810182138c",
-  "category": [
+  "categories": [
     "music",
     "dining"
   ],
-  "location": "9348293df12398123885930a",
+  "placeId": "9348293df12398123885930a",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
@@ -89,8 +89,8 @@ Status: 200 OK
 Name | Type | Description
 ---|---|---
 ownerId | mongoose ObjectId | id of event owner.
-category | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
-location | mongoose ObjectId | id of event location.
+categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+placeId | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
@@ -109,11 +109,11 @@ Status: 201 Created
   "updatedAt": "2017-07-28T13:03:54.818Z",
   "createdAt": "2017-07-28T13:03:54.818Z",
   "ownerId": "8496873ea34958810182138c",
-  "category": [
+  "categories": [
     "music",
     "dining"
   ],
-  "location": "9348293df12398123885930a",
+  "placeId": "9348293df12398123885930a",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
@@ -138,8 +138,8 @@ Status: 201 Created
 Name | Type | Description
 ---|---|---
 ownerId | mongoose ObjectId | id of event owner.
-category | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
-location | mongoose ObjectId | id of event location.
+categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+placeId | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
@@ -158,11 +158,11 @@ Status: 200 OK
   "updatedAt": "2017-07-28T13:03:54.818Z",
   "createdAt": "2017-07-28T13:03:54.818Z",
   "ownerId": "8496873ea34958810182138c",
-  "category": [
+  "categories": [
     "music",
     "dining"
   ],
-  "location": "9348293df12398123885930a",
+  "placeId": "9348293df12398123885930a",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
