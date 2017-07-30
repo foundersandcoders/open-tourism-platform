@@ -1,5 +1,8 @@
 # Open Tourism Platform API
+
 An API providing data for the four apps on the Nazareth Open Tourism Platform, built by graduates of [Founders and Coders](https://foundersandcoders.com/about/).
+
+Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 
 ## Contents
 **Events**
@@ -96,10 +99,30 @@ startTime | date | Event start time.
 endTime | date | Event end time.
 cost | string | Rough estimation of event cost.
 imageUrl | string | Link to image of event.
-name | string | **Required**. Name of event.
-description | string | More information about event.
+name* | string | **Required**. Name of event.
+description* | string | More information about event.
 
-**Response**
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+  "en": {
+    "name": "Party at the guesthouse",
+    "description": "Sick party dudes"
+  },
+  "categories": [
+    "music",
+    "dining"
+  ],
+  "accessibilityOptions": [
+    "braille-menu",
+    "wheelchair-friendly"
+  ]
+}
+```
+
+**Sample Response**
 ```
 Status: 201 Created
 
@@ -145,10 +168,21 @@ startTime | date | Event start time.
 endTime | date | Event end time.
 cost | string | Rough estimation of event cost.
 imageUrl | string | Link to image of event.
-name | string | **Required**. Name of event.
-description | string | More information about event.
+name* | string | **Required**. Name of event.
+description* | string | More information about event.
 
-**Response**
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+  "en": {
+    "name": "Party at the guesthouse V2"
+  }
+}
+```
+
+**Sample Response**
 ```
 Status: 200 OK
 
