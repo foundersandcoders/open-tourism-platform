@@ -32,7 +32,7 @@ tape('GET /products, with and without query parameters', t => {
           t.ok(res.body.map(product => product.en.name).includes(validProduct2.en.name), 'second product has been added')
         })
       supertest(server)
-        .get('/products?category=handicraft')
+        .get('/products?categories=handicraft')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {

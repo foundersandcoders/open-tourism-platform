@@ -9,15 +9,19 @@ const placeTranslatedFieldsSchema = mongoose.Schema(
     description: String,
     address: String,
     openingHours: String
-  }
+  },
+  { _id: false }
 )
 
 const placeSchema = mongoose.Schema(
   {
+    // id of owner in user table
     ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     location: { type: [Number], index: '2dsphere' },
-    category: [{ type: String, enum: placeCategories }],
-    accessibilityOptions: [{ type: String, enum: accessibilityOptions }],
+    // categories can be an array of one or more strings from the enum, is not required here
+    categories: { type: [{ type: String, enum: placeCategories }] },
+    // accessibilityOptions can be an array of one or more strings from the enum
+    accessibilityOptions: { type: [{ type: String, enum: accessibilityOptions }] },
     imageUrl: String,
     website: String,
     phone: String,

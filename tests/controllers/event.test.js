@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const Event = require('../../src/models/Event.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
-const { validEvent1, validEvent2, validEvent3, invalidEvent1 } = require('../fixtures/events.json')
+const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
@@ -34,7 +34,7 @@ tape('GET /events, with and without query parameters', t => {
           t.ok(res.body.map(event => event.en.name).includes(validEvent3.en.name), 'third event has been added')
         })
       supertest(server)
-        .get('/events?category=dining')
+        .get('/events?categories=dining')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -100,6 +100,7 @@ tape('POST /events adding invalid event', t => {
       if (err) t.fail(err)
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
+      t.equal(res.body.reasons[0], 'one of Path `en` or Path `ar` required', 'Correct reason is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })
@@ -117,13 +118,55 @@ tape('POST /events adding valid event', t => {
       // Now check whether it is in the database
       Event.findById(res.body._id)
         .then(event => {
-          t.equal(event.category[0], res.body.category[0], 'Event is in the database')
+          t.equal(event.categories[0], res.body.categories[0], 'Event is in the database')
           dropCollectionAndEnd(Event, t)
         })
         .catch(err => {
           t.fail(err)
           dropCollectionAndEnd(Event, t)
         })
+    })
+})
+
+tape('POST /events adding events with invalid categories - wrong categories', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent2)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.reasons[0], '`eating` is not a valid enum value for path `categories`.', 'Correct reason is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('POST /events adding events with invalid categories - null in array', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent3)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.reasons[0], '`null` is not a valid enum value for path `categories`.', 'Correct reason is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('POST /events adding events with invalid categories - empty array', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent4)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.reasons[0], 'Path `categories` is required.', 'Correct message is sent back')
+      dropCollectionAndEnd(Event, t)
     })
 })
 
@@ -155,7 +198,7 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
           // check event has been updated
           Event.findById(res.body._id)
             .then(event => {
-              t.equal(event.category[0], res.body.category[0], 'Event is in the database')
+              t.equal(event.categories[0], res.body.categories[0], 'Event is in the database')
               dropCollectionAndEnd(Event, t)
             })
             .catch(err => {

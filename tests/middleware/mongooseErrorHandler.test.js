@@ -9,6 +9,8 @@ tape('mongooseErrorHandler with MONGOOSE_VALIDATION', t => {
 
   const badRequestError = new Error(errMessages.VALIDATION_FAILED)
   badRequestError.name = errNames.MONGOOSE_VALIDATION
+  // make this look like a mongoose validation error
+  badRequestError.errors = {message: 'Some Message'}
 
   const { resSpy } = generateSpiesAndCallMiddleware(badRequestError)
 
