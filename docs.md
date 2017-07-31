@@ -728,17 +728,17 @@ organisationDescription | string | Organisation description.
 **Sample Request**
 ```
 {
-	"username": "Saliba",
-	"password": "ILoveJack",
-	"email": "myEmail@me.com",
-	"role": "BASIC",
-	"isPublic": true,
-	"imageUrl": "imgIsHere.com/12345",
-	"en": {
-		"name": "Mario",
-		"organisationName": "Guesthouse management",
-		"organisationDescription": "Made up"
-	}
+  "username": "Saliba",
+  "password": "ILoveJack",
+  "email": "myEmail@me.com",
+  "role": "BASIC",
+  "isPublic": true,
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Mario",
+    "organisationName": "Guesthouse management",
+    "organisationDescription": "Made up"
+  }
 }
 ```
 
@@ -787,9 +787,9 @@ organisationDescription | string | Organisation description.
 **Sample Request**
 ```
 {
-	"en": {
-		"name": "Mario V2",
-	}
+  "en": {
+    "name": "Mario V2",
+  }
 }
 ```
 
