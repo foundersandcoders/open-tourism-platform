@@ -1,4 +1,4 @@
-# Open Tourism Platform API
+# Open Tourism Platform API
 
 An API providing data for the four apps on the Nazareth Open Tourism Platform, built by graduates of [Founders and Coders](https://foundersandcoders.com/about/).
 
@@ -12,12 +12,19 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Update event](#update-event)
 - [Delete event](#delete-event)
 
+**Places**
+- [Get all places](#get-all-places)
+- [Get place by id](#get-place-by-id)
+- [Create place](#create-place)
+- [Update place](#update-place)
+- [Delete place](#delete-place)
+
 ## Events
 
 ### Get all events
 `GET /events`
 
-**Response**
+**Sample Response**
 ```
 Status: 200 OK
 
@@ -53,7 +60,7 @@ Status: 200 OK
 ### Get event by id
 `GET /events/:id`
 
-**Response**
+**Sample Response**
 ```
 Status: 200 OK
 
@@ -216,7 +223,248 @@ Status: 200 OK
 ### Delete event
 `DELETE /events/:id`
 
-**Response**
+**Sample Response**
+
+```
+Status: 204 No Content
+```
+
+## Places
+
+### Get all places
+`GET /places`
+
+**Sample Response**
+```
+Status: 200 OK
+
+[
+  {
+    "__v": 0,
+    "updatedAt": "2017-07-31T08:33:40.199Z",
+    "createdAt": "2017-07-31T08:33:40.199Z",
+    "ownerId": "8496873ea34958810182138c",
+    "location": [
+      32.701358,
+      32.2968133
+    ],
+    "imageUrl": "imgIsHere.com/12345",
+    "website": "myWebsite.com",
+    "phone": "07774443333",
+    "email": "myEmail@me.com",
+    "en": {
+      "name": "Alreda",
+      "description": "Super cool",
+      "address": "Old town",
+      "openingHours": "10am-11pm"
+    },
+    "_id": "597eeb64aecdd6283a873898",
+    "accessibilityOptions": [
+      "braille-menu",
+      "wheelchair-friendly"
+    ],
+    "categories": [
+      "restaurant",
+      "cafe"
+    ]
+  }
+]
+```
+
+### Get place by id
+`GET /places/:id`
+
+**Sample Response**
+```
+Status: 200 OK
+
+{
+  "__v": 0,
+  "updatedAt": "2017-07-31T08:33:40.199Z",
+  "createdAt": "2017-07-31T08:33:40.199Z",
+  "ownerId": "8496873ea34958810182138c",
+  "location": [
+    32.701358,
+    32.2968133
+  ],
+  "imageUrl": "imgIsHere.com/12345",
+  "website": "myWebsite.com",
+  "phone": "07774443333",
+  "email": "myEmail@me.com",
+  "en": {
+    "name": "Alreda",
+    "description": "Super cool",
+    "address": "Old town",
+    "openingHours": "10am-11pm"
+  },
+  "_id": "597eeb64aecdd6283a873898",
+  "accessibilityOptions": [
+    "braille-menu",
+    "wheelchair-friendly"
+  ],
+  "categories": [
+    "restaurant",
+    "cafe"
+  ]
+}
+```
+
+### Create place
+`POST /places`
+
+**Input**
+
+Name | Type | Description
+---|---|---
+ownerId | mongoose ObjectId | id of owner in user table.
+location | array of numbers | Location coordinates.
+categories | array of strings | Place [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+accessibilityOptions | array of strings | Place [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+imageUrl | string | Link to image of place.
+website | string | Link to place's website.
+phone | string | Place phone number.
+email | string | Place email.
+name* | string | **Required**. Place name.
+description* | string | Place description.
+address* | string | Place address.
+openingHours* | string | Place opening hours.
+
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+  "ownerId": "8496873ea34958810182138c",
+  "location": [
+    32.701358,
+    32.2968133
+  ],
+  "categories": [
+    "restaurant",
+    "cafe"
+  ],
+  "accessibilityOptions": [
+    "braille-menu",
+    "wheelchair-friendly"
+  ],
+  "imageUrl": "imgIsHere.com/12345",
+  "website": "myWebsite.com",
+  "phone": "07774443333",
+  "email": "myEmail@me.com",
+  "en": {
+    "name": "Alreda",
+    "description": "Super cool",
+    "address": "Old town",
+    "openingHours": "10am-11pm"
+  }
+}
+```
+
+**Sample Response**
+```
+Status: 201 Created
+
+{
+  "__v": 0,
+  "updatedAt": "2017-07-31T08:33:40.199Z",
+  "createdAt": "2017-07-31T08:33:40.199Z",
+  "ownerId": "8496873ea34958810182138c",
+  "location": [
+    32.701358,
+    32.2968133
+  ],
+  "imageUrl": "imgIsHere.com/12345",
+  "website": "myWebsite.com",
+  "phone": "07774443333",
+  "email": "myEmail@me.com",
+  "en": {
+    "name": "Alreda",
+    "description": "Super cool",
+    "address": "Old town",
+    "openingHours": "10am-11pm"
+  },
+  "_id": "597eeb64aecdd6283a873898",
+  "accessibilityOptions": [
+    "braille-menu",
+    "wheelchair-friendly"
+  ],
+  "categories": [
+    "restaurant",
+    "cafe"
+  ]
+}
+```
+
+### Update place
+`PUT /places/:id`
+
+**Input**
+
+Name | Type | Description
+---|---|---
+ownerId | mongoose ObjectId | id of owner in user table.
+location | array of numbers | Location coordinates.
+categories | array of strings | Place [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+accessibilityOptions | array of strings | Place [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+imageUrl | string | Link to image of place.
+website | string | Link to place's website.
+phone | string | Place phone number.
+email | string | Place email.
+name* | string | **Required**. Place name.
+description* | string | Place description.
+address* | string | Place address.
+openingHours* | string | Place opening hours.
+
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+  "en": {
+    "name": "Alreda V2"
+  }
+}
+```
+
+**Sample Response**
+```
+Status: 200 OK
+
+{
+  "__v": 1,
+  "updatedAt": "2017-07-31T08:33:40.199Z",
+  "createdAt": "2017-07-31T08:33:40.199Z",
+  "ownerId": "8496873ea34958810182138c",
+  "location": [
+    32.701358,
+    32.2968133
+  ],
+  "imageUrl": "imgIsHere.com/12345",
+  "website": "myWebsite.com",
+  "phone": "07774443333",
+  "email": "myEmail@me.com",
+  "en": {
+    "name": "Alreda V2",
+    "description": "Super cool",
+    "address": "Old town",
+    "openingHours": "10am-11pm"
+  },
+  "_id": "597eeb64aecdd6283a873898",
+  "accessibilityOptions": [
+    "braille-menu",
+    "wheelchair-friendly"
+  ],
+  "categories": [
+    "restaurant",
+    "cafe"
+  ]
+}
+```
+
+### Delete place
+`DELETE /places/:id`
+
+**Sample Response**
 
 ```
 Status: 204 No Content
