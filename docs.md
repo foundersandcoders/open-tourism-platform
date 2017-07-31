@@ -26,6 +26,13 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Update product](#update-product)
 - [Delete product](#delete-product)
 
+**Users**
+- [Get all users](#get-all-users)
+- [Get user by id](#get-user-by-id)
+- [Create user](#create-user)
+- [Update user](#update-user)
+- [Delete user](#delete-user)
+
 ## Events
 
 ### Get all events
@@ -636,6 +643,181 @@ Status: 200 OK
 
 ### Delete product
 `DELETE /products/:id`
+
+**Sample Response**
+
+```
+Status: 204 No Content
+```
+
+## Users
+
+### Get all users
+`GET /users`
+
+**Sample Response**
+```
+Status: 200 OK
+
+[
+  {
+    "__v": 0,
+    "updatedAt": "2017-07-31T12:59:09.013Z",
+    "createdAt": "2017-07-31T12:59:09.013Z",
+    "username": "Saliba",
+    "password": "ILoveJack",
+    "email": "myEmail@me.com",
+    "role": "BASIC",
+    "imageUrl": "imgIsHere.com/12345",
+    "en": {
+      "name": "Mario",
+      "organisationName": "Guesthouse management",
+      "organisationDescription": "Not real"
+    },
+    "_id": "597f299dc3a0222edda71f0c",
+    "isPublic": true
+  }
+]
+```
+
+### Get user by id
+`GET /users/:id`
+
+**Sample Response**
+```
+Status: 200 OK
+
+{
+  "__v": 0,
+  "updatedAt": "2017-07-31T12:59:09.013Z",
+  "createdAt": "2017-07-31T12:59:09.013Z",
+  "username": "Saliba",
+  "password": "ILoveJack",
+  "email": "myEmail@me.com",
+  "role": "BASIC",
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Mario",
+    "organisationName": "Guesthouse management",
+    "organisationDescription": "Not real"
+  },
+  "_id": "597f299dc3a0222edda71f0c",
+  "isPublic": true
+}
+```
+
+### Create user
+`POST /users`
+
+**Input**
+
+Name | Type | Description
+---|---|---
+username | string | Username.
+password | string | User's password.
+email | string | User's email.
+role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+isPublic | boolean | Whether the user's profile is public or not.
+imageUrl | string | Link to image of user.
+name* | string | **Required**. User's name.
+organisationName | string | Organisation name.
+organisationDescription | string | Organisation description.
+
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+	"username": "Saliba",
+	"password": "ILoveJack",
+	"email": "myEmail@me.com",
+	"role": "BASIC",
+	"isPublic": true,
+	"imageUrl": "imgIsHere.com/12345",
+	"en": {
+		"name": "Mario",
+		"organisationName": "Guesthouse management",
+		"organisationDescription": "Made up"
+	}
+}
+```
+
+**Sample Response**
+```
+Status: 201 Created
+
+{
+  "__v": 0,
+  "updatedAt": "2017-07-31T12:59:09.013Z",
+  "createdAt": "2017-07-31T12:59:09.013Z",
+  "username": "Saliba",
+  "password": "ILoveJack",
+  "email": "myEmail@me.com",
+  "role": "BASIC",
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Mario",
+    "organisationName": "Guesthouse management",
+    "organisationDescription": "Made up"
+  },
+  "_id": "597f299dc3a0222edda71f0c",
+  "isPublic": true
+}
+```
+
+### Update user
+`PUT /users/:id`
+
+**Input**
+
+Name | Type | Description
+---|---|---
+username | string | Username.
+password | string | User's password.
+email | string | User's email.
+role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+isPublic | boolean | Whether the user's profile is public or not.
+imageUrl | string | Link to image of user.
+name* | string | **Required**. User's name.
+organisationName | string | Organisation name.
+organisationDescription | string | Organisation description.
+
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+	"en": {
+		"name": "Mario V2",
+	}
+}
+```
+
+**Sample Response**
+```
+Status: 200 OK
+
+{
+  "__v": 1,
+  "updatedAt": "2017-07-31T12:59:09.013Z",
+  "createdAt": "2017-07-31T12:59:09.013Z",
+  "username": "Saliba",
+  "password": "ILoveJack",
+  "email": "myEmail@me.com",
+  "role": "BASIC",
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Mario V2",
+    "organisationName": "Guesthouse management",
+    "organisationDescription": "Made up"
+  },
+  "_id": "597f299dc3a0222edda71f0c",
+  "isPublic": true
+}
+```
+
+### Delete user
+`DELETE /users/:id`
 
 **Sample Response**
 
