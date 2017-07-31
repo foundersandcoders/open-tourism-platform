@@ -19,6 +19,13 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Update place](#update-place)
 - [Delete place](#delete-place)
 
+**Products**
+- [Get all products](#get-all-products)
+- [Get product by id](#get-product-by-id)
+- [Create product](#create-product)
+- [Update product](#update-product)
+- [Delete product](#delete-product)
+
 ## Events
 
 ### Get all events
@@ -463,6 +470,172 @@ Status: 200 OK
 
 ### Delete place
 `DELETE /places/:id`
+
+**Sample Response**
+
+```
+Status: 204 No Content
+```
+
+## Products
+
+### Get all products
+`GET /products`
+
+**Sample Response**
+```
+Status: 200 OK
+
+[
+  {
+    "__v": 0,
+    "updatedAt": "2017-07-31T11:59:18.624Z",
+    "createdAt": "2017-07-31T11:59:18.624Z",
+    "ownerId": "8496873ea34958810182138c",
+    "imageUrl": "imgIsHere.com/12345",
+    "cost": 1000,
+    "en": {
+      "name": "Cool thing",
+      "description": "Really cool"
+    },
+    "_id": "597f1b96e19cb32c342c0be0",
+    "categories": [
+      "handicraft",
+      "clothing"
+    ]
+  }
+]
+```
+
+### Get product by id
+`GET /products/:id`
+
+**Sample Response**
+```
+Status: 200 OK
+
+{
+  "__v": 0,
+  "updatedAt": "2017-07-31T11:59:18.624Z",
+  "createdAt": "2017-07-31T11:59:18.624Z",
+  "ownerId": "8496873ea34958810182138c",
+  "imageUrl": "imgIsHere.com/12345",
+  "cost": 1000,
+  "en": {
+    "name": "Cool thing",
+    "description": "Really cool"
+  },
+  "_id": "597f1b96e19cb32c342c0be0",
+  "categories": [
+    "handicraft",
+    "clothing"
+  ]
+}
+```
+
+### Create product
+`POST /product`
+
+**Input**
+
+Name | Type | Description
+---|---|---
+ownerId | mongoose ObjectId | id of owner in user table.
+categories | array of strings | Product [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+imageUrl | string | Link to image of product.
+cost | number | Product cost.
+name* | string | **Required**. Product name.
+description* | string | Product description.
+
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+	"ownerId": "8496873ea34958810182138c",
+	"categories": ["handicraft", "clothing"],
+	"imageUrl": "imgIsHere.com/12345",
+	"cost": 1000,
+	"en": {
+		"name": "Cool thing",
+		"description": "Really cool"
+	}
+}
+```
+
+**Sample Response**
+```
+Status: 201 Created
+
+{
+  "__v": 0,
+  "updatedAt": "2017-07-31T11:59:18.624Z",
+  "createdAt": "2017-07-31T11:59:18.624Z",
+  "ownerId": "8496873ea34958810182138c",
+  "imageUrl": "imgIsHere.com/12345",
+  "cost": 1000,
+  "en": {
+    "name": "Cool thing",
+    "description": "Really cool"
+  },
+  "_id": "597f1b96e19cb32c342c0be0",
+  "categories": [
+    "handicraft",
+    "clothing"
+  ]
+}
+```
+
+### Update product
+`PUT /products/:id`
+
+**Input**
+
+Name | Type | Description
+---|---|---
+ownerId | mongoose ObjectId | id of owner in user table.
+categories | array of strings | Product [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+imageUrl | string | Link to image of product.
+cost | number | Product cost.
+name* | string | **Required**. Product name.
+description* | string | Product description.
+
+\* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
+
+**Sample Request**
+```
+{
+  "en": {
+    "name": "Cool thing V2"
+  }
+}
+```
+
+**Sample Response**
+```
+Status: 200 OK
+
+{
+  "__v": 1,
+  "updatedAt": "2017-07-31T11:59:18.624Z",
+  "createdAt": "2017-07-31T11:59:18.624Z",
+  "ownerId": "8496873ea34958810182138c",
+  "imageUrl": "imgIsHere.com/12345",
+  "cost": 1000,
+  "en": {
+    "name": "Cool thing V2",
+    "description": "Really cool"
+  },
+  "_id": "597f1b96e19cb32c342c0be0",
+  "categories": [
+    "handicraft",
+    "clothing"
+  ]
+}
+```
+
+### Delete product
+`DELETE /products/:id`
 
 **Sample Response**
 
