@@ -559,14 +559,14 @@ description* | string | Product description.
 **Sample Request**
 ```
 {
-	"ownerId": "8496873ea34958810182138c",
-	"categories": ["handicraft", "clothing"],
-	"imageUrl": "imgIsHere.com/12345",
-	"cost": 1000,
-	"en": {
-		"name": "Cool thing",
-		"description": "Really cool"
-	}
+  "ownerId": "8496873ea34958810182138c",
+  "categories": ["handicraft", "clothing"],
+  "imageUrl": "imgIsHere.com/12345",
+  "cost": 1000,
+  "en": {
+    "name": "Cool thing",
+    "description": "Really cool"
+  }
 }
 ```
 
