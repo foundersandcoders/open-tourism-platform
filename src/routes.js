@@ -2,6 +2,7 @@ const userController = require('./controllers/user')
 const placeController = require('./controllers/place')
 const eventController = require('./controllers/event')
 const productController = require('./controllers/product')
+const sessionController = require('./controllers/session')
 
 const router = require('express').Router()
 
@@ -40,5 +41,10 @@ router.route('/products/:id')
   .get(productController.getById)
   .put(productController.update)
   .delete(productController.delete)
+
+router.route('/sessions/login')
+  .post(sessionController.login)
+router.route('/sessions/register')
+  .post(sessionController.register)
 
 module.exports = router
