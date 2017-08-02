@@ -1,6 +1,8 @@
 const { names: errNames, codes: errCodes, messages: errMessages } = require('../constants/errors')
 
 module.exports = (err, req, res, next) => {
+  console.log('handling error mongo')
+
   // Mongo errors are of the form:
   // {
   //   name: 'MongoError',

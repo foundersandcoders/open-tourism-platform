@@ -1,6 +1,7 @@
 const { names: errNames, messages: errMessages } = require('../constants/errors')
 
 module.exports = (err, req, res, next) => {
+  console.log('handling error custom')
   if (err.name !== errNames.CUSTOM) {
     return next(err)
   }

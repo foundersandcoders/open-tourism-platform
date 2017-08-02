@@ -1,6 +1,8 @@
 const { names: errNames, messages: errMessages } = require('../constants/errors')
 
 module.exports = (err, req, res, next) => {
+  console.log('handling error mongoose')
+
   // Mongoose errors have specific names, with each error name potentially having different structures
   // extracting more information about the error requires specific handling of that particular error name
   switch (err.name) {
@@ -24,7 +26,7 @@ module.exports = (err, req, res, next) => {
 
     // unhandled mongoose error
     default:
-      res.boom.badImplementation(errMessages.UNHANDLED_MONGOOSE)
+      next(err)
   }
 }
 
