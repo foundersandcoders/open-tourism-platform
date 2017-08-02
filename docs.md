@@ -45,28 +45,27 @@ Status: 200 OK
 [
   {
     "__v": 0,
-    "_id": "597b363ae05960001124583b",
-    "updatedAt": "2017-07-28T13:03:54.818Z",
-    "createdAt": "2017-07-28T13:03:54.818Z",
+    "updatedAt": "2017-08-02T14:48:20.989Z",
+    "createdAt": "2017-08-02T14:48:20.989Z",
     "ownerId": "8496873ea34958810182138c",
-    "categories": [
-      "music",
-      "dining"
-    ],
     "placeId": "9348293df12398123885930a",
+    "startTime": "2001-01-01T00:00:00.000Z",
+    "endTime": "2002-02-02T00:00:00.000Z",
+    "cost": "100 shekels",
+    "imageUrl": "imgIsHere.com/12345",
+    "en": {
+      "name": "Party at the guesthouse",
+      "description": "Really cool"
+    },
+    "_id": "5981e634b6e958614d64e111",
     "accessibilityOptions": [
       "braille-menu",
       "wheelchair-friendly"
     ],
-    "startTime": "2001-01-01T00:00:00.000Z",
-    "endTime": "2002-02-02T00:00:00.000Z",
-    "cost": "1000 shekels",
-    "imageUrl": "imgIsHere.com/12345"
-    "en": {
-      "name": "Party at the guesthouse",
-      "description": "Sick party dudes"
-    },
-    "ar": { }
+    "categories": [
+      "music",
+      "dining"
+    ]
   }
 ]
 ```
@@ -80,28 +79,27 @@ Status: 200 OK
 
 {
   "__v": 0,
-  "_id": "597b363ae05960001124583b",
-  "updatedAt": "2017-07-28T13:03:54.818Z",
-  "createdAt": "2017-07-28T13:03:54.818Z",
+  "updatedAt": "2017-08-02T14:48:20.989Z",
+  "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "categories": [
-    "music",
-    "dining"
-  ],
   "placeId": "9348293df12398123885930a",
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "100 shekels",
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Party at the guesthouse",
+    "description": "Really cool"
+  },
+  "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
   ],
-  "startTime": "2001-01-01T00:00:00.000Z",
-  "endTime": "2002-02-02T00:00:00.000Z",
-  "cost": "1000 shekels",
-  "imageUrl": "imgIsHere.com/12345"
-  "en": {
-    "name": "Party at the guesthouse",
-    "description": "Sick party dudes"
-  },
-  "ar": { }
+  "categories": [
+    "music",
+    "dining"
+  ]
 }
 ```
 
@@ -128,18 +126,18 @@ description* | string | More information about event.
 **Sample Request**
 ```
 {
+  "ownerId": "8496873ea34958810182138c",
+  "categories": ["music", "dining"],
+  "placeId": "9348293df12398123885930a",
+  "accessibilityOptions": ["braille-menu", "wheelchair-friendly"],
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "100 shekels",
+  "imageUrl": "imgIsHere.com/12345",
   "en": {
     "name": "Party at the guesthouse",
-    "description": "Sick party dudes"
-  },
-  "categories": [
-    "music",
-    "dining"
-  ],
-  "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
-  ]
+    "description": "Really cool"
+  }
 }
 ```
 
@@ -149,28 +147,27 @@ Status: 201 Created
 
 {
   "__v": 0,
-  "_id": "597b363ae05960001124583b",
-  "updatedAt": "2017-07-28T13:03:54.818Z",
-  "createdAt": "2017-07-28T13:03:54.818Z",
+  "updatedAt": "2017-08-02T14:48:20.989Z",
+  "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "categories": [
-    "music",
-    "dining"
-  ],
   "placeId": "9348293df12398123885930a",
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "100 shekels",
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Party at the guesthouse",
+    "description": "Really cool"
+  },
+  "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
   ],
-  "startTime": "2001-01-01T00:00:00.000Z",
-  "endTime": "2002-02-02T00:00:00.000Z",
-  "cost": "1000 shekels",
-  "imageUrl": "imgIsHere.com/12345"
-  "en": {
-    "name": "Party at the guesthouse",
-    "description": "Sick party dudes"
-  },
-  "ar": { }
+  "categories": [
+    "music",
+    "dining"
+  ]
 }
 ```
 
@@ -208,29 +205,28 @@ description* | string | More information about event.
 Status: 200 OK
 
 {
-  "__v": 1,
-  "_id": "597b363ae05960001124583b",
-  "updatedAt": "2017-07-28T13:03:54.818Z",
-  "createdAt": "2017-07-28T13:03:54.818Z",
+  "__v": 0,
+  "updatedAt": "2017-08-02T14:48:20.989Z",
+  "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "categories": [
-    "music",
-    "dining"
-  ],
   "placeId": "9348293df12398123885930a",
+  "startTime": "2001-01-01T00:00:00.000Z",
+  "endTime": "2002-02-02T00:00:00.000Z",
+  "cost": "100 shekels",
+  "imageUrl": "imgIsHere.com/12345",
+  "en": {
+    "name": "Party at the guesthouse V2",
+    "description": "Really cool"
+  },
+  "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
   ],
-  "startTime": "2001-01-01T00:00:00.000Z",
-  "endTime": "2002-02-02T00:00:00.000Z",
-  "cost": "1000 shekels",
-  "imageUrl": "imgIsHere.com/12345"
-  "en": {
-    "name": "Party at the guesthouse V2",
-    "description": "Sick party dudes"
-  },
-  "ar": { }
+  "categories": [
+    "music",
+    "dining"
+  ]
 }
 ```
 
