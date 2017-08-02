@@ -127,9 +127,15 @@ description* | string | More information about event.
 ```
 {
   "ownerId": "8496873ea34958810182138c",
-  "categories": ["music", "dining"],
+  "categories": [
+    "music",
+    "dining"
+  ],
   "placeId": "9348293df12398123885930a",
-  "accessibilityOptions": ["braille-menu", "wheelchair-friendly"],
+  "accessibilityOptions": [
+    "braille-menu",
+    "wheelchair-friendly"
+  ],
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
   "cost": "100 shekels",
@@ -556,7 +562,10 @@ description* | string | Product description.
 ```
 {
   "ownerId": "8496873ea34958810182138c",
-  "categories": ["handicraft", "clothing"],
+  "categories": [
+    "handicraft",
+    "clothing"
+  ],
   "imageUrl": "imgIsHere.com/12345",
   "cost": 1000,
   "en": {
