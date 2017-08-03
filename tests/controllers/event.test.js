@@ -31,9 +31,12 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 3, 'response body should be an array with length 3')
-          t.ok(res.body.map(event => event.en.name).includes(validEvent1.en.name), 'first event has been added')
-          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'second event has been added')
-          t.ok(res.body.map(event => event.en.name).includes(validEvent3.en.name), 'third event has been added')
+          const eventNames = res.body.map(event => event.en.name)
+          const eventStartTimes = res.body.map(event => event.startTime)
+          t.ok(eventNames.includes(validEvent1.en.name), 'first event has been added')
+          t.ok(eventNames.includes(validEvent2.en.name), 'second event has been added')
+          t.ok(eventNames.includes(validEvent3.en.name), 'third event has been added')
+          t.deepEqual(eventStartTimes, eventStartTimes.sort(), 'returned events should be sorted by startTime')
         })
       supertest(server)
         .get('/events?categories=dining')
@@ -53,19 +56,19 @@ tape('GET /events, with and without query parameters', t => {
 tape('GET /events, check place field is populated', t => {
   Place.create(validPlace1)
     .then(createdPlace => {
-      const event = Object.assign(validEvent1, { location: createdPlace.id })
-      console.log(event)
-      Event.create(event)
+      const event = Object.assign(validEvent1, { placeId: createdPlace.id })
+      return Event.create(event)
     })
-    .then(() => {
+    .then((createdEvent) => {
       supertest(server)
         .get('/events')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          // check our get path returns that event correctly
-          console.log(res.body)
+          t.equal(typeof res.body[0].placeId, 'object', 'returned event should have placeId field populated')
+          // this should be cleaned up- drop Collections and end function?
+          Place.remove({})
           dropCollectionAndEnd(Event, t)
         })
     })

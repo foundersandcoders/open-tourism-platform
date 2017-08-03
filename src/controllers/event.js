@@ -6,9 +6,8 @@ eventController.getAll = (req, res, next) => {
   // sends back array of events, filtered by queries
   Event.find(req.query)
     .select('-__v -createdAt -updatedAt')
-    .populate('location', '-__v -createdAt -updatedAt')
-    //.exec()
-    // .sort('-startTime')
+    .populate('placeId', '-__v -createdAt -updatedAt')
+    .sort('startTime')
     .then(events => res.status(200).send(events))
     .catch(next)
 }
