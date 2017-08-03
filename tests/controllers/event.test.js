@@ -1,9 +1,11 @@
 const tape = require('tape')
 const supertest = require('supertest')
 const server = require('../../src/server.js')
+const Place = require('../../src/models/Place.js')
 const Event = require('../../src/models/Event.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
+const { validPlace1 } = require('../fixtures/places.json')
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
@@ -42,6 +44,28 @@ tape('GET /events, with and without query parameters', t => {
           // check our get path returns that event correctly
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
           t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'results should be filtered correctly by url query parameters')
+          dropCollectionAndEnd(Event, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
+
+tape('GET /events, check place field is populated', t => {
+  Place.create(validPlace1)
+    .then(createdPlace => {
+      const event = Object.assign(validEvent1, { location: createdPlace.id })
+      console.log(event)
+      Event.create(event)
+    })
+    .then(() => {
+      supertest(server)
+        .get('/events')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          // check our get path returns that event correctly
+          console.log(res.body)
           dropCollectionAndEnd(Event, t)
         })
     })
@@ -104,6 +128,21 @@ tape('POST /events adding invalid event', t => {
       dropCollectionAndEnd(Event, t)
     })
 })
+
+tape('POST /events adding event with invalid placeId field', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent2)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
 
 tape('POST /events adding valid event', t => {
   supertest(server)
