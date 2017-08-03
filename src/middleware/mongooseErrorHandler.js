@@ -23,8 +23,8 @@ module.exports = (err, req, res, next) => {
       break
 
     // unhandled mongoose error
-    default:
-      res.boom.badImplementation(errMessages.UNHANDLED_MONGOOSE)
+    // default:
+    //   res.boom.badImplementation(errMessages.UNHANDLED_MONGOOSE)
   }
 }
 

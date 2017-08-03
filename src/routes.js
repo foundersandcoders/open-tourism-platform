@@ -4,7 +4,12 @@ const eventController = require('./controllers/event')
 const productController = require('./controllers/product')
 const sessionController = require('./controllers/session')
 
+const authSession = require('./middleware/authSession.js')
+const authUser = require('./middleware/authUser.js')
+
 const router = require('express').Router()
+
+const roles = require('./constants/roles.js')
 
 // user routes
 router.route('/users')
@@ -46,5 +51,14 @@ router.route('/sessions/login')
   .post(sessionController.login)
 router.route('/sessions/register')
   .post(sessionController.register)
+
+router.route('/apps')
+  .post(
+    authSession(),
+    authUser({
+      minRole: roles.SUPER
+    })
+    // appsController.create
+  )
 
 module.exports = router

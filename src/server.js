@@ -6,6 +6,7 @@ const boom = require('express-boom')
 const customErrorHandler = require('./middleware/customErrorHandler')
 const mongoErrorHandler = require('./middleware/mongoErrorHandler')
 const mongooseErrorHandler = require('./middleware/mongooseErrorHandler')
+const boomErrorHandler = require('./middleware/boomErrorHandler')
 
 const server = express()
 
@@ -18,5 +19,6 @@ server.use(router)
 server.use(customErrorHandler)
 server.use(mongoErrorHandler)
 server.use(mongooseErrorHandler)
+server.use(boomErrorHandler)
 
 module.exports = server
