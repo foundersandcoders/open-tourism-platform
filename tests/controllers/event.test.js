@@ -59,7 +59,7 @@ tape('GET /events, check place field is populated', t => {
       const event = Object.assign(validEvent1, { placeId: createdPlace.id })
       return Event.create(event)
     })
-    .then((createdEvent) => {
+    .then(createdEvent => {
       supertest(server)
         .get('/events')
         .expect(200)
@@ -69,7 +69,10 @@ tape('GET /events, check place field is populated', t => {
           t.equal(typeof res.body[0].placeId, 'object', 'returned event should have placeId field populated')
           // this should be cleaned up- drop Collections and end function?
           Place.remove({})
-          dropCollectionAndEnd(Event, t)
+            .then(() => {
+              dropCollectionAndEnd(Event, t)
+            })
+            .catch(err => t.end(err))
         })
     })
     .catch(err => t.end(err))
@@ -145,7 +148,6 @@ tape('POST /events adding event with invalid placeId field', t => {
       dropCollectionAndEnd(Event, t)
     })
 })
-
 
 tape('POST /events adding valid event', t => {
   supertest(server)
