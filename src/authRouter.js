@@ -23,13 +23,13 @@ router.get('/authorize', (req, res, next) => {
   if (!req.query || !req.query.client_id) {
     return res.boom.badRequest('no client_id provided')
   }
-  Client.findOne({ id: req.params.id })
+  Client.findOne({ id: req.query.client_id })
     .populate('user')
     .then(client => {
       if (client === null) {
         return res.boom.badRequest('client_id is incorrect')
       }
-      console.log(client.user.username)
+      console.log(`app created by ${client.user.username} requests your authorisation.`)
       // TODO: this should display correct authorization grant prompt page
       res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
     })
