@@ -14,13 +14,24 @@ module.exports = {
     console.log('finding auth code, code = ' + authCode)
     return AuthorizationCode.findOne({ authorizationCode: authCode })
       .populate('user client')
-      .exec()
+      .then(code => {
+        console.log(code)
+        return code
+      })
+      .catch(err => err)
   },
 
   getClient: (clientId, clientSecret) => {
-    console.log('finding client, id = ' + clientId)
-    return Client.findOne({ id: clientId, clientSecret })
-      .exec()
+    console.log('finding client, id = ' + clientId + ' secret = ' + clientSecret)
+    const params = { id: clientId }
+    if (clientSecret) params.secret = clientSecret
+    return Client.findOne(params)
+      .then(client => {
+        // console.log(client)
+        return client
+      })
+      .catch(err => err)
+      // .exec()
   },
 
   getRefreshToken: refreshToken =>
@@ -46,6 +57,7 @@ module.exports = {
       client: client.id,
       user: user.id
     }
+    console.log('code: ', code.authorizationCode)
     return AuthorizationCode.create(authCode)
       .then(authCode => {
         return {
@@ -60,6 +72,7 @@ module.exports = {
       .catch(err => console.log(err))
   },
   saveToken: (token, client, user) => {
+    console.log('saving token')
     const newToken = {
       accessToken: token.accessToken,
       accessTokenExpiresAt: token.accessTokenExpiresAt,

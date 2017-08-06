@@ -4,7 +4,7 @@ const clientSchema = mongoose.Schema(
   {
     id: String, // client_id
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'UserTests' },
-    clientSecret: String,
+    secret: String,
     grants: [ String ],
     redirectUris: [ String ]
   }

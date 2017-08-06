@@ -13,19 +13,21 @@ const { authorizationCode } = require('../fixtures/auth/authorizationCodes.json'
 tape('POST /oauth/token', t => {
   // create some data
   Client.create(client)
+    .then(newClient => console.log(newClient))
     .then(() => AuthorizationCode.create(authorizationCode))
     .then(() => {
       // the actual test
       supertest(server)
         .post('/oauth/token')
+        .set('Content-Type', 'application/x-www-form-urlencoded')
         .send({
+          grant_type: "authorization_code",
           client_id: client.id,
           client_secret: client.secret,
           code: authorizationCode.authorizationCode
         })
         .expect(200)
         .end((err, res) => {
-          console.log(err)
           t.error(err)
           t.end()
         })

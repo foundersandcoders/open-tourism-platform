@@ -39,7 +39,7 @@ router.get('/authorize', (req, res, next) => {
 router.post('/authorize', oauth.authorize())
 
 // TOKEN ROUTE: request for an access token, needs access code
-router.post('/oauth/token', oauth.token())
+router.post('/token', oauth.token())
 
 // SECURE ROUTES
 router.use('/secure', oauth.authenticate())
@@ -58,7 +58,7 @@ router.post('/clients', (req, res) => {
 
 // DEVELOPMENT/TESTING ROUTES
 
-// // empty the db
+// empty the db
 // UserTests.remove({})
 //   .then(() => console.log('removed users.'))
 //   .catch(err => console.log('error removing users.'))
@@ -68,9 +68,12 @@ router.post('/clients', (req, res) => {
 // Token.remove({})
 //   .then(() => console.log('removed tokens.'))
 //   .catch(err => console.log('error removing tokens.'))
+// AuthorizationCode.remove({})
+//   .then(() => console.log('removed codes.'))
+//   .catch(err => console.log('error removing codes.'))
 
 // create a user
-router.get('/oauth/createUser', (req, res) => {
+router.get('/createUser', (req, res) => {
   UserTests.create({
     _id: USER_ID,
     id: USER_ID,
@@ -83,20 +86,23 @@ router.get('/oauth/createUser', (req, res) => {
 })
 
 // create a client
-router.get('/oauth/createClient', (req, res) => {
-  Client.create({
-    user: USER_ID,
-    id: CLIENT_ID,
-    secret: 'secret',
-    grants: [ 'authorization_code' ],
-    redirectUris: [ 'localhost:3000' ]
-  })
+router.get('/createClient', (req, res) => {
+  const { client } = require('../tests/fixtures/auth/clients.json')
+  Client.create(client)
   .then(client => res.send(client))
   .catch(err => res.send(err))
 })
 
+// create a code
+router.get('/createCode', (req, res) => {
+  const { authorizationCode } = require('../tests/fixtures/auth/authorizationCodes.json')
+  AuthorizationCode.create(authorizationCode)
+  .then(code => res.send(code))
+  .catch(err => res.send(err))
+})
+
 // create a token
-router.get('/oauth/createToken', (req, res) => {
+router.get('/createToken', (req, res) => {
   Token.create({
     user: USER_ID,
     accessToken: 'token'
