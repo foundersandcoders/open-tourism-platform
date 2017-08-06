@@ -6,8 +6,15 @@
     <title>Authorize</title>
   </head>
   <body>
-    <form action="/oauth/authorize" method="post">
-        <input type="submit" value="Authorize application">
+    <form id="authorize-form" action="/oauth/authorize?response_type=code&client_id=0&redirect_uri=https://www.google.co.il" method="post">
+        <p>Amazing App would like to access your Open Tourism Platform data.</p>
+        <input type="submit" value="Authorize application"/>
     </form>
+
+    <div id="request-response">
+    </div>
+
+    <script type="application/javascript" src="/authorize.js"></script>
+
   </body>
 </html>
