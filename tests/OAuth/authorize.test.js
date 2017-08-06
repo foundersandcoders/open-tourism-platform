@@ -3,7 +3,7 @@ const supertest = require('supertest')
 
 const server = require('../../src/server')
 
-const Client = require('../../src/models/auth/Client.js')
+// const Client = require('../../src/models/auth/Client.js')
 
 // Tests for: GET /oauth/authorize
 // need to add valid client to test this properly
@@ -19,7 +19,6 @@ tape('GET /oauth/authorize, should return form page', t => {
     .expect('Content-Type', /html/)
     .end((err, res) => {
       t.error(err)
-      t.ok(res.body.includes)
       t.end()
     })
 })
@@ -37,6 +36,9 @@ tape('POST /oauth/authorize', t => {
       response_type: 'code'
     })
     .expect(302)
+    // test query params of redirection location
+    .expect('Location', /code=/)
+    .expect('Location', /state=/)
     .end((err, res) => {
       t.error(err)
       t.end()

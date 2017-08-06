@@ -17,7 +17,7 @@ const oauth = new OAuthServer({ model: authModel })
 const router = require('express').Router()
 
 // AUTHORIZE ROUTES
-// should display the authorization grant page for a specific app/client 
+// should display the authorization grant page for a specific app/client
 router.get('/authorize', (req, res, next) => {
   // get query params to find out what the app is (client_id is required)
   if (!req.query || !req.query.client_id) {
