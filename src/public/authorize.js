@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
       mode: 'cors',
       cache: 'default'
     }
-    
+
     // query params for post request
     var clientId = '507f1f77bcf86cd799439011'
     var state = Math.floor(Math.random() * 100000)

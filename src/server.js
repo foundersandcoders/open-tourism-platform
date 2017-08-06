@@ -1,6 +1,6 @@
 const express = require('express')
 const router = require('./routes')
-const authRouter = require('./auth')
+const authRouter = require('./authRouter')
 const bodyParser = require('body-parser')
 const boom = require('express-boom')
 const path = require('path')
@@ -16,8 +16,8 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json({ extended: true }))
 server.use(boom())
 
-server.use(router)
-server.use(authRouter)
+server.use('/api', router)
+server.use('/oauth', authRouter)
 
 server.use(customErrorHandler)
 server.use(mongoErrorHandler)
