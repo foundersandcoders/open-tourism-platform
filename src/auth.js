@@ -36,7 +36,7 @@ const Token = mongoose.model('Token', tokenSchema)
 
 const authorizationCodeSchema = mongoose.Schema(
   {
-    code: String,
+    authorizationCode: String,
     scope: String,
     expiresAt: Date,
     redirectUri: String,
@@ -99,7 +99,7 @@ const Model = {
     console.log('code: ')
     console.log(code)
     let authCode = {
-      code: code.authorizationCode,
+      authorizationCode: code.authorizationCode,
       expiresAt: code.expiresAt,
       redirectUri: code.redirectUri,
       scope: code.scope,
@@ -109,7 +109,7 @@ const Model = {
     return AuthorizationCode.create(authCode)
       .then(authCode => {
         return {
-          authorizationCode: authCode.code,
+          authorizationCode: authCode.authorizationCode,
           expiresAt: authCode.expiresAt,
           redirectUri: authCode.redirectUri,
           scope: authCode.scope,
@@ -161,6 +161,11 @@ router.get('/oauth/tokens/', (req, res) => {
 router.get('/oauth/users/', (req, res) => {
   UserTests.find()
     .then(users => res.send(users))
+    .catch(err => res.send(err))
+})
+router.get('/oauth/codes/', (req, res) => {
+  AuthorizationCode.find()
+    .then(codes => res.send(codes))
     .catch(err => res.send(err))
 })
 
