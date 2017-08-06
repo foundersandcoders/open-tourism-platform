@@ -231,6 +231,8 @@ router.get('/oauth/authorize', (req, res) => {
 })
 
 router.get('/oauth/authorize.js', (req, res) => {
+  // get query params to find out what the app is
+  // display correct authorization grant prompt
   res.sendFile(path.join(__dirname, 'public', 'authorize.js'))
 })
 

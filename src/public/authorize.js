@@ -1,8 +1,5 @@
 document.addEventListener('DOMContentLoaded', function (event) {
   var form = document.querySelector('#authorize-form')
-  var results = document.querySelector('#request-response')
-
-  console.log('in file')
 
   form.addEventListener('submit', function (e) {
     e.preventDefault()
@@ -19,9 +16,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
       mode: 'cors',
       cache: 'default'
     }
-
-    console.log(headers.get('Authorization'))
-
+    
     // query params for post request
     var clientId = '507f1f77bcf86cd799439011'
     var state = Math.floor(Math.random() * 100000)
@@ -29,16 +24,14 @@ document.addEventListener('DOMContentLoaded', function (event) {
 
     var url = `/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}`
 
-    var myRequest = new Request(url, init)
+    var request = new Request(url, init)
 
-    fetch(myRequest)
+    fetch(request)
       .then(function (response) {
         console.log(response)
-        results.innerHTML = response
       })
       .catch(function (err) {
-        console.log(err)
-        results.innerHTML = err
+        console.error(err)
       })
   })
 })
