@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
+    "testAuth": "NODE_ENV=test tape tests/OAuth/index.test.js | tap-spec",
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
     "lintFix": "standard --fix | snazzy",

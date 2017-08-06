@@ -12,7 +12,7 @@ module.exports = {
 
   getAuthorizationCode: authCode => {
     console.log('finding auth code, code = ' + authCode)
-    return AuthorizationCode.findOne({ code: authCode })
+    return AuthorizationCode.findOne({ authorizationCode: authCode })
       .populate('user client')
       .exec()
   },
@@ -38,9 +38,7 @@ module.exports = {
 
   saveAuthorizationCode: (code, client, user) => {
     console.log('saving authorization code.')
-    console.log('code: ')
-    console.log(code)
-    let authCode = {
+    const authCode = {
       authorizationCode: code.authorizationCode,
       expiresAt: code.expiresAt,
       redirectUri: code.redirectUri,
@@ -62,7 +60,7 @@ module.exports = {
       .catch(err => console.log(err))
   },
   saveToken: (token, client, user) => {
-    let newToken = {
+    const newToken = {
       accessToken: token.accessToken,
       accessTokenExpiresAt: token.accessTokenExpiresAt,
       refreshToken: token.refreshToken,
@@ -72,7 +70,7 @@ module.exports = {
       user: user.id
     }
     return Token.create(newToken)
-      .then((savedToken) => {
+      .then(savedToken => {
         return {
           accessToken: savedToken.accessToken,
           accessTokenExpiresAt: savedToken.accessTokenExpiresAt,

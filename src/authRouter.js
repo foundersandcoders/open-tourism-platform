@@ -17,10 +17,23 @@ const oauth = new OAuthServer({ model: authModel })
 const router = require('express').Router()
 
 // AUTHORIZE ROUTES
-router.get('/authorize', (req, res) => {
-  // get query params to find out what the app is
-  // display correct authorization grant prompt
-  res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
+// should display the authorization grant page for a specific app/client 
+router.get('/authorize', (req, res, next) => {
+  // get query params to find out what the app is (client_id is required)
+  if (!req.query || !req.query.client_id) {
+    return res.boom.badRequest('no client_id provided')
+  }
+  Client.findOne({ id: req.params.id })
+    .populate('user')
+    .then(client => {
+      if (client === null) {
+        return res.boom.badRequest('client_id is incorrect')
+      }
+      console.log(client.user.username)
+      // TODO: this should display correct authorization grant prompt page
+      res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
+    })
+    .catch(next)
 })
 
 router.post('/authorize', oauth.authorize())

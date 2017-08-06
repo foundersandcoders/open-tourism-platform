@@ -9,7 +9,6 @@ const authorizationCodeSchema = mongoose.Schema(
     client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client' },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'UserTests' }
   }
-
 )
 
 module.exports = mongoose.model('AuthorizationCodeSchema', authorizationCodeSchema)
