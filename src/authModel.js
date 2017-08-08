@@ -7,17 +7,12 @@ module.exports = {
     console.log('finding token, accessToken = ' + accessToken)
     return Token.findOne({ accessToken })
       .populate('user')
-      .exec()
   },
 
   getAuthorizationCode: authCode => {
     console.log('finding auth code, code = ' + authCode)
     return AuthorizationCode.findOne({ authorizationCode: authCode })
       .populate('user client')
-      .then(code => {
-        return code
-      })
-      .catch(err => err)
   },
 
   getClient: (clientId, clientSecret) => {
@@ -25,15 +20,12 @@ module.exports = {
     const params = { _id: clientId }
     if (clientSecret) params.secret = clientSecret
     return Client.findOne(params)
-      .then(client => {
-        return client
-      })
-      .catch(err => err)
-      // .exec()
   },
 
   getRefreshToken: refreshToken =>
-    Token.find({ refreshToken }).populate('user').exec(),
+    Token.find({ refreshToken })
+      .populate('user'),
+      //.exec(),
 
   revokeAuthorizationCode: authCode => {
     // should return true if successful
@@ -43,8 +35,8 @@ module.exports = {
   },
 
   revokeToken: token => {
-    Token.findOneAndRemove({refreshToken: token.refreshToken})
-      .then((doc) => !!doc)
+    Token.findOneAndRemove({ refreshToken: token.refreshToken })
+      .then(doc => !!doc)
   },
 
   saveAuthorizationCode: (code, client, user) => {
@@ -57,19 +49,17 @@ module.exports = {
       client: client._id,
       user: user._id
     }
-    console.log('code: ', code.authorizationCode)
     return AuthorizationCode.create(authCode)
-      .then(authCode => {
-        return {
+      .then(authCode => ({
           authorizationCode: authCode.authorizationCode,
           expiresAt: authCode.expiresAt,
           redirectUri: authCode.redirectUri,
           scope: authCode.scope,
           client: {id: authCode.client},
           user: {id: authCode.user}
-        }
-      })
-      .catch(err => console.log(err))
+        })
+      )
+      .catch(err => err)
   },
   saveToken: (token, client, user) => {
     console.log('saving token')
@@ -83,8 +73,7 @@ module.exports = {
       user: user.id
     }
     return Token.create(newToken)
-      .then(savedToken => {
-        return {
+      .then(savedToken => ({
           accessToken: savedToken.accessToken,
           accessTokenExpiresAt: savedToken.accessTokenExpiresAt,
           refreshToken: savedToken.refreshToken,
@@ -92,7 +81,8 @@ module.exports = {
           scope: savedToken.scope,
           client: {id: savedToken.client},
           user: {id: savedToken.user}
-        }
-      })
+        })
+      )
+      .catch(err => err)
   }
 }
