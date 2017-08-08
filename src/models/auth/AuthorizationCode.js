@@ -7,7 +7,7 @@ const authorizationCodeSchema = mongoose.Schema(
     expiresAt: Date,
     redirectUri: String,
     client: { type: mongoose.Schema.Types.ObjectId, ref: 'Client' },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'UserTests' }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   }
 )
 

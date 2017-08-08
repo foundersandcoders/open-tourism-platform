@@ -6,7 +6,7 @@ const tokenSchema = mongoose.Schema(
     accessTokenExpiresAt: Date,
     refreshToken: String,
     refreshTokenExpiresAt: Date,
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'UserTests' }
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
   }
 )
 

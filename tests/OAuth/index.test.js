@@ -4,8 +4,8 @@ const dbConnection = require('../../src/db/connect.js')
 
 dbConnection.once('open', () => {
   // the tests
-  // require('./authorize.test.js')
-  require('./token.test.js')
+  require('./authorize.test.js')
+  // require('./token.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()

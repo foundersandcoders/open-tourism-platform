@@ -3,7 +3,7 @@ const OAuthServer = require('express-oauth-server')
 const authModel = require('./authModel')
 
 // models
-const UserTests = require('./models/auth/UserTests')
+const User = require('./models/User')
 const Token = require('./models/auth/Token')
 const Client = require('./models/auth/Client')
 const AuthorizationCode = require('./models/auth/AuthorizationCode')
@@ -59,29 +59,21 @@ router.post('/clients', (req, res) => {
 // DEVELOPMENT/TESTING ROUTES
 
 // empty the db
-// UserTests.remove({})
-//   .then(() => console.log('removed users.'))
-//   .catch(err => console.log('error removing users.'))
-// Client.remove({})
-//   .then(() => console.log('removed clients.'))
-//   .catch(err => console.log('error removing clients.'))
-// Token.remove({})
-//   .then(() => console.log('removed tokens.'))
-//   .catch(err => console.log('error removing tokens.'))
-// AuthorizationCode.remove({})
-//   .then(() => console.log('removed codes.'))
-//   .catch(err => console.log('error removing codes.'))
+router.get('/deleteAll', (req, res) => {
+  Promise.resolve()
+  .then(() => User.remove({}))
+  .then(() => Client.remove({}))
+  .then(() => Token.remove({}))
+  .then(() => AuthorizationCode.remove({}))
+  .then(() => res.send('successfully removed users, clients, tokens, codes.'))
+  .catch(err => res.send(err))
+})
 
 // create a user
 router.get('/createUser', (req, res) => {
-  UserTests.create({
-    _id: USER_ID,
-    id: USER_ID,
-    username: 'username',
-    password: 'password',
-    email: 'test'
-  })
-  .then(user => res.send(user))
+  const { user } = require('../tests/fixtures/users.json')
+  User.create(user)
+  .then(newUser => res.send(newUser))
   .catch(err => res.send(err))
 })
 
@@ -124,7 +116,7 @@ router.get('/tokens', (req, res) => {
     .catch(err => res.send(err))
 })
 router.get('/users', (req, res) => {
-  UserTests.find()
+  User.find()
     .then(users => res.send(users))
     .catch(err => res.send(err))
 })
