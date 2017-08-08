@@ -14,10 +14,7 @@ module.exports = {
     console.log('finding auth code, code = ' + authCode)
     return AuthorizationCode.findOne({ authorizationCode: authCode })
       .populate('user client')
-      .then(code => {
-        console.log(code)
-        return code
-      })
+      .then(code => code)
       .catch(err => err)
   },
 
@@ -53,8 +50,8 @@ module.exports = {
       expiresAt: code.expiresAt,
       redirectUri: code.redirectUri,
       scope: code.scope,
-      client: client.id,
-      user: user.id
+      client: client._id,
+      user: user._id
     }
     console.log('code: ', code.authorizationCode)
     return AuthorizationCode.create(authCode)

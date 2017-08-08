@@ -39,8 +39,11 @@ tape('emptying db.', t => {
 //     })
 // })
 
+// the first test creates the authCode, the second test uses it
+let authCode
+
 // Tests for: POST /oauth/authorize
-tape('POST /oauth/authorize', t => {
+tape('POST /oauth/authorize should successfully redirect and create authorization code', t => {
   Promise.resolve()
   // add valid user, client
   .then(() => User.create(user))
@@ -66,9 +69,31 @@ tape('POST /oauth/authorize', t => {
         const parsedLocationUrl = url.parse(res.headers.location)
         const locationQueries = qs.parse(parsedLocationUrl.query)
         t.equal(locationQueries.state, randomState, 'state on redirect location should be correct.')
-        // locationQueries.code is the auth code which has been created
+        authCode = locationQueries.code
         t.end()
       })
   })
   .catch(err => t.end(err))
 })
+
+// Tests for: POST /oauth/token
+tape('POST /oauth/token should send back a token', t => {
+  console.log('auth code:')
+  console.log(authCode)
+  supertest(server)
+    .post('/oauth/token')
+    .set('Content-Type', 'application/x-www-form-urlencoded')
+    .send({
+      grant_type: 'authorization_code',
+      client_id: client._id,
+      client_secret: client.secret,
+      code: authCode
+    })
+    .expect(200)
+    .end((err, res) => {
+      t.error(err)
+      console.log(res.error.text)
+      t.end()
+    }) 
+})
+
