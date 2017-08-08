@@ -14,6 +14,9 @@ dbConnection.once('open', () => {
   require('./middleware/mongoErrorHandler.test.js')
   require('./middleware/mongooseErrorHandler.test.js')
 
+  // OAuth tests
+  require('./OAuth/index.test.js')
+
   tape.onFinish(() => {
     dbConnection.close()
   })

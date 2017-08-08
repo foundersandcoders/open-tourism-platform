@@ -16,7 +16,7 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json({ extended: true }))
 server.use(boom())
 
-server.use('/api', router)
+server.use(router) // API endpoints
 server.use('/oauth', authRouter)
 
 server.use(customErrorHandler)
