@@ -14,7 +14,9 @@ module.exports = {
     console.log('finding auth code, code = ' + authCode)
     return AuthorizationCode.findOne({ authorizationCode: authCode })
       .populate('user client')
-      .then(code => code)
+      .then(code => {
+        return code
+      })
       .catch(err => err)
   },
 
@@ -34,8 +36,10 @@ module.exports = {
     Token.find({ refreshToken }).populate('user').exec(),
 
   revokeAuthorizationCode: authCode => {
-    AuthorizationCode.findOneAndRemove({code: authCode.code})
-      .then((doc) => !!doc)
+    // should return true if successful
+    console.log('revoking auth code: ')
+    return AuthorizationCode.findOneAndRemove({ authorizationCode: authCode.authorizationCode })
+      .then(doc => !!doc)
   },
 
   revokeToken: token => {

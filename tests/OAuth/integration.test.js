@@ -9,6 +9,7 @@ const server = require('../../src/server')
 const Client = require('../../src/models/auth/Client.js')
 const User = require('../../src/models/User.js')
 const AuthorizationCode = require('../../src/models/auth/AuthorizationCode.js')
+const Token = require('../../src/models/auth/Token.js')
 
 const { client } = require('../fixtures/auth/clients.json')
 const { user } = require('../fixtures/users.json')
@@ -18,6 +19,7 @@ tape('emptying db.', t => {
   .then(() => User.remove({}))
   .then(() => Client.remove({}))
   .then(() => AuthorizationCode.remove({}))
+  .then(() => Token.remove({}))
   .then(() => t.end())
   .catch(err => t.end(err))
 })
@@ -66,6 +68,7 @@ tape('POST /oauth/authorize should successfully redirect and create authorizatio
       .expect('Location', /state=/)
       .end((err, res) => {
         t.error(err)
+        console.log('redirect location: ', res.headers.location)
         const parsedLocationUrl = url.parse(res.headers.location)
         const locationQueries = qs.parse(parsedLocationUrl.query)
         t.equal(locationQueries.state, randomState, 'state on redirect location should be correct.')
@@ -78,8 +81,7 @@ tape('POST /oauth/authorize should successfully redirect and create authorizatio
 
 // Tests for: POST /oauth/token
 tape('POST /oauth/token should send back a token', t => {
-  console.log('auth code:')
-  console.log(authCode)
+  console.log('auth code: ', authCode)
   supertest(server)
     .post('/oauth/token')
     .set('Content-Type', 'application/x-www-form-urlencoded')
@@ -87,12 +89,16 @@ tape('POST /oauth/token should send back a token', t => {
       grant_type: 'authorization_code',
       client_id: client._id,
       client_secret: client.secret,
+      redirect_uri: client.redirectUris[0],
       code: authCode
     })
     .expect(200)
     .end((err, res) => {
       t.error(err)
-      console.log(res.error.text)
+      t.ok(res.body.access_token, 'response body should contain access_token')
+      t.equal(res.body.token_type, 'Bearer', 'response body.token_type should be "Bearer"')
+      t.ok(res.body.expires_in, 'response body should contain expires_in')
+      t.ok(res.body.refresh_token, 'response body should contain refresh_token')
       t.end()
     }) 
 })
