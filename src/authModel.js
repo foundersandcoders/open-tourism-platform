@@ -25,7 +25,7 @@ module.exports = {
   getRefreshToken: refreshToken =>
     Token.find({ refreshToken })
       .populate('user'),
-      //.exec(),
+      // .exec(),
 
   revokeAuthorizationCode: authCode => {
     // should return true if successful
@@ -51,17 +51,17 @@ module.exports = {
     }
     return AuthorizationCode.create(authCode)
       .then(authCode => ({
-          authorizationCode: authCode.authorizationCode,
-          expiresAt: authCode.expiresAt,
-          redirectUri: authCode.redirectUri,
-          scope: authCode.scope,
-          client: {id: authCode.client},
-          user: {id: authCode.user}
-        })
+        authorizationCode: authCode.authorizationCode,
+        expiresAt: authCode.expiresAt,
+        redirectUri: authCode.redirectUri,
+        scope: authCode.scope,
+        client: {id: authCode.client},
+        user: {id: authCode.user}
+      })
       )
       .catch(err => err)
   },
-  
+
   saveToken: (token, client, user) => {
     console.log('saving token')
     const newToken = {
@@ -75,14 +75,14 @@ module.exports = {
     }
     return Token.create(newToken)
       .then(savedToken => ({
-          accessToken: savedToken.accessToken,
-          accessTokenExpiresAt: savedToken.accessTokenExpiresAt,
-          refreshToken: savedToken.refreshToken,
-          refreshTokenExpiresAt: savedToken.refreshTokenExpiresAt,
-          scope: savedToken.scope,
-          client: {id: savedToken.client},
-          user: {id: savedToken.user}
-        })
+        accessToken: savedToken.accessToken,
+        accessTokenExpiresAt: savedToken.accessTokenExpiresAt,
+        refreshToken: savedToken.refreshToken,
+        refreshTokenExpiresAt: savedToken.refreshTokenExpiresAt,
+        scope: savedToken.scope,
+        client: {id: savedToken.client},
+        user: {id: savedToken.user}
+      })
       )
       .catch(err => err)
   }

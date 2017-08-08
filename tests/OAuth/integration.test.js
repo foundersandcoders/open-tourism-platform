@@ -100,6 +100,5 @@ tape('POST /oauth/token should send back a token', t => {
       t.ok(res.body.expires_in, 'response body should contain expires_in')
       t.ok(res.body.refresh_token, 'response body should contain refresh_token')
       t.end()
-    }) 
+    })
 })
-

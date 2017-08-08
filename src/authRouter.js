@@ -4,9 +4,7 @@ const authModel = require('./authModel')
 
 // models
 const User = require('./models/User')
-const Token = require('./models/auth/Token')
 const Client = require('./models/auth/Client')
-const AuthorizationCode = require('./models/auth/AuthorizationCode')
 
 // create new OAuthServer
 const oauth = new OAuthServer({ model: authModel })
@@ -59,4 +57,3 @@ router.post('/clients', (req, res) => {
 })
 
 module.exports = router
-
