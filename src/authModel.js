@@ -22,12 +22,11 @@ module.exports = {
   },
 
   getClient: (clientId, clientSecret) => {
-    console.log('finding client, id = ' + clientId + ' secret = ' + clientSecret)
-    const params = { id: clientId }
+    console.log('finding client, id = ' + clientId + ', secret = ' + clientSecret)
+    const params = { _id: clientId }
     if (clientSecret) params.secret = clientSecret
     return Client.findOne(params)
       .then(client => {
-        // console.log(client)
         return client
       })
       .catch(err => err)

@@ -32,7 +32,15 @@ router.get('/authorize', (req, res, next) => {
     .catch(next)
 })
 
-router.post('/authorize', oauth.authorize())
+router.post('/authorize', oauth.authorize({
+  authenticateHandler: {
+    // dummy function for now, just finds a user
+    handle: req => {
+      console.log('running custom authenticate handler.')
+      return User.findOne({})
+    }
+  }
+}))
 
 // TOKEN ROUTE: request for an access token, needs access code
 router.post('/token', oauth.token())
