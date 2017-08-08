@@ -21,7 +21,7 @@ tape('POST /oauth/token', t => {
         .post('/oauth/token')
         .set('Content-Type', 'application/x-www-form-urlencoded')
         .send({
-          grant_type: "authorization_code",
+          grant_type: 'authorization_code',
           client_id: client.id,
           client_secret: client.secret,
           code: authorizationCode.authorizationCode

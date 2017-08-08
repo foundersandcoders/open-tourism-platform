@@ -8,10 +8,6 @@ const Token = require('./models/auth/Token')
 const Client = require('./models/auth/Client')
 const AuthorizationCode = require('./models/auth/AuthorizationCode')
 
-// constants for creating test data
-const CLIENT_ID = '507f1f77bcf86cd799439011'
-const USER_ID = '5986abad5e2d852cb1ee6bce'
-
 // create new OAuthServer
 const oauth = new OAuthServer({ model: authModel })
 const router = require('express').Router()
@@ -94,14 +90,14 @@ router.get('/createCode', (req, res) => {
 })
 
 // create a token
-router.get('/createToken', (req, res) => {
-  Token.create({
-    user: USER_ID,
-    accessToken: 'token'
-  })
-  .then(token => res.send(token))
-  .catch(err => res.send(err))
-})
+// router.get('/createToken', (req, res) => {
+//   Token.create({
+//     user: '5986abad5e2d852cb1ee6bce',
+//     accessToken: 'token'
+//   })
+//   .then(token => res.send(token))
+//   .catch(err => res.send(err))
+// })
 
 // for dev purposes, to see db data
 router.get('/clients', (req, res) => {
