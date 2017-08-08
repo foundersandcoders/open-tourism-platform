@@ -1,10 +1,10 @@
 {
 	"client": {
 		"id": "507f1f77bcf86cd799439011",
-	    "_id": "507f1f77bcf86cd799439011",
-	    "user": "5986abad5e2d852cb1ee6bce",
-	    "secret": "secret",
-	    "grants": [ "authorization_code" ],
-	    "redirectUris": [ "https://www.test.com" ]
-  	}
+		"_id": "507f1f77bcf86cd799439011",
+		"user": "5986abad5e2d852cb1ee6bce",
+		"secret": "secret",
+		"grants": [ "authorization_code" ],
+		"redirectUris": [ "https://www.test.com" ]
+	}
 }
