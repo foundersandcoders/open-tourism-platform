@@ -61,6 +61,7 @@ module.exports = {
       )
       .catch(err => err)
   },
+  
   saveToken: (token, client, user) => {
     console.log('saving token')
     const newToken = {

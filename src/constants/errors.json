@@ -17,7 +17,7 @@
     "DUPLICATE_KEY": "Data violates unique constraints validation",
     "INVALID_ID": "Invalid id",
 
-    "UNHANDLED_CUSTOM": "An internal custom server error occurred",
+    "UNHANDLED_CUSTOM": "An internal server error occurred",
     "UNHANDLED_MONGO": "An internal mongo server error occurred",
     "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred"
   }

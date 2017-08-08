@@ -8,7 +8,7 @@ const path = require('path')
 const customErrorHandler = require('./middleware/customErrorHandler')
 const mongoErrorHandler = require('./middleware/mongoErrorHandler')
 const mongooseErrorHandler = require('./middleware/mongooseErrorHandler')
-
+const finalErrorHandler = require('./middleware/finalErrorHandler')
 const server = express()
 
 server.use(express.static(path.join(__dirname, 'public')))
@@ -22,9 +22,6 @@ server.use('/oauth', authRouter)
 server.use(customErrorHandler)
 server.use(mongoErrorHandler)
 server.use(mongooseErrorHandler)
-server.use((err, req, res, next) => {
-  console.error(err)
-  res.boom.badImplementation()
-})
+server.use(finalErrorHandler)
 
 module.exports = server
