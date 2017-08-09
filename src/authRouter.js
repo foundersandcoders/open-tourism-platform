@@ -1,59 +1,12 @@
-const path = require('path')
-const OAuthServer = require('express-oauth-server')
-const authModel = require('./authModel')
+const oauthController = require('./controllers/oauth')
 
-// models
-const User = require('./models/User')
-const Client = require('./models/auth/Client')
-
-// create new OAuthServer
-const oauth = new OAuthServer({ model: authModel })
 const router = require('express').Router()
 
-// AUTHORIZE ROUTES
+router.route('/authorize')
+  .get(oauthController.getAuthorizePage)
+  .post(oauthController.getAuthorizationCode)
 
-// should display the authorization grant page for a specific app/client
-router.get('/authorize', (req, res, next) => {
-  // get query params to find out what the app is (client_id is required)
-  if (!req.query || !req.query.client_id) {
-    return res.boom.badRequest('no client_id provided')
-  }
-  Client.findOne({ id: req.query.client_id })
-    .populate('user')
-    .then(client => {
-      if (client === null) {
-        return res.boom.badRequest('client_id is incorrect')
-      }
-      // TODO: this should display correct authorization grant prompt page
-      // res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
-      res.send('TODO')
-    })
-    .catch(next)
-})
-
-// should redirect supplying an authorization code
-router.post('/authorize', oauth.authorize({
-  authenticateHandler: {
-    // dummy function for now, just finds a user
-    // DANGER: currently insecure
-    handle: req => {
-      return User.findOne({})
-    }
-  }
-}))
-
-// TOKEN ROUTE: request for an access token
-router.post('/token', oauth.token())
-
-// SECURE ROUTES
-router.use('/secure', oauth.authenticate())
-
-// create a new client (WIP)
-router.post('/clients', (req, res) => {
-  // get grants and redirect URIs from request
-  // generate id (client id)
-  // generate client secret
-  Client.save()
-})
+router.route('/token')
+  .post(oauthController.getToken)
 
 module.exports = router
