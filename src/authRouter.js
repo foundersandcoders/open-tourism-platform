@@ -24,9 +24,9 @@ router.get('/authorize', (req, res, next) => {
       if (client === null) {
         return res.boom.badRequest('client_id is incorrect')
       }
-      console.log(`app created by ${client.user.username} requests your authorisation.`)
       // TODO: this should display correct authorization grant prompt page
-      res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
+      // res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
+      res.send('TODO')
     })
     .catch(next)
 })
@@ -35,8 +35,8 @@ router.get('/authorize', (req, res, next) => {
 router.post('/authorize', oauth.authorize({
   authenticateHandler: {
     // dummy function for now, just finds a user
+    // DANGER: currently insecure
     handle: req => {
-      console.log('running custom authenticate handler.')
       return User.findOne({})
     }
   }
