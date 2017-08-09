@@ -55,7 +55,6 @@ tape('POST /oauth/authorize should successfully redirect and create authorizatio
     const randomState = 'randomString'
     supertest(server)
       .post('/oauth/authorize')
-      // .set('Authorization', 'bearer token')
       .query({
         client_id: client._id,
         redirect_uri: client.redirectUris[0],
@@ -68,7 +67,6 @@ tape('POST /oauth/authorize should successfully redirect and create authorizatio
       .expect('Location', /state=/)
       .end((err, res) => {
         t.error(err)
-        console.log('redirect location: ', res.headers.location)
         const parsedLocationUrl = url.parse(res.headers.location)
         const locationQueries = qs.parse(parsedLocationUrl.query)
         t.equal(locationQueries.state, randomState, 'state on redirect location should be correct.')

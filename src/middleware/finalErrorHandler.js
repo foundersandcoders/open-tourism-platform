@@ -1,6 +1,4 @@
-const { messages: errMessages } = require('../constants/errors')
-
-module.exports = (err, req, res) => {
+module.exports = (err, req, res, next) => {
   console.error(err)
-  res.boom.badImplementation(errMessages.UNHANDLED_CUSTOM)
+  res.boom.badImplementation()
 }
