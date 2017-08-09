@@ -79,7 +79,6 @@ tape('POST /oauth/authorize should successfully redirect and create authorizatio
 
 // Tests for: POST /oauth/token
 tape('POST /oauth/token should send back a token', t => {
-  console.log('auth code: ', authCode)
   supertest(server)
     .post('/oauth/token')
     .set('Content-Type', 'application/x-www-form-urlencoded')

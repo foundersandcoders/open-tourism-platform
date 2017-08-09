@@ -8,7 +8,6 @@ const Event = require('../src/models/Event.js')
 const Product = require('../src/models/Product.js')
 
 dbConnection.once('open', () => {
-
   tape('emptying test db.', t => {
     Promise.resolve()
     .then(() => User.remove({}))

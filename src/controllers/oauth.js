@@ -1,4 +1,3 @@
-const path = require('path')
 const OAuthServer = require('express-oauth-server')
 const authModel = require('../authModel')
 
@@ -40,4 +39,3 @@ oauthController.getAuthorizationCode = oauth.authorize({
 })
 
 oauthController.getToken = oauth.token()
-
