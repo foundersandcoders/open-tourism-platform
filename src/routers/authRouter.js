@@ -1,4 +1,4 @@
-const oauthController = require('./controllers/oauth')
+const oauthController = require('../controllers/oauth')
 
 const router = require('express').Router()
 

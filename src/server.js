@@ -1,6 +1,6 @@
 const express = require('express')
-const router = require('./routes')
-const authRouter = require('./authRouter')
+const apiRouter = require('./routers/apiRouter')
+const authRouter = require('./routers/authRouter')
 const bodyParser = require('body-parser')
 const boom = require('express-boom')
 const path = require('path')
@@ -16,7 +16,7 @@ server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json({ extended: true }))
 server.use(boom())
 
-server.use(router) // API endpoints
+server.use(apiRouter)
 server.use('/oauth', authRouter)
 
 server.use(customErrorHandler)
