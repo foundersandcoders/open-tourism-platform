@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const Place = require('../../src/models/Place.js')
 const Event = require('../../src/models/Event.js')
-const { dropCollectionAndEnd } = require('../helpers/index.js')
+const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 const { validPlace1 } = require('../fixtures/places.json')
 
@@ -67,12 +67,7 @@ tape('GET /events, check place field is populated', t => {
         .end((err, res) => {
           if (err) t.fail(err)
           t.equal(typeof res.body[0].placeId, 'object', 'returned event should have placeId field populated')
-          // this should be cleaned up- drop Collections and end function?
-          Place.remove({})
-            .then(() => {
-              dropCollectionAndEnd(Event, t)
-            })
-            .catch(err => t.end(err))
+          dropCollectionsAndEnd([Place, Event], t)
         })
     })
     .catch(err => t.end(err))
