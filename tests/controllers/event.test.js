@@ -98,17 +98,23 @@ tape('GET /events/:id with valid id of something not in the database', t => {
     })
 })
 
-tape('GET /events/:id with valid id', t => {
-  Event.create(validEvent1)
-    .then(result => {
+
+tape('GET /events/:id, check place field is populated', t => {
+  Place.create(validPlace1)
+    .then(createdPlace => {
+      const event = Object.assign(validEvent1, { placeId: createdPlace.id })
+      return Event.create(event)
+    })
+    .then(createdEvent => {
       supertest(server)
-        .get(`/events/${result.id}`)
+        .get(`/events/${createdEvent.id}`)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
           t.equal(res.body.en.name, validEvent1.en.name, 'should get event with correct name.')
-          dropCollectionAndEnd(Event, t)
+          t.equal(typeof res.body.placeId, 'object', 'returned event should have placeId field populated')
+          dropCollectionsAndEnd([Place, Event], t)
         })
     })
     .catch(err => t.end(err))
