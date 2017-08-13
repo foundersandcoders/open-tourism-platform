@@ -1,4 +1,3 @@
-// load environment variables
 require('../config.js')
 
 const server = require('./server.js')
