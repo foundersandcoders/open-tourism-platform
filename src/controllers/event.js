@@ -1,5 +1,5 @@
 const Event = require('../models/Event')
-const { errorIfNotFound } = require('../db/utils')
+const { rejectIfEmpty } = require('../db/utils')
 const { messages: errMessages } = require('../constants/errors')
 
 const eventController = module.exports = {}
@@ -17,9 +17,9 @@ eventController.getById = (req, res, next) => {
   // receives id in url
   // sends back one event or errors
   const id = req.params.id
-  const findEventById = Event.findById(id).populate('placeId')
-
-  errorIfNotFound(findEventById, errMessages.GET_ID_NOT_FOUND)
+  Event.findById(id)
+    .populate('placeId')
+    .then(rejectIfEmpty(errMessages.GET_ID_NOT_FOUND))
     .then(event => res.status(200).send(event))
     .catch(next)
 }
@@ -38,9 +38,8 @@ eventController.update = (req, res, next) => {
   // receives updated json for event in body
   // updates or errors
   const id = req.params.id
-  const findEventByIdAndUpdate = Event.findByIdAndUpdate(id, req.body, { new: true })
-  
-  errorIfNotFound(findEventByIdAndUpdate, errMessages.UPDATE_ID_NOT_FOUND)
+  Event.findByIdAndUpdate(id, req.body, { new: true })
+    .then(rejectIfEmpty(errMessages.UPDATE_ID_NOT_FOUND))
     .then(updatedEvent => res.status(200).send(updatedEvent))
     .catch(next)
 }
@@ -50,7 +49,8 @@ eventController.delete = (req, res, next) => {
   // deletes or errors
   const id = req.params.id
 
-  errorIfNotFound(Event.findByIdAndRemove(id), errMessages.DELETE_ID_NOT_FOUND)
+  Event.findByIdAndRemove(id)
+    .then(rejectIfEmpty(errMessages.DELETE_ID_NOT_FOUND))
     .then(() => res.status(204).send())
     .catch(next)
 }

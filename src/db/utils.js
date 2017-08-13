@@ -6,14 +6,10 @@ const createCustomDbError = message => {
   return err
 }
 
-const errorIfNotFound = (query, message) => {
-  return query.then(res => {
-    if (res === null) {
-      return Promise.reject(createCustomDbError(message))
-    }
-    return Promise.resolve(res)
-  })
-}
+const rejectIfEmpty = message => res =>
+  res === null
+    ? Promise.reject(createCustomDbError(message))
+    : res
 
 // static method for Mongoose schema
 const findByIdOrError = function (id) {
@@ -64,5 +60,5 @@ const customRequireValidator = function (next) {
 module.exports = {
   addStaticSchemaMethods,
   customRequireValidator,
-  errorIfNotFound
+  rejectIfEmpty
 }
