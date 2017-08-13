@@ -1,7 +1,7 @@
-const userController = require('./controllers/user')
-const placeController = require('./controllers/place')
-const eventController = require('./controllers/event')
-const productController = require('./controllers/product')
+const userController = require('../controllers/user')
+const placeController = require('../controllers/place')
+const eventController = require('../controllers/event')
+const productController = require('../controllers/product')
 
 const router = require('express').Router()
 

@@ -6,6 +6,8 @@
 
 If you want to get involved, check out the [contributing file](./CONTRIBUTING.md).
 
+Read the API docs [here](./docs.md).
+
 ## What?
 An open backend to help support and facilitate the creation of apps and websites aimed at developing tourism in Nazareth.
 
@@ -41,5 +43,5 @@ npm run dev
 npm test
 
 # To run the istanbul coverage:
-npm run coverage 
+npm run coverage
 ```

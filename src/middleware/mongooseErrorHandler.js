@@ -22,9 +22,9 @@ module.exports = (err, req, res, next) => {
       res.boom.badRequest(errMessages.INVALID_ID)
       break
 
-    // unhandled mongoose error
+    // unhandled
     default:
-      res.boom.badImplementation(errMessages.UNHANDLED_MONGOOSE)
+      next(err)
   }
 }
 
