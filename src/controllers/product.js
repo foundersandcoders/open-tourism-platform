@@ -1,4 +1,6 @@
 const Product = require('../models/Product')
+const { rejectIfNull } = require('../db/utils')
+const { messages: errMessages } = require('../constants/errors')
 
 const productController = module.exports = {}
 
@@ -13,7 +15,8 @@ productController.getById = (req, res, next) => {
   // receives id in url
   // sends back one product or errors
   const id = req.params.id
-  Product.findByIdOrError(id)
+  Product.findById(id)
+    .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
     .then(product => res.status(200).send(product))
     .catch(next)
 }
@@ -32,7 +35,8 @@ productController.update = (req, res, next) => {
   // receives updated json for product in body
   // updates or errors
   const id = req.params.id
-  Product.findByIdAndUpdateOrError(id, req.body, { new: true })
+  Product.findByIdAndUpdate(id, req.body, { new: true })
+    .then(rejectIfNull(errMessages.UPDATE_ID_NOT_FOUND))
     .then(updatedProduct => res.status(200).send(updatedProduct))
     .catch(next)
 }
@@ -41,7 +45,8 @@ productController.delete = (req, res, next) => {
   // receives id in url
   // deletes or errors
   const id = req.params.id
-  Product.findByIdAndRemoveOrError(id)
+  Product.findByIdAndRemove(id)
+    .then(rejectIfNull(errMessages.DELETE_ID_NOT_FOUND))
     .then(() => res.status(204).send())
     .catch(next)
 }
