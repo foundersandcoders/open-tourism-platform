@@ -98,7 +98,6 @@ tape('GET /events/:id with valid id of something not in the database', t => {
     })
 })
 
-
 tape('GET /events/:id, check place field is populated', t => {
   Place.create(validPlace1)
     .then(createdPlace => {

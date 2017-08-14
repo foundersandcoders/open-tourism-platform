@@ -1,4 +1,4 @@
-const { messages: errMessages, names: errNames } = require('../constants/errors')
+const { names: errNames } = require('../constants/errors')
 
 const createCustomDbError = message => {
   const err = new Error(message)
