@@ -6,7 +6,7 @@ const createCustomDbError = message => {
   return err
 }
 
-const rejectIfEmpty = message => res =>
+const rejectIfNull = message => res =>
   res === null
     ? Promise.reject(createCustomDbError(message))
     : res
@@ -60,5 +60,5 @@ const customRequireValidator = function (next) {
 module.exports = {
   addStaticSchemaMethods,
   customRequireValidator,
-  rejectIfEmpty
+  rejectIfNull
 }

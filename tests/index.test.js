@@ -30,7 +30,7 @@ dbConnection.once('open', () => {
   // require('./middleware/mongooseErrorHandler.test.js')
 
   // test oauth flow
-  require('./oauth/integration.test.js')
+  // require('./oauth/integration.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
