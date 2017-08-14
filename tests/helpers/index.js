@@ -10,10 +10,9 @@ helpers.dropCollectionAndEnd = (myCollection, assert) => {
 
 helpers.dropCollectionsAndEnd = (collections, assert) => {
   if (collections.length > 0) {
-    return Promise.resolve()
-            .then(() => collections[0].remove({}))
-            .then(() => helpers.dropCollectionsAndEnd(collections.slice(1), assert))
-            .catch(err => assert.end(err))
+    return collections[0].remove({})
+      .then(() => helpers.dropCollectionsAndEnd(collections.slice(1), assert))
+      .catch(err => assert.end(err))
   }
   assert.end()
 }
