@@ -1,4 +1,6 @@
 const Place = require('../models/Place')
+const { rejectIfNull } = require('../db/utils')
+const { messages: errMessages } = require('../constants/errors')
 
 const placeController = module.exports = {}
 
@@ -13,7 +15,8 @@ placeController.getById = (req, res, next) => {
   // receives id in url
   // sends back one place or errors
   const id = req.params.id
-  Place.findByIdOrError(id)
+  Place.findById(id)
+    .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
     .then(place => res.status(200).send(place))
     .catch(next)
 }
@@ -32,7 +35,8 @@ placeController.update = (req, res, next) => {
   // receives updated json for place in body
   // updates or errors
   const id = req.params.id
-  Place.findByIdAndUpdateOrError(id, req.body, { new: true })
+  Place.findByIdAndUpdate(id, req.body, { new: true })
+    .then(rejectIfNull(errMessages.UPDATE_ID_NOT_FOUND))
     .then(updatedPlace => res.status(200).send(updatedPlace))
     .catch(next)
 }
@@ -41,7 +45,8 @@ placeController.delete = (req, res, next) => {
   // receives id in url
   // deletes or errors
   const id = req.params.id
-  Place.findByIdAndRemoveOrError(id)
+  Place.findByIdAndRemove(id)
+    .then(rejectIfNull(errMessages.DELETE_ID_NOT_FOUND))
     .then(() => res.status(204).send())
     .catch(next)
 }

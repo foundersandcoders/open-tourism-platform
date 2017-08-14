@@ -20,7 +20,7 @@ dbConnection.once('open', () => {
 
   // test controllers
   // require('./controllers/user.test.js')
-  // require('./controllers/place.test.js')
+  require('./controllers/place.test.js')
   require('./controllers/event.test.js')
   // require('./controllers/product.test.js')
 
