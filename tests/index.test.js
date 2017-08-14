@@ -25,12 +25,12 @@ dbConnection.once('open', () => {
   require('./controllers/product.test.js')
 
   // test error handlers
-  // require('./middleware/customErrorHandler.test.js')
-  // require('./middleware/mongoErrorHandler.test.js')
-  // require('./middleware/mongooseErrorHandler.test.js')
+  require('./middleware/customErrorHandler.test.js')
+  require('./middleware/mongoErrorHandler.test.js')
+  require('./middleware/mongooseErrorHandler.test.js')
 
   // test oauth flow
-  // require('./oauth/integration.test.js')
+  require('./oauth/integration.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
