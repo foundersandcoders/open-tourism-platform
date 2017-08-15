@@ -1,15 +1,15 @@
-const userController = require('./controllers/user')
-const placeController = require('./controllers/place')
-const eventController = require('./controllers/event')
-const productController = require('./controllers/product')
-const sessionController = require('./controllers/session')
+const userController = require('../controllers/user')
+const placeController = require('../controllers/place')
+const eventController = require('../controllers/event')
+const productController = require('../controllers/product')
+const sessionController = require('../controllers/session')
 
-const authSession = require('./middleware/authSession.js')
-const authUser = require('./middleware/authUser.js')
+const authSession = require('../middleware/authSession.js')
+const authUser = require('../middleware/authUser.js')
 
 const router = require('express').Router()
 
-const roles = require('./constants/roles.js')
+const roles = require('../constants/roles.js')
 
 // user routes
 router.route('/users')

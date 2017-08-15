@@ -1,4 +1,4 @@
-const boom = require('boom')
+const boom = require('express-boom')
 
 const roles = require('../constants/roles.js')
 const User = require('../models/User')

@@ -7,6 +7,7 @@
     "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
+    "lintFix": "standard --fix | snazzy",
     "dev": "NODE_ENV=development nodemon src/start.js",
     "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
@@ -33,6 +34,7 @@
     "express-boom": "^2.0.0",
     "express-jwt": "^5.3.0",
     "jsonwebtoken": "^7.4.1",
+    "express-oauth-server": "^2.0.0-b1",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.1"
   },
