@@ -1,7 +1,7 @@
 module.exports = (err, req, res, next) => {
-  if (err.isBoom) {
-    return res.status(err.output.statusCode).send(err)
+  if (!err.isBoom) {
+    return next(err)
   }
-
-  next()
+  res.status(err.output.statusCode)
+  return res.send(err.output.payload)
 }
