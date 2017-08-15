@@ -21,7 +21,7 @@ server.use(bodyParser.json({ extended: true }))
 server.use(boom())
 
 server.use(apiRouter)
-server.use('/oauth', authRouter)
+server.use(authRouter)
 
 server.use(customErrorHandler)
 server.use(mongoErrorHandler)
