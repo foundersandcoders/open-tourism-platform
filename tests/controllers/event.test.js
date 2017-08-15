@@ -1,9 +1,11 @@
 const tape = require('tape')
 const supertest = require('supertest')
 const server = require('../../src/server.js')
+const Place = require('../../src/models/Place.js')
 const Event = require('../../src/models/Event.js')
-const { dropCollectionAndEnd } = require('../helpers/index.js')
+const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
+const { validPlace1 } = require('../fixtures/places.json')
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
@@ -29,9 +31,12 @@ tape('GET /events, with and without query parameters', t => {
           if (err) t.fail(err)
           // check our get path returns that event correctly
           t.equal(res.body.length, 3, 'response body should be an array with length 3')
-          t.ok(res.body.map(event => event.en.name).includes(validEvent1.en.name), 'first event has been added')
-          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'second event has been added')
-          t.ok(res.body.map(event => event.en.name).includes(validEvent3.en.name), 'third event has been added')
+          const eventNames = res.body.map(event => event.en.name)
+          const eventStartTimes = res.body.map(event => event.startTime)
+          t.ok(eventNames.includes(validEvent1.en.name), 'first event has been added')
+          t.ok(eventNames.includes(validEvent2.en.name), 'second event has been added')
+          t.ok(eventNames.includes(validEvent3.en.name), 'third event has been added')
+          t.deepEqual(eventStartTimes, eventStartTimes.sort(), 'returned events should be sorted by startTime')
         })
       supertest(server)
         .get('/events?categories=dining')
@@ -43,6 +48,26 @@ tape('GET /events, with and without query parameters', t => {
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
           t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'results should be filtered correctly by url query parameters')
           dropCollectionAndEnd(Event, t)
+        })
+    })
+    .catch(err => t.end(err))
+})
+
+tape('GET /events, check place field is populated', t => {
+  Place.create(validPlace1)
+    .then(createdPlace => {
+      const event = Object.assign(validEvent1, { placeId: createdPlace.id })
+      return Event.create(event)
+    })
+    .then(createdEvent => {
+      supertest(server)
+        .get('/events')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(typeof res.body[0].placeId, 'object', 'returned event should have placeId field populated')
+          dropCollectionsAndEnd([Place, Event], t)
         })
     })
     .catch(err => t.end(err))
@@ -73,17 +98,22 @@ tape('GET /events/:id with valid id of something not in the database', t => {
     })
 })
 
-tape('GET /events/:id with valid id', t => {
-  Event.create(validEvent1)
-    .then(result => {
+tape('GET /events/:id, check place field is populated', t => {
+  Place.create(validPlace1)
+    .then(createdPlace => {
+      const event = Object.assign(validEvent1, { placeId: createdPlace.id })
+      return Event.create(event)
+    })
+    .then(createdEvent => {
       supertest(server)
-        .get(`/events/${result.id}`)
+        .get(`/events/${createdEvent.id}`)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
           t.equal(res.body.en.name, validEvent1.en.name, 'should get event with correct name.')
-          dropCollectionAndEnd(Event, t)
+          t.equal(typeof res.body.placeId, 'object', 'returned event should have placeId field populated')
+          dropCollectionsAndEnd([Place, Event], t)
         })
     })
     .catch(err => t.end(err))
@@ -101,6 +131,20 @@ tape('POST /events adding invalid event', t => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       t.equal(res.body.reasons[0], 'one of Path `en` or Path `ar` required', 'Correct reason is sent back')
+      dropCollectionAndEnd(Event, t)
+    })
+})
+
+tape('POST /events adding event with invalid placeId field', t => {
+  supertest(server)
+    .post('/events')
+    .send(invalidEvent2)
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.body.message, 'A message is sent back')
+      t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       dropCollectionAndEnd(Event, t)
     })
 })

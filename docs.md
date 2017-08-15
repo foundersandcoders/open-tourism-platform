@@ -48,7 +48,18 @@ Status: 200 OK
     "updatedAt": "2017-08-02T14:48:20.989Z",
     "createdAt": "2017-08-02T14:48:20.989Z",
     "ownerId": "8496873ea34958810182138c",
-    "placeId": "9348293df12398123885930a",
+    "placeId": {
+      _id: '599152711fd6dc190c9940c1',
+      "updatedAt": "2017-08-14T07:34:09.985Z",
+      "createdAt": "2017-08-14T07:34:09.985Z",
+      "en": {
+        "name": "Basilica",
+        "description": "biggest church in the middle east"
+      },
+      "__v": 0,
+      "accessibilityOptions": [],
+      "categories": []
+    },
     "startTime": "2001-01-01T00:00:00.000Z",
     "endTime": "2002-02-02T00:00:00.000Z",
     "cost": "100 shekels",
@@ -82,7 +93,18 @@ Status: 200 OK
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "placeId": "9348293df12398123885930a",
+  "placeId": "placeId": {
+    _id: '599152711fd6dc190c9940c1',
+    "updatedAt": "2017-08-14T07:34:09.985Z",
+    "createdAt": "2017-08-14T07:34:09.985Z",
+    "en": {
+      "name": "Basilica",
+      "description": "biggest church in the middle east"
+    },
+    "__v": 0,
+    "accessibilityOptions": [],
+    "categories": []
+  },
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
   "cost": "100 shekels",
