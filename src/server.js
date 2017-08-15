@@ -4,7 +4,7 @@ const authRouter = require('./routers/authRouter')
 const bodyParser = require('body-parser')
 const boom = require('express-boom')
 const path = require('path')
-const expressHandlebars  = require('express-handlebars')
+const expressHandlebars = require('express-handlebars')
 
 const customErrorHandler = require('./middleware/customErrorHandler')
 const mongoErrorHandler = require('./middleware/mongoErrorHandler')
@@ -14,7 +14,7 @@ const finalErrorHandler = require('./middleware/finalErrorHandler')
 const expressHandlebarsConfig = {
   defaultLayout: 'main',
   layoutsDir: path.join(__dirname, 'views/layouts'),
-  partialsDir: path.join(__dirname, 'views/partials'),
+  partialsDir: path.join(__dirname, 'views/partials')
 }
 
 const server = express()
