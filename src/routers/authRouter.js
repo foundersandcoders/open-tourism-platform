@@ -7,11 +7,11 @@ router.route('/login')
     res.render('login')
   })
 
-router.route('oauth/authorize')
+router.route('/oauth/authorize')
   .get(oauthController.getAuthorizePage)
   .post(oauthController.getAuthorizationCode)
 
-router.route('oauth/token')
+router.route('/oauth/token')
   .post(oauthController.getToken)
 
 module.exports = router
