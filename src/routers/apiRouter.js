@@ -3,6 +3,7 @@ const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
 const sessionController = require('../controllers/session')
+const appsController = require('../controllers/apps')
 
 const authSession = require('../middleware/authSession.js')
 const authUser = require('../middleware/authUser.js')
@@ -53,12 +54,12 @@ router.route('/sessions/register')
   .post(sessionController.register)
 
 router.route('/apps')
-  .post(
+  .get(
     authSession(),
     authUser({
-      minRole: roles.SUPER
-    })
-    // appsController.create
+      minRole: roles.ADMIN
+    }),
+    appsController.get
   )
 
 module.exports = router
