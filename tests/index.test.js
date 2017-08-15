@@ -28,6 +28,7 @@ dbConnection.once('open', () => {
   require('./middleware/customErrorHandler.test.js')
   require('./middleware/mongoErrorHandler.test.js')
   require('./middleware/mongooseErrorHandler.test.js')
+  require('./middleware/boomErrorHandler.test.js')
 
   // test oauth flow
   require('./oauth/integration.test.js')

@@ -15,7 +15,9 @@ const buildResponseObj = () => {
       badRequest: sinon.spy(),
       notFound: sinon.spy(),
       badImplementation: sinon.spy()
-    }
+    },
+    status: sinon.spy(),
+    send: sinon.spy()
   }
   return resSpy
 }
