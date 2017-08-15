@@ -8,6 +8,15 @@ helpers.dropCollectionAndEnd = (myCollection, assert) => {
     .catch(err => assert.end(err))
 }
 
+helpers.dropCollectionsAndEnd = (collections, assert) => {
+  if (collections.length > 0) {
+    return collections[0].remove({})
+      .then(() => helpers.dropCollectionsAndEnd(collections.slice(1), assert))
+      .catch(err => assert.end(err))
+  }
+  assert.end()
+}
+
 // build a res.boom object with the functions that might get called as spies
 const buildResponseObj = () => {
   const resSpy = {
