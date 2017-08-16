@@ -3,7 +3,6 @@ const roles = require('../constants/roles.js')
 const { auth } = require('../constants/errors.json')
 const boom = require('boom')
 
-
 module.exports = {
   // Function to get the token, which will be decoded and used to populate req.user
   // atm it will check the headers, then query params, then cookies
