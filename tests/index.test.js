@@ -18,11 +18,14 @@ dbConnection.once('open', () => {
     .catch(err => t.end(err))
   })
 
-  // test controllers
+  // test api controllers
   require('./controllers/user.test.js')
   require('./controllers/place.test.js')
   require('./controllers/event.test.js')
   require('./controllers/product.test.js')
+
+  // test sessions controller
+  require('./controllers/sessions.test.js')
 
   // test error handlers
   require('./middleware/customErrorHandler.test.js')
