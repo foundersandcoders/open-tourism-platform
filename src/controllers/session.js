@@ -34,10 +34,10 @@ sessionController.register = (req, res, next) => {
 }
 
 sessionController.login = (req, res, next) => {
-  Users.find({ username: req.body.username }).then(users => {
-    if (users.length !== 0) {
-      return bcrypt.compare(req.body.password, users[0].password).then(match => {
-        if (match) return users[0]
+  Users.findOne({ username: req.body.username }).then(existingUser => {
+    if (existingUser) {
+      return bcrypt.compare(req.body.password, existingUser.password).then(match => {
+        if (match) return existingUser
 
         res.boom.badRequest('username / password combination do not exist')
       })
