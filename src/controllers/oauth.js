@@ -15,15 +15,24 @@ oauthController.getAuthorizePage = (req, res, next) => {
   if (!req.query || !req.query.client_id) {
     return res.boom.badRequest('no client_id provided')
   }
-  Client.findOne({ id: req.query.client_id })
+  if (!req.query || !req.query.redirect_uri) {
+    return res.boom.badRequest('no redirect_uri provided')
+  }
+  Client.findOne({ _id: req.query.client_id })
     .populate('user')
     .then(client => {
       if (client === null) {
         return res.boom.badRequest('client_id is incorrect')
       }
-      // TODO: this should display correct authorization grant prompt page
-      // res.sendFile(path.join(__dirname, 'public', 'authorize.html'))
-      res.send('TODO')
+      if (!client.user) {
+        // should error
+        client.user = { username: 'not found'}
+      }
+      res.render('authorize', {
+        user: client.user.username,
+        redirectUri: req.query.redirect_uri
+
+      })
     })
     .catch(next)
 }

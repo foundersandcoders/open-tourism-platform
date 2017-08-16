@@ -18,19 +18,22 @@ dbConnection.once('open', () => {
     .catch(err => t.end(err))
   })
 
-  // test controllers
-  require('./controllers/user.test.js')
-  require('./controllers/place.test.js')
-  require('./controllers/event.test.js')
-  require('./controllers/product.test.js')
+  // // test controllers
+  // require('./controllers/user.test.js')
+  // require('./controllers/place.test.js')
+  // require('./controllers/event.test.js')
+  // require('./controllers/product.test.js')
 
-  // test error handlers
-  require('./middleware/customErrorHandler.test.js')
-  require('./middleware/mongoErrorHandler.test.js')
-  require('./middleware/mongooseErrorHandler.test.js')
+  // // test error handlers
+  // require('./middleware/customErrorHandler.test.js')
+  // require('./middleware/mongoErrorHandler.test.js')
+  // require('./middleware/mongooseErrorHandler.test.js')
 
-  // test oauth flow
-  require('./oauth/integration.test.js')
+  // test oauth routes
+  require('./oauth/authorize.test.js')
+
+  // // test oauth flow
+  // require('./oauth/integration.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
