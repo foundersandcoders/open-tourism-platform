@@ -21,6 +21,7 @@ router.route('/login')
 router.route('/register')
   .post(sessionController.register)
 
+// secure route with dummy handler for now
 router.route('/apps')
   .get(
     authSession(),

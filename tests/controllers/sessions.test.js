@@ -37,8 +37,8 @@ tape('POST /register with new user and then log in', t => {
         .end((err, res) => {
           if (err) t.fail(err)
           t.equal(res.text, 'success', 'should return \'success\'')
-          t.ok(res.headers.authorization, 'authorization header exists')
-          t.ok(res.headers.authorization.includes('Bearer'), 'Header has \'Bearer\' inside it')
+          t.ok(res.headers['set-cookie'], 'set cookie header exists')
+          t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
           dropCollectionAndEnd(User, t)
         })
     })
@@ -64,7 +64,7 @@ tape('GET SUPER secure route /app with unauthorized user', t => {
           // attempt to use token to access secure route
           supertest(server)
             .get('/apps')
-            .set('authorization', loggedInRes.header.authorization)
+            .set('Cookie', loggedInRes.header['set-cookie'][0])
             .expect(401)
             .end((err, secureRes) => {
               if (err) t.fail(err)
@@ -99,7 +99,7 @@ tape('GET SUPER secure route /app with authorized user', t => {
               // use token to try and access secure route
               supertest(server)
                 .get('/apps')
-                .set('authorization', loggedInRes.header.authorization)
+                .set('Cookie', loggedInRes.header['set-cookie'][0])
                 .expect(200)
                 .expect('Content-Type', /text/)
                 .end((err, secureRes) => {

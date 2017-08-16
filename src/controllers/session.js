@@ -61,8 +61,7 @@ sessionController.login = (req, res, next) => {
       )
     })
   }).then(token => {
-    res.header('authorization', `Bearer ${token}`)
-
+    res.cookie('token', token)
     res.send('success')
   }).catch(next)
 }

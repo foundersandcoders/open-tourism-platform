@@ -5,6 +5,7 @@ const { auth } = require('../constants/errors.json')
 
 const User = require('../models/User')
 
+// function to check role of user matches minRole allowed on the route
 const verifyRole = ({ minRole }) => user => {
   const userScope = user.scope
 
@@ -15,6 +16,7 @@ const verifyRole = ({ minRole }) => user => {
   return Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
 }
 
+// Check user from the token exists, and add their id to the req.user for potential use in permissioning
 const addUserIdToSession = req => {
   return User.find({ username: req.user.username }).then(users => {
     if (users.length === 0) {
