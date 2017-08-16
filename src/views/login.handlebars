@@ -1,13 +1,15 @@
-<h2>Login</h2>
+<form class="{{ classes.form }}" method="POST" action="/login">
 
-<form class="form">
+  <h2 class="{{ classes.formTitle }}">Login</h2>
 
-  <label class="form-label">Username:
-    <input class="form-input" type="text" name="username">
+  <label class="{{ classes.formLabel }}">Username:
+    <input class="{{ classes.formInput }}" type="text" name="username">
   </label>
 
-  <label class="form-label">Password:
-    <input class="form-input" type="password" name="password">
+  <label class="{{ classes.formLabel }}">Password:
+    <input class="{{ classes.formInput }}" type="password" name="password">
   </label>
+
+  <button class="{{ classes.formSubmit }}" type="submit" value="submit">Submit</button>
 
 </form>
