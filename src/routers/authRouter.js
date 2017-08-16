@@ -8,6 +8,11 @@ router.route('/login')
     res.render('login', { classes })
   })
 
+router.route('/register')
+  .get((req, res) => {
+    res.render('register', { classes })
+  })
+
 router.route('/oauth/authorize')
   .get(oauthController.getAuthorizePage)
   .post(oauthController.getAuthorizationCode)
