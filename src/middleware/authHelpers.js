@@ -31,12 +31,12 @@ module.exports = {
 
 // Check user from the token exists, and add their id to the req.user for potential use in permissioning
   addUserIdToSession: req => {
-    return User.find({ username: req.user.username }).then(users => {
-      if (users.length === 0) {
+    return User.findOne({ username: req.user.username }).then(user => {
+      if (!user) {
         return Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
       }
 
-      req.user.id = users[0].id
+      req.user.id = user.id
       return req.user
     })
   }
