@@ -1,9 +1,34 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const boom = require('boom')
+const isProduction = process.env.NODE_ENV === 'production'
 
 const Users = require('../models/User.js')
 const roles = require('../constants/roles.js')
+
+const makeLoggedInToken = user => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      {
+        username: user.username,
+        scope: user.role
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h'
+      },
+      (err, token) => {
+        if (err) return reject(err)
+
+        resolve(token)
+      }
+    )
+  })
+}
+
+const setTokenCookie = (res, token) => {
+  res.cookie('token', token, {isSecure: isProduction, httpOnly: isProduction})
+}
 
 const sessionController = module.exports = {}
 
@@ -29,7 +54,7 @@ sessionController.register = (req, res, next) => {
       }
     )
   }).then(makeLoggedInToken).then(token => {
-    res.cookie('token', token)
+    setTokenCookie(res, token)
     res.send('registered!')
   }).catch(next)
 }
@@ -43,27 +68,7 @@ sessionController.login = (req, res, next) => {
       })
     }
   }).then(makeLoggedInToken).then(token => {
-    res.cookie('token', token)
+    setTokenCookie(res, token)
     res.send('success')
   }).catch(next)
-}
-
-const makeLoggedInToken = user => {
-  return new Promise((resolve, reject) => {
-    jwt.sign(
-      {
-        username: user.username,
-        scope: user.role
-      },
-      process.env.JWT_SECRET,
-      {
-        expiresIn: '1h'
-      },
-      (err, token) => {
-        if (err) return reject(err)
-
-        resolve(token)
-      }
-    )
-  })
 }
