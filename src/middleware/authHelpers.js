@@ -8,11 +8,7 @@ module.exports = {
   // atm it will check the headers, then query params, then cookies
   // We might need to get rid of the headers check if we end up putting the OAth token their?
   getToken: (req) => {
-    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
-      return req.headers.authorization.split(' ')[1]
-    } else if (req.query && req.query.token) {
-      return req.query.token
-    } else if (req.cookies && req.cookies.token) {
+    if (req.cookies && req.cookies.token) {
       return req.cookies.token
     }
     return null

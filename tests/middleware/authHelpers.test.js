@@ -6,31 +6,8 @@ const User = require('../../src/models/User')
 
 const tape = require('tape')
 
-tape('test getToken function where req has auth header', t => {
-  const req = {
-    headers: {
-      authorization: 'Bearer sometoken'
-    }
-  }
-  t.equal(getToken(req), 'sometoken', 'token is returned')
-  t.end()
-})
-
-tape('test getToken function where req has token query param', t => {
-  const req = {
-    headers: {},
-    query: {
-      token: 'sometoken'
-    }
-  }
-  t.equal(getToken(req), 'sometoken', 'token is returned')
-  t.end()
-})
-
 tape('test getToken function where req has token cookie', t => {
   const req = {
-    headers: {},
-    query: {},
     cookies: {
       token: 'sometoken'
     }
@@ -40,11 +17,7 @@ tape('test getToken function where req has token cookie', t => {
 })
 
 tape('test getToken function where no token anywhere', t => {
-  const req = {
-    headers: {},
-    query: {},
-    cookies: {}
-  }
+  const req = {}
   t.equal(getToken(req), null, 'null is returned')
   t.end()
 })
