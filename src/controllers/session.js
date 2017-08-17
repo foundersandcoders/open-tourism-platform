@@ -17,17 +17,17 @@ sessionController.register = (req, res, next) => {
     const { englishName, arabicName, email, username, imageUrl } = req.body
     const en = englishName && { name: englishName }
     const ar = arabicName && { name: arabicName }
-    return Users.create(Object.assign(
+    return Users.create(
       {
-        username: username,
+        username,
         password: passwordHash,
         role: roles.BASIC,
-        email: email,
-        imageUrl: imageUrl
-      },
-      { ar },
-      { en }
-    ))
+        email,
+        imageUrl,
+        ar,
+        en
+      }
+    )
   }).then(user => {
     res.send('registered!')
   }).catch(next)
