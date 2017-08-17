@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const boom = require('boom')
 
 const Users = require('../models/User.js')
 const roles = require('../constants/roles.js')
@@ -7,12 +8,11 @@ const roles = require('../constants/roles.js')
 const sessionController = module.exports = {}
 
 sessionController.register = (req, res, next) => {
-  Users.find({ username: req.body.username }).then(user => {
-    if (user.length === 0) {
-      return bcrypt.hash(req.body.password, 12)
+  Users.findOne({ username: req.body.username }).then(notNewUsername => {
+    if (notNewUsername) {
+      return Promise.reject(boom.badRequest('username already exists'))
     }
-
-    res.boom.badRequest('username already exists')
+    return bcrypt.hash(req.body.password, 12)
   }).then(passwordHash => {
     const { englishName, arabicName, email, username, imageUrl } = req.body
     const en = englishName && { name: englishName }
@@ -37,9 +37,8 @@ sessionController.login = (req, res, next) => {
   Users.findOne({ username: req.body.username }).then(existingUser => {
     if (existingUser) {
       return bcrypt.compare(req.body.password, existingUser.password).then(match => {
-        if (match) return existingUser
-
-        res.boom.badRequest('username / password combination do not exist')
+        if (!match) return Promise.reject(boom.badRequest('username / password combination do not exist'))
+        return existingUser
       })
     }
   }).then(user => {
