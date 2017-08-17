@@ -1,4 +1,5 @@
-const { getToken, verifyRole, addUserIdToSession } = require('../../src/middleware/authHelpers.js')
+const { verifyRole, addUserIdToSession } = require('../../src/middleware/authUser.js')
+const { getToken } = require('../../src/middleware/authSession.js')
 const roles = require('../../src/constants/roles.js')
 const { auth } = require('../../src/constants/errors.json')
 const { validUser1 } = require('../fixtures/users.json')
