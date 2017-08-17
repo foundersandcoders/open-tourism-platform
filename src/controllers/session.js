@@ -28,7 +28,8 @@ sessionController.register = (req, res, next) => {
         en
       }
     )
-  }).then(user => {
+  }).then(makeLoggedInToken).then(token => {
+    res.cookie('token', token)
     res.send('registered!')
   }).catch(next)
 }
@@ -41,26 +42,28 @@ sessionController.login = (req, res, next) => {
         return existingUser
       })
     }
-  }).then(user => {
-    return new Promise((resolve, reject) => {
-      jwt.sign(
-        {
-          username: user.username,
-          scope: user.role
-        },
-        process.env.JWT_SECRET,
-        {
-          expiresIn: '1h'
-        },
-        (err, token) => {
-          if (err) return reject(err)
-
-          resolve(token)
-        }
-      )
-    })
-  }).then(token => {
+  }).then(makeLoggedInToken).then(token => {
     res.cookie('token', token)
     res.send('success')
   }).catch(next)
+}
+
+const makeLoggedInToken = user => {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      {
+        username: user.username,
+        scope: user.role
+      },
+      process.env.JWT_SECRET,
+      {
+        expiresIn: '1h'
+      },
+      (err, token) => {
+        if (err) return reject(err)
+
+        resolve(token)
+      }
+    )
+  })
 }

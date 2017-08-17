@@ -16,6 +16,8 @@ tape('POST /register with new user', t => {
     .end((err, res) => {
       if (err) t.fail(err)
       t.equal(res.text, 'registered!', 'should return \'registered!\'')
+      t.ok(res.headers['set-cookie'], 'set cookie header exists')
+      t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
       dropCollectionAndEnd(User, t)
     })
 })
