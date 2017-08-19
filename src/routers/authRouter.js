@@ -26,7 +26,7 @@ router.route('/apps')
   .get(
     authSession(),
     authUser({
-      minRole: roles.ADMIN
+      minRole: roles.SUPER
     }),
     appsController.get
   )
