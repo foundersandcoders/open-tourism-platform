@@ -72,3 +72,5 @@ sessionController.login = (req, res, next) => {
     res.send('success')
   }).catch(next)
 }
+
+module.exports.makeLoggedInToken = makeLoggedInToken
