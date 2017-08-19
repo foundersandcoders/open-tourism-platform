@@ -4,7 +4,7 @@ const server = require('../../src/server.js')
 const User = require('../../src/models/User.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validUser1, regUser } = require('../fixtures/users.json')
-// const { auth } = require('../../src/constants/errors.json')
+const { auth } = require('../../src/constants/errors.json')
 // const roles = require('../../src/constants/roles.js')
 const { addUserWithHashedPassword } = require('../helpers/index.js')
 
@@ -38,6 +38,58 @@ tape('test helper to add user with hashed pw to db', t => {
   .catch(err => t.end(err))
 })
 
+tape('POST /login with validUser1', t => {
+  addUserWithHashedPassword(validUser1)
+  .then(() => {
+    supertest(server)
+    .post('/login')
+    .send({ username: validUser1.username, password: validUser1.password })
+    .expect(200)
+    .expect('Content-Type', /text/)
+    .then(res => {
+      t.equal(res.text, 'success', 'should return \'success\'')
+      t.ok(res.headers['set-cookie'], 'set cookie header exists')
+      t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+  })
+  .catch(err => t.end(err))
+})
+
+tape('POST /login with wrong password', t => {
+  addUserWithHashedPassword(validUser1)
+  .then(() => {
+    supertest(server)
+    .post('/login')
+    .send({ username: validUser1.username, password: 'WRONG' })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .then(res => {
+      t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+  })
+  .catch(err => t.end(err))
+})
+
+tape('POST /login with wrong username', t => {
+  addUserWithHashedPassword(validUser1)
+  .then(() => {
+    supertest(server)
+    .post('/login')
+    .send({ username: 'm4v15', password: validUser1.password })
+    .expect(400)
+    .expect('Content-Type', /json/)
+    .then(res => {
+      t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+  })
+  .catch(err => t.end(err))
+})
 // tape('POST /register with new user and then log in', t => {
 //   // register user before logging in as that user
 //   supertest(server)
