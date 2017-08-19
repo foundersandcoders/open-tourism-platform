@@ -1,4 +1,6 @@
+const bcrypt = require('bcrypt')
 const sinon = require('sinon')
+const User = require('../../src/models/User.js')
 
 const helpers = module.exports = {}
 
@@ -36,4 +38,16 @@ helpers.spyGeneratorErrorMiddlewareCaller = errorMiddleware => (error) => {
   const nextSpy = sinon.spy()
   errorMiddleware(error, undefined, resSpy, nextSpy)
   return { resSpy, nextSpy }
+}
+
+helpers.addUserWithHashedPassword = validUser1 => {
+  return new Promise((resolve, reject) => {
+    bcrypt.hash(validUser1.password, 12)
+    .then(hashedPassword => {
+      User.create(Object.assign({}, validUser1, {password: hashedPassword}))
+      .then(resolve)
+      .catch(err => reject(err))
+    .catch(err => reject(err))
+    })
+  })
 }
