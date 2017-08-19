@@ -5,6 +5,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 const Users = require('../models/User.js')
 const roles = require('../constants/roles.js')
+const { auth: authErr } = require('../constants/errors.json')
 
 const makeLoggedInToken = user => {
   return new Promise((resolve, reject) => {
@@ -61,12 +62,11 @@ sessionController.register = (req, res, next) => {
 
 sessionController.login = (req, res, next) => {
   Users.findOne({ username: req.body.username }).then(existingUser => {
-    if (existingUser) {
-      return bcrypt.compare(req.body.password, existingUser.password).then(match => {
-        if (!match) return Promise.reject(boom.badRequest('username / password combination do not exist'))
-        return existingUser
-      })
-    }
+    if (!existingUser) return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
+    return bcrypt.compare(req.body.password, existingUser.password).then(match => {
+      if (!match) return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
+      return existingUser
+    })
   }).then(makeLoggedInToken).then(token => {
     setTokenCookie(res, token)
     res.send('success')

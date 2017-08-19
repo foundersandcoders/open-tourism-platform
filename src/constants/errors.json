@@ -22,6 +22,7 @@
     "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred"
   },
   "auth": {
-    "UNAUTHORIZED":"You are not authorised to access this resource"
+    "UNAUTHORIZED":"You are not authorised to access this resource",
+    "WRONGUSERORPW": "username / password combination do not exist"
   }
 }
