@@ -3,10 +3,11 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const User = require('../../src/models/User.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
-const { validUser1, regUser } = require('../fixtures/users.json')
+const { validUser1, validUser2, validBasicUser, regUser } = require('../fixtures/users.json')
 const { auth } = require('../../src/constants/errors.json')
 // const roles = require('../../src/constants/roles.js')
 const { addUserWithHashedPassword } = require('../helpers/index.js')
+const { makeLoggedInToken } = require('../../src/controllers/session.js')
 
 tape('POST /register with new user', t => {
   supertest(server)
@@ -14,13 +15,13 @@ tape('POST /register with new user', t => {
     .send(regUser)
     .expect(200)
     .expect('Content-Type', /text/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    .then(res => {
       t.equal(res.text, 'registered!', 'should return \'registered!\'')
       t.ok(res.headers['set-cookie'], 'set cookie header exists')
       t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
       dropCollectionAndEnd(User, t)
     })
+    .catch(t.end)
 })
 
 tape('test helper to add user with hashed pw to db', t => {
@@ -84,6 +85,62 @@ tape('POST /login with wrong username', t => {
     .expect('Content-Type', /json/)
     .then(res => {
       t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+  })
+  .catch(err => t.end(err))
+})
+
+tape('POST /apps with validToken', t => {
+  addUserWithHashedPassword(validUser1)
+  .then(() => makeLoggedInToken(validUser1))
+  .then(token => {
+    supertest(server)
+    .get('/apps')
+    .set('Cookie', `token=${token}`)
+    .expect(200)
+    .expect('Content-Type', /text/)
+    .then(res => {
+      t.equal(res.text, 'IN!', 'should return \'IN!\'')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+  })
+  .catch(err => t.end(err))
+})
+
+tape('POST /apps with invalidToken', t => {
+  addUserWithHashedPassword(validUser1)
+  .then(() => makeLoggedInToken(validUser2))
+  .then(token => {
+    supertest(server)
+    .get('/apps')
+    .set('Cookie', `token=${token}`)
+    .expect(401)
+    .expect('Content-Type', /json/)
+    .then(res => {
+      t.equal(res.body.error, 'Unauthorized', 'Unauthorised error returned')
+      t.equal(res.body.message, auth.UNAUTHORIZED, `'${auth.UNAUTHORIZED}' is returned as error message`)
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+  })
+  .catch(err => t.end(err))
+})
+
+tape('POST /apps with validToken, unauthorized role', t => {
+  addUserWithHashedPassword(validBasicUser)
+  .then(() => makeLoggedInToken(validBasicUser))
+  .then(token => {
+    supertest(server)
+    .get('/apps')
+    .set('Cookie', `token=${token}`)
+    .expect(401)
+    .expect('Content-Type', /json/)
+    .then(res => {
+      t.equal(res.body.error, 'Unauthorized', 'Unauthorised error returned')
+      t.equal(res.body.message, auth.UNAUTHORIZED, `'${auth.UNAUTHORIZED}' is returned as error message`)
       dropCollectionAndEnd(User, t)
     })
     .catch(err => t.end(err))
