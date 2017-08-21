@@ -32,6 +32,7 @@
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-boom": "^2.0.0",
+    "express-handlebars": "^3.0.0",
     "express-oauth-server": "^2.0.0-b1",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.1"
