@@ -9,7 +9,7 @@ router.route('/login')
 
 router.route('/register')
   .get((req, res) => {
-    res.render('register', { classes })
+    res.render('register')
   })
 
 router.route('/oauth/authorize')

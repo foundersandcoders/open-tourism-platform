@@ -1,27 +1,27 @@
-<form class="{{ classes.form }}" method="POST" action="/register">
+<form class="{{> classes/form }}" method="POST" action="/register">
 
-  <h2 class="{{ classes.formTitle }}">Register</h2>
+  <h2 class="{{> classes/formTitle }}">Register</h2>
 
-  <label class="{{ classes.formLabel }}">Username:
-    <input class="{{ classes.formInput }}" type="text" name="username" required>
+  <label class="{{> classes/formLabel }}">Username:
+    <input class="{{> classes/formInput }}" type="text" name="username" required>
   </label>
 
-  <label class="{{ classes.formLabel }}">Name:
-    <input class="{{ classes.formInput }}" type="text" name="name" required>
+  <label class="{{> classes/formLabel }}">Name:
+    <input class="{{> classes/formInput }}" type="text" name="name" required>
   </label>
 
-  <label class="{{ classes.formLabel }}">Email:
-    <input class="{{ classes.formInput }}" type="email" name="email" required>
+  <label class="{{> classes/formLabel }}">Email:
+    <input class="{{> classes/formInput }}" type="email" name="email" required>
   </label>
 
-  <label class="{{ classes.formLabel }}">Password:
-    <input class="{{ classes.formInput }}" type="password" name="password" required>
+  <label class="{{> classes/formLabel }}">Password:
+    <input class="{{> classes/formInput }}" type="password" name="password" required>
   </label>
 
-  <label class="{{ classes.formLabel }}">Confirm Password:
-    <input class="{{ classes.formInput }}" type="password" name="confirm-password" required>
+  <label class="{{> classes/formLabel }}">Confirm Password:
+    <input class="{{> classes/formInput }}" type="password" name="confirm-password" required>
   </label>
 
-  <button class="{{ classes.formSubmit }}" type="submit" value="submit">Submit</button>
+  <button class="{{> classes/formSubmit }}" type="submit" value="submit">Submit</button>
 
 </form>
