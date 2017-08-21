@@ -17,7 +17,7 @@ tape('GET /login', t => {
 
 tape('GET /register', t => {
   supertest(server)
-    .get('/login')
+    .get('/register')
     .expect(200)
     .expect('Content-Type', /html/)
     .end((err, res) => {
