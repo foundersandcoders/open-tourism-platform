@@ -1,11 +1,10 @@
 const oauthController = require('../controllers/oauth')
-const classes = require('../tachyonsClasses')
 
 const router = require('express').Router()
 
 router.route('/login')
   .get((req, res) => {
-    res.render('login', { classes })
+    res.render('login')
   })
 
 router.route('/oauth/authorize')
