@@ -1,6 +1,7 @@
 {
 	"client": {
 		"_id": "507f1f77bcf86cd799439011",
+		"name": "the client",
 		"user": "5986abad5e2d852cb1ee6bce",
 		"secret": "secret",
 		"grants": [ "authorization_code" ],
