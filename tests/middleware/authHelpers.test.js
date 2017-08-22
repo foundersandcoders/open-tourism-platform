@@ -1,5 +1,6 @@
-const { verifyRole, addUserIdToSession } = require('../../src/middleware/authUser.js')
-const { getToken } = require('../../src/middleware/authSession.js')
+const { rolePermissionIsSufficient } = require('../../src/middleware/rolePermission.js')
+const { authenticateUserAndAddId } = require('../../src/middleware/authenticateUser.js')
+const { getToken } = require('../../src/middleware/validateJWT.js')
 const roles = require('../../src/constants/roles.js')
 const { auth } = require('../../src/constants/errors.json')
 const { validUser1 } = require('../fixtures/users.json')
@@ -23,94 +24,69 @@ tape('test getToken function where no token anywhere', t => {
   t.end()
 })
 
-tape('test verifyRole with minRole SUPER, user scope BASIC', t => {
+tape('rolePermissionIsSufficient with minRole SUPER, user role BASIC', t => {
   const minRole = { minRole: roles.SUPER }
-  const scope = { scope: roles.BASIC }
-  verifyRole(minRole)(scope)
-    .catch(err => {
-      t.ok(err, 'Unauthorized scope is rejected')
-      t.equal(err.message, auth.UNAUTHORIZED, 'Unauthorized rejected with correct message')
-      t.end()
-    })
+  const user = { role: roles.BASIC }
+  t.notOk(rolePermissionIsSufficient(minRole)(user), 'Unauthorized role returns false')
+  t.end()
 })
 
-tape('test verifyRole with minRole SUPER, user scope ADMIN', t => {
+tape('rolePermissionIsSufficient with minRole SUPER, user role ADMIN', t => {
   const minRole = { minRole: roles.SUPER }
-  const scope = { scope: roles.ADMIN }
-  verifyRole(minRole)(scope)
-    .catch(err => {
-      t.ok(err, 'Unauthorized scope is rejected')
-      t.equal(err.message, auth.UNAUTHORIZED, 'Unauthorized rejected with correct message')
-      t.end()
-    })
+  const user = { role: roles.ADMIN }
+  t.notOk(rolePermissionIsSufficient(minRole)(user), 'Unauthorized role returns false')
+  t.end()
 })
 
-tape('test verifyRole with minRole SUPER, user scope SUPER', t => {
+tape('rolePermissionIsSufficient with minRole SUPER, user role SUPER', t => {
   const minRole = { minRole: roles.SUPER }
-  const scope = { scope: roles.SUPER }
-  const result = verifyRole(minRole)(scope)
-  t.notOk(result, 'result of function should be undefined (just return, allow through)')
+  const user = { role: roles.SUPER }
+  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('test verifyRole with minRole ADMIN, user scope BASIC', t => {
+tape('rolePermissionIsSufficient with minRole ADMIN, user role BASIC', t => {
   const minRole = { minRole: roles.ADMIN }
-  const scope = { scope: roles.BASIC }
-  verifyRole(minRole)(scope)
-    .catch(err => {
-      t.ok(err, 'Unauthorized scope is rejected')
-      t.equal(err.message, auth.UNAUTHORIZED, 'Unauthorized rejected with correct message')
-      t.end()
-    })
+  const user = { role: roles.BASIC }
+  t.notOk(rolePermissionIsSufficient(minRole)(user), 'Unauthorized role returns false')
+  t.end()
 })
 
-tape('test verifyRole with minRole ADMIN, user scope ADMIN', t => {
+tape('rolePermissionIsSufficient with minRole ADMIN, user role ADMIN', t => {
   const minRole = { minRole: roles.ADMIN }
-  const scope = { scope: roles.ADMIN }
-  const result = verifyRole(minRole)(scope)
-  t.notOk(result, 'result of function should be undefined (just return, allow through)')
+  const user = { role: roles.ADMIN }
+  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('test verifyRole with minRole ADMIN, user scope SUPER', t => {
+tape('rolePermissionIsSufficient with minRole ADMIN, user role SUPER', t => {
   const minRole = { minRole: roles.ADMIN }
-  const scope = { scope: roles.SUPER }
-  const result = verifyRole(minRole)(scope)
-  t.notOk(result, 'result of function should be undefined (just return, allow through)')
+  const user = { role: roles.SUPER }
+  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('test verifyRole with minRole BASIC, user scope BASIC', t => {
+tape('rolePermissionIsSufficient with minRole BASIC, user role BASIC', t => {
   const minRole = { minRole: roles.BASIC }
-  const scope = { scope: roles.ADMIN }
-  const result = verifyRole(minRole)(scope)
-  t.notOk(result, 'result of function should be undefined (just return, allow through)')
+  const user = { role: roles.BASIC }
+  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('test verifyRole with minRole BASIC, user scope BASIC', t => {
+tape('rolePermissionIsSufficient with minRole BASIC, user role SUPER', t => {
   const minRole = { minRole: roles.BASIC }
-  const scope = { scope: roles.ADMIN }
-  const result = verifyRole(minRole)(scope)
-  t.notOk(result, 'result of function should be undefined (just return, allow through)')
+  const user = { role: roles.SUPER }
+  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('test verifyRole with minRole BASIC, user scope SUPER', t => {
-  const minRole = { minRole: roles.BASIC }
-  const scope = { scope: roles.SUPER }
-  const result = verifyRole(minRole)(scope)
-  t.notOk(result, 'result of function should be undefined (just return, allow through)')
-  t.end()
-})
-
-tape('test addUserIdToSession with non existant user', t => {
+tape('test authenticateUserAndAddId with non existant user', t => {
   const req = {
     user: {
       username: 'notreal'
     }
   }
-  addUserIdToSession(req)
+  authenticateUserAndAddId(req)
     .catch(err => {
       t.ok(err, 'Non existant user is rejected')
       t.equal(err.message, auth.UNAUTHORIZED, 'Rejected with correct message')
@@ -118,21 +94,20 @@ tape('test addUserIdToSession with non existant user', t => {
     })
 })
 
-tape('test addUserIdToSession with existant user', t => {
+tape('test authenticateUserAndAddId with existant user', t => {
+  const req = {
+    user: {
+      username: validUser1.username
+    }
+  }
   User.create(validUser1)
     .then(() => {
-      const req = {
-        user: {
-          username: validUser1.username
-        }
-      }
-      addUserIdToSession(req)
-        .then(result => {
-          t.ok(result, 'result does exist')
-          t.ok(req.user.id, 'id has been attached to request object')
-          t.end()
-        })
-        .catch(err => t.end(err))
+      return authenticateUserAndAddId(req)
+    })
+    .then(result => {
+      t.ok(result, 'result does exist')
+      t.ok(req.user.id, 'id has been attached to request object')
+      t.end()
     })
     .catch(err => t.end(err))
 })
