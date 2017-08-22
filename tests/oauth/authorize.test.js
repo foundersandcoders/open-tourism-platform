@@ -24,25 +24,22 @@ tape('emptying db.', t => {
 
 // Tests for: GET /oauth/authorize
 // should render page or redirect to login if not authorized
-
+// TODO: add redirect query params to the location
 tape('GET /oauth/authorize without authorization token, should redirect to login', t => {
-  Promise.resolve()
-  .then(() => Client.create(client))
-  .then(createdClient => {
-    supertest(server)
-      .get('/oauth/authorize')
-      .query({
-        client_id: createdClient.id,
-        redirect_uri: createdClient.redirectUris[0]
-      })
-      .expect(302)
-      .expect('Location', /login/)
-      .end((err, res) => {
-        t.error(err)
-        const parsedLocationUrl = url.parse(res.headers.location)
-        const locationQueries = qs.parse(parsedLocationUrl.query)
-        t.end()
-      })
+  Client.create(client)
+  .then(createdClient => supertest(server)
+    .get('/oauth/authorize')
+    .query({
+      client_id: createdClient.id,
+      redirect_uri: createdClient.redirectUris[0]
+    })
+    .expect(302)
+    .expect('Location', /login/)
+  )
+  .then(res => {
+    const parsedLocationUrl = url.parse(res.headers.location)
+    const locationQueries = qs.parse(parsedLocationUrl.query)
+    t.end()
   })
   .catch(err => t.end(err))
 })
@@ -62,6 +59,7 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
 //       .expect('Content-Type', /html/)
 //       .end((err, res) => {
 //         t.error(err)
+//         t.ok(res.text.includes('action="/oauth/authorize?'), 'rendered html should contain the string "action=\"/oauth/authorize?"')
 //         t.ok(res.text.includes('If you authorize this app'), 'html page should contain correct text')
 //         t.end()
 //       })   
