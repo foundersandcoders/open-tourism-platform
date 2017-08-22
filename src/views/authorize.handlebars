@@ -1,6 +1,11 @@
-<h2>The app at </h2>
+<form class="{{> classes/form }}" method="POST" action="/oauth/authorize">
 
-An app owned by {{ user }} is requesting access to your Open Tourism Platform account.
-If you authorize this app, you will be redirected to {{ redirectUri }}.
+	<h2>Authorization request</h2>
 
-<input type="submit">Authorize</input>
+	{{ name }}, owned by {{ user }}, is requesting full read and write access to your Open Tourism Platform account.
+	If you authorize this app, you will be redirected to {{ redirectUri }}.
+
+	<input class="{{ classes/formSubmit }}" value="approve" type="submit">Authorize</input>
+	<input class="{{ classes/formSubmit }}" value="deny" type="submit">Deny Access</input>
+
+</form>

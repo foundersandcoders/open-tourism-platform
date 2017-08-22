@@ -21,13 +21,11 @@ tape('emptying db.', t => {
 })
 
 // Tests for: GET /oauth/authorize
-// should return custom page (handlebars?) showing the app, the owner, the requested permissions (if we implement this)
-// shuold redirect to login if not authorized
+// should render page or redirect to login if not authorized
 tape('GET /oauth/authorize, should return form page', t => {
   Promise.resolve()
   .then(() => Client.create(client))
   .then(createdClient => {
-    console.log(createdClient)
     supertest(server)
       .get('/oauth/authorize')
       .query({
@@ -38,7 +36,6 @@ tape('GET /oauth/authorize, should return form page', t => {
       .expect('Content-Type', /html/)
       .end((err, res) => {
         t.error(err)
-        // console.log(res.text)
         t.ok(res.text.includes('If you authorize this app'), 'html page should contain correct text')
         t.end()
       })   
