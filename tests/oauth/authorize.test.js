@@ -1,5 +1,7 @@
 const tape = require('tape')
 const supertest = require('supertest')
+const url = require('url')
+const qs = require('querystring')
 
 const server = require('../../src/server')
 
@@ -22,7 +24,8 @@ tape('emptying db.', t => {
 
 // Tests for: GET /oauth/authorize
 // should render page or redirect to login if not authorized
-tape('GET /oauth/authorize, should return form page', t => {
+
+tape('GET /oauth/authorize without authorization token, should redirect to login', t => {
   Promise.resolve()
   .then(() => Client.create(client))
   .then(createdClient => {
@@ -32,13 +35,36 @@ tape('GET /oauth/authorize, should return form page', t => {
         client_id: createdClient.id,
         redirect_uri: createdClient.redirectUris[0]
       })
-      .expect(200)
-      .expect('Content-Type', /html/)
+      .expect(302)
+      .expect('Location', /login/)
       .end((err, res) => {
         t.error(err)
-        t.ok(res.text.includes('If you authorize this app'), 'html page should contain correct text')
+        const parsedLocationUrl = url.parse(res.headers.location)
+        const locationQueries = qs.parse(parsedLocationUrl.query)
         t.end()
-      })   
+      })
   })
   .catch(err => t.end(err))
 })
+
+// TODO: add a JWT to this request
+// tape('GET /oauth/authorize with token, should return form page', t => {
+//   Promise.resolve()
+//   .then(() => Client.create(client))
+//   .then(createdClient => {
+//     supertest(server)
+//       .get('/oauth/authorize')
+//       .query({
+//         client_id: createdClient.id,
+//         redirect_uri: createdClient.redirectUris[0]
+//       })
+//       .expect(200)
+//       .expect('Content-Type', /html/)
+//       .end((err, res) => {
+//         t.error(err)
+//         t.ok(res.text.includes('If you authorize this app'), 'html page should contain correct text')
+//         t.end()
+//       })   
+//   })
+//   .catch(err => t.end(err))
+// })

@@ -13,8 +13,10 @@ const oauthController = module.exports = {}
 oauthController.getAuthorizePage = (req, res, next) => {
   // get query params to find out what the app is (client_id is required)
 
-  // TODO:
-  // if not logged in, redirect to login page
+  // TODO: add something (query param?) to redirect so after login would redirect back here
+  if (!req.user) {
+    res.redirect('/login')
+  }
 
   if (!req.query || !req.query.client_id) {
     return res.boom.badRequest('no client_id provided')
