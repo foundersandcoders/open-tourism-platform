@@ -12,7 +12,7 @@ const makeLoggedInToken = user => {
     jwt.sign(
       {
         username: user.username,
-        scope: user.role
+        role: user.role
       },
       process.env.JWT_SECRET,
       {
@@ -31,16 +31,14 @@ const setTokenCookie = (res, token) => {
   res.cookie('token', token, {isSecure: isProduction, httpOnly: isProduction})
 }
 
-const sessionController = module.exports = {}
-
-sessionController.register = (req, res, next) => {
-  Users.findOne({ username: req.body.username }).then(notNewUsername => {
+const registerNewUser = (data) => {
+  return Users.findOne({ username: data.username }).then(notNewUsername => {
     if (notNewUsername) {
       return Promise.reject(boom.badRequest('username already exists'))
     }
-    return bcrypt.hash(req.body.password, 12)
+    return bcrypt.hash(data.password, 12)
   }).then(passwordHash => {
-    const { englishName, arabicName, email, username, imageUrl } = req.body
+    const { englishName, arabicName, email, username, imageUrl } = data
     const en = englishName && { name: englishName }
     const ar = arabicName && { name: arabicName }
     return Users.create(
@@ -54,10 +52,18 @@ sessionController.register = (req, res, next) => {
         en
       }
     )
-  }).then(makeLoggedInToken).then(token => {
-    setTokenCookie(res, token)
-    res.send('registered!')
-  }).catch(next)
+  })
+}
+
+const sessionController = module.exports = {}
+
+sessionController.registerAndLogOn = (req, res, next) => {
+  registerNewUser(req.body)
+    .then(makeLoggedInToken)
+    .then(token => {
+      setTokenCookie(res, token)
+      res.send('registered!')
+    }).catch(next)
 }
 
 sessionController.login = (req, res, next) => {

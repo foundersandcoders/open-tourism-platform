@@ -2,8 +2,9 @@ const oauthController = require('../controllers/oauth')
 const sessionController = require('../controllers/session')
 const appsController = require('../controllers/apps')
 
-const authSession = require('../middleware/authSession.js')
-const authUser = require('../middleware/authUser.js')
+const validateJWT = require('../middleware/validateJWT.js')
+const authenticateUser = require('../middleware/authenticateUser.js')
+const checkRole = require('../middleware/rolePermission.js')
 
 const roles = require('../constants/roles.js')
 
@@ -19,15 +20,14 @@ router.route('/oauth/token')
 router.route('/login')
   .post(sessionController.login)
 router.route('/register')
-  .post(sessionController.register)
+  .post(sessionController.registerAndLogOn)
 
 // secure route with dummy handler for now
 router.route('/apps')
   .get(
-    authSession(),
-    authUser({
-      minRole: roles.SUPER
-    }),
+    validateJWT(),
+    authenticateUser,
+    checkRole({ minRole: roles.SUPER }),
     appsController.get
   )
 

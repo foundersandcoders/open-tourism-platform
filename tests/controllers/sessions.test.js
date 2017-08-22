@@ -102,7 +102,7 @@ tape('POST /apps with validToken', t => {
     .expect(200)
     .expect('Content-Type', /text/)
     .then(res => {
-      t.equal(res.text, 'IN!', 'should return \'IN!\'')
+      t.equal(res.text, 'Here are you apps', 'should return \'Here are you apps\'')
       dropCollectionAndEnd(User, t)
     })
     .catch(err => t.end(err))
