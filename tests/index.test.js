@@ -36,7 +36,7 @@ dbConnection.once('open', () => {
   require('./oauth/authorize.test.js')
 
   // test oauth flow
-  // require('./oauth/integration.test.js')
+  require('./oauth/integration.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
