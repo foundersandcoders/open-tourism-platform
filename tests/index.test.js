@@ -38,6 +38,9 @@ dbConnection.once('open', () => {
   // test auth middleware
   require('./middleware/authHelpers.test.js')
 
+  // test auth routes
+  require('./auth.test.js')
+
   // test oauth flow
   require('./oauth/integration.test.js')
 

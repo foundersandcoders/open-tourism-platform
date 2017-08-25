@@ -10,17 +10,24 @@ const roles = require('../constants/roles.js')
 
 const router = require('express').Router()
 
+router.route('/login')
+  .get((req, res) => {
+    res.render('login')
+  })
+  .post(sessionController.login)
+
+router.route('/register')
+  .get((req, res) => {
+    res.render('register')
+  })
+  .post(sessionController.registerAndLogOn)
+
 router.route('/oauth/authorize')
   .get(oauthController.getAuthorizePage)
   .post(oauthController.getAuthorizationCode)
 
 router.route('/oauth/token')
   .post(oauthController.getToken)
-
-router.route('/login')
-  .post(sessionController.login)
-router.route('/register')
-  .post(sessionController.registerAndLogOn)
 
 // secure route with dummy handler for now
 router.route('/apps')

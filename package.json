@@ -36,6 +36,7 @@
     "express": "^4.15.3",
     "express-boom": "^2.0.0",
     "express-jwt": "^5.3.0",
+    "express-handlebars": "^3.0.0",
     "express-oauth-server": "^2.0.0-b1",
     "jsonwebtoken": "^7.4.1",
     "mongodb": "^2.2.30",
