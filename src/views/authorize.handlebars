@@ -5,7 +5,6 @@
   {{ name }}, owned by {{ user }}, is requesting full read and write access to your Open Tourism Platform account.
   If you authorize this app, you will be redirected to {{ redirect_uri }}.
 
-  <input class="{{ classes/formSubmit }}" value="approve" type="submit">Authorize</input>
-  <input class="{{ classes/formSubmit }}" value="deny" type="submit">Deny Access</input>
+  <button class="{{> classes/formSubmit }}" type="submit" value="submit">Authorize</button>
 
 </form>
