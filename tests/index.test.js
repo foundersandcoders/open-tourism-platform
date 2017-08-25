@@ -17,6 +17,8 @@ dbConnection.once('open', () => {
     .then(() => t.end())
     .catch(err => t.end(err))
   })
+  // test the test helper functions
+  require('./helpers/index.test.js')
 
   // test api controllers
   require('./controllers/user.test.js')
