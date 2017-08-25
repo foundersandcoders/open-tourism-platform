@@ -24,7 +24,6 @@ tape('emptying db.', t => {
 
 // Tests for: GET /oauth/authorize
 // should render page or redirect to login if not authorized
-// TODO: add redirect query params to the location
 tape('GET /oauth/authorize without authorization token, should redirect to login', t => {
   Client.create(client)
   .then(createdClient => supertest(server)
@@ -41,7 +40,6 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
   .then(res => {
     const parsedLocationUrl = url.parse(res.headers.location)
     const locationQueries = qs.parse(parsedLocationUrl.query)
-    console.log(locationQueries)
     t.end()
   })
   .catch(err => t.end(err))
