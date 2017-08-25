@@ -23,6 +23,8 @@
   },
   "auth": {
     "UNAUTHORIZED":"You are not authorised to access this resource",
-    "WRONGUSERORPW": "username / password combination do not exist"
+    "WRONGUSERORPW": "username / password combination do not exist",
+    "PASSWORDSDONOTMATCH":"Passwords do not match",
+    "USERNAMEEXISTS":"username already exists"
   }
 }

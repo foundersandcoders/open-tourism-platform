@@ -32,9 +32,12 @@ const setTokenCookie = (res, token) => {
 }
 
 const registerNewUser = (data) => {
+  if (data.password !== data['confirm-password']) {
+    return Promise.reject(boom.badRequest(authErr.PASSWORDSDONOTMATCH))
+  }
   return Users.findOne({ username: data.username }).then(notNewUsername => {
     if (notNewUsername) {
-      return Promise.reject(boom.badRequest('username already exists'))
+      return Promise.reject(boom.badRequest(authErr.USERNAMEEXISTS))
     }
     return bcrypt.hash(data.password, 12)
   }).then(passwordHash => {
@@ -68,9 +71,13 @@ sessionController.registerAndLogOn = (req, res, next) => {
 
 sessionController.login = (req, res, next) => {
   Users.findOne({ username: req.body.username }).then(existingUser => {
-    if (!existingUser) return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
+    if (!existingUser) {
+      return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
+    }
     return bcrypt.compare(req.body.password, existingUser.password).then(match => {
-      if (!match) return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
+      if (!match) {
+        return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
+      }
       return existingUser
     })
   }).then(makeLoggedInToken).then(token => {
