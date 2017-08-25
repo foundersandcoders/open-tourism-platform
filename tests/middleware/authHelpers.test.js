@@ -101,13 +101,14 @@ tape('test authenticateUserAndAddId with existant user', t => {
     }
   }
   User.create(validUser1)
-    .then(() => {
-      return authenticateUserAndAddId(req)
-    })
-    .then(result => {
-      t.ok(result, 'result does exist')
-      t.ok(req.user.id, 'id has been attached to request object')
-      t.end()
+    .then((addedUser) => {
+      authenticateUserAndAddId(req)
+      .then(result => {
+        t.equal(result.username, addedUser.username, 'returns req.user')
+        t.ok(req.user.id, 'id has been attached to request object')
+        t.equal(req.user.id, addedUser.id, 'correct id was added')
+        t.end()
+      })
     })
     .catch(err => t.end(err))
 })
