@@ -69,34 +69,30 @@ tape('POST /login with validUser1', t => {
 
 tape('POST /login with wrong password', t => {
   addUserWithHashedPassword(validUser1)
-  .then(() => {
-    supertest(server)
+  .then(() => supertest(server)
     .post('/login')
     .send({ username: validUser1.username, password: 'WRONG' })
     .expect(400)
     .expect('Content-Type', /json/)
-    .then(res => {
-      t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
-      dropCollectionAndEnd(User, t)
-    })
-    .catch(err => t.end(err))
+  )
+  .then(res => {
+    t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
+    dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
 })
 
 tape('POST /login with wrong username', t => {
   addUserWithHashedPassword(validUser1)
-  .then(() => {
-    supertest(server)
+  .then(() => supertest(server)
     .post('/login')
     .send({ username: 'm4v15', password: validUser1.password })
     .expect(400)
     .expect('Content-Type', /json/)
-    .then(res => {
-      t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
-      dropCollectionAndEnd(User, t)
-    })
-    .catch(err => t.end(err))
+  )
+  .then(res => {
+    t.equal(res.body.message, auth.WRONGUSERORPW, 'Correct error message returned')
+    dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
 })
@@ -104,17 +100,15 @@ tape('POST /login with wrong username', t => {
 tape('POST /apps with validToken', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => makeLoggedInToken(validUser1))
-  .then(token => {
-    supertest(server)
+  .then(token => supertest(server)
     .get('/apps')
     .set('Cookie', `token=${token}`)
     .expect(200)
     .expect('Content-Type', /text/)
-    .then(res => {
-      t.equal(res.text, 'Here are you apps', 'should return \'Here are you apps\'')
-      dropCollectionAndEnd(User, t)
-    })
-    .catch(err => t.end(err))
+  )
+  .then(res => {
+    t.equal(res.text, 'Here are you apps', 'should return \'Here are you apps\'')
+    dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
 })
@@ -122,18 +116,16 @@ tape('POST /apps with validToken', t => {
 tape('POST /apps with invalidToken (of a non-existent user)', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => makeLoggedInToken(validUser2))
-  .then(token => {
-    supertest(server)
+  .then(token => supertest(server)
     .get('/apps')
     .set('Cookie', `token=${token}`)
     .expect(401)
     .expect('Content-Type', /json/)
-    .then(res => {
-      t.equal(res.body.error, 'Unauthorized', 'Unauthorised error returned')
-      t.equal(res.body.message, auth.UNAUTHORIZED, `'${auth.UNAUTHORIZED}' is returned as error message`)
-      dropCollectionAndEnd(User, t)
-    })
-    .catch(err => t.end(err))
+  )
+  .then(res => {
+    t.equal(res.body.error, 'Unauthorized', 'Unauthorised error returned')
+    t.equal(res.body.message, auth.UNAUTHORIZED, `'${auth.UNAUTHORIZED}' is returned as error message`)
+    dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
 })
@@ -141,18 +133,16 @@ tape('POST /apps with invalidToken (of a non-existent user)', t => {
 tape('POST /apps with validToken, unauthorized role', t => {
   addUserWithHashedPassword(validBasicUser)
   .then(() => makeLoggedInToken(validBasicUser))
-  .then(token => {
-    supertest(server)
+  .then(token => supertest(server)
     .get('/apps')
     .set('Cookie', `token=${token}`)
     .expect(401)
     .expect('Content-Type', /json/)
-    .then(res => {
-      t.equal(res.body.error, 'Unauthorized', 'Unauthorised error returned')
-      t.equal(res.body.message, auth.UNAUTHORIZED, `'${auth.UNAUTHORIZED}' is returned as error message`)
-      dropCollectionAndEnd(User, t)
-    })
-    .catch(err => t.end(err))
+  )
+  .then(res => {
+    t.equal(res.body.error, 'Unauthorized', 'Unauthorised error returned')
+    t.equal(res.body.message, auth.UNAUTHORIZED, `'${auth.UNAUTHORIZED}' is returned as error message`)
+    dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
 })

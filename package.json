@@ -7,7 +7,7 @@
     "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
-    "lintFix": "standard --fix | snazzy",
+    "lint:fix": "standard --fix | snazzy",
     "dev": "NODE_ENV=development nodemon src/start.js",
     "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
