@@ -31,14 +31,17 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
     .get('/oauth/authorize')
     .query({
       client_id: createdClient.id,
-      redirect_uri: createdClient.redirectUris[0]
+      redirect_uri: createdClient.redirectUris[0],
+      state: 'random'
     })
     .expect(302)
     .expect('Location', /login/)
+    .expect('Location', /return_to/)
   )
   .then(res => {
     const parsedLocationUrl = url.parse(res.headers.location)
     const locationQueries = qs.parse(parsedLocationUrl.query)
+    console.log(locationQueries)
     t.end()
   })
   .catch(err => t.end(err))
