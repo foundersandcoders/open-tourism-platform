@@ -1,8 +1,8 @@
 const OAuthServer = require('express-oauth-server')
 const authModel = require('../authModel')
+const { authenticateUserAndAddId } = require('../middleware/authenticateUser.js')
 
 // models
-const User = require('../models/User')
 const Client = require('../models/auth/Client')
 
 // create new OAuthServer
@@ -30,11 +30,7 @@ oauthController.getAuthorizePage = (req, res, next) => {
 
 oauthController.getAuthorizationCode = oauth.authorize({
   authenticateHandler: {
-    // dummy function for now, just finds a user
-    // DANGER: currently insecure
-    handle: req => {
-      return User.findOne({})
-    }
+    handle: authenticateUserAndAddId
   }
 })
 

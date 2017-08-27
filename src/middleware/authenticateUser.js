@@ -10,6 +10,7 @@ const authenticateUserAndAddId = (req) => {
       }
 
       req.user.id = user.id
+      // user is returned for use in oauth
       return req.user
     })
 }

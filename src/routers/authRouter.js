@@ -24,7 +24,7 @@ router.route('/register')
 
 router.route('/oauth/authorize')
   .get(oauthController.getAuthorizePage)
-  .post(oauthController.getAuthorizationCode)
+  .post(validateJWT(), oauthController.getAuthorizationCode)
 
 router.route('/oauth/token')
   .post(oauthController.getToken)

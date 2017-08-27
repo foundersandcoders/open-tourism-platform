@@ -37,8 +37,8 @@ module.exports = {
       expiresAt: code.expiresAt,
       redirectUri: code.redirectUri,
       scope: code.scope,
-      client: client._id,
-      user: user._id
+      client: client.id,
+      user: user.id
     }
     return AuthorizationCode.create(authCode)
       .then(authCode => ({
