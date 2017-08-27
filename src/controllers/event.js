@@ -6,7 +6,23 @@ const eventController = module.exports = {}
 
 eventController.getAll = (req, res, next) => {
   // sends back array of events, filtered by queries
-  Event.find(req.query)
+  const queries = {}
+
+  if (req.query.categories) {
+    queries.categories = req.query.categories
+  }
+
+  if (req.query.date_to || req.query.date_from) {
+    queries.startTime = {}
+    if (req.query.date_to) {
+      queries.startTime.$lte = new Date(req.query.date_to)
+    }
+    if (req.query.date_from) {
+      queries.startTime.$gte = new Date(req.query.date_from)
+    }
+  }
+
+  Event.find(queries)
     .populate('placeId')
     .sort('startTime')
     .then(events => res.status(200).send(events))

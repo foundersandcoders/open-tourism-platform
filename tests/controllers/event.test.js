@@ -44,9 +44,17 @@ tape('GET /events, with and without query parameters', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          // check our get path returns that event correctly
           t.equal(res.body.length, 2, 'query response body should be an array with length 2')
           t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'results should be filtered correctly by url query parameters')
+        })
+      supertest(server)
+        .get('/events?date_from=2017-05-01&date_to=2017-05-10')
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end((err, res) => {
+          if (err) t.fail(err)
+          t.equal(res.body.length, 1, 'query response body should be an array with length 1')
+          t.ok(res.body.map(event => event.en.name).includes(validEvent2.en.name), 'results should be filtered correctly by url date-related query parameters')
           dropCollectionAndEnd(Event, t)
         })
     })
