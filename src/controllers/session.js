@@ -42,8 +42,20 @@ const registerNewUser = (data) => {
     return bcrypt.hash(data.password, 12)
   }).then(passwordHash => {
     const { email, username, imageUrl } = data
-    const en = data.name_en ? { name: data.name_en, organisationName: data.organisationName_en } : null
-    const ar = data.name_ar ? { name: data.name_ar, organisationName: data.organisationName_ar } : null
+    const en = data.name_en
+      ? {
+        name: data.name_en,
+        organisationName: data.organisationName_en,
+        organisationDescription: data.organisationDescription_en
+      }
+      : null
+    const ar = data.name_ar
+      ? {
+        name: data.name_ar,
+        organisationName: data.organisationName_ar,
+        organisationDescription: data.organisationDescription_ar
+      }
+      : null
     return Users.create(
       {
         username,
