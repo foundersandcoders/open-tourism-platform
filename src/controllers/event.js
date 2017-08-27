@@ -8,10 +8,6 @@ eventController.getAll = (req, res, next) => {
   // sends back array of events, filtered by queries
   const queries = {}
 
-  if (req.query.categories) {
-    queries.categories = req.query.categories
-  }
-
   if (req.query.date_to || req.query.date_from) {
     queries.startTime = {}
     if (req.query.date_to) {
