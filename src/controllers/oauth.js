@@ -18,13 +18,13 @@ const oauthController = module.exports = {}
 
 oauthController.getAuthorizePage = (req, res, next) => {
   if (!req.query || !req.query.client_id) {
-    return res.boom.badRequest(errMessages.NOCLIENTID)
+    return res.boom.badRequest(errMessages.NO_CLIENT_ID)
   }
   if (!req.query.redirect_uri) {
-    return res.boom.badRequest(errMessages.NOREDIRECT)
+    return res.boom.badRequest(errMessages.NO_REDIRECT_URI)
   }
   if (!req.query.state) {
-    return res.boom.badRequest(errMessages.NOSTATE)
+    return res.boom.badRequest(errMessages.NO_STATE)
   }
 
   if (!req.user) {
@@ -35,14 +35,10 @@ oauthController.getAuthorizePage = (req, res, next) => {
     return res.redirect('/login?' + qs.stringify(queries))
   }
 
-  Client.findOne({ _id: req.query.client_id })
+  Client.findById(req.query.client_id)
     .populate('user')
-    .then(rejectIfNull('client_id is incorrect'))
+    .then(rejectIfNull(errMessages.INCORRECT_CLIENT_ID))
     .then(client => {
-      if (!client.user) {
-        // should error?
-        client.user = { username: '<user not found>' }
-      }
       res.render('authorize', {
         name: client.name,
         user: client.user.username,

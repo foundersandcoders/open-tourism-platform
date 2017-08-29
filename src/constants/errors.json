@@ -21,8 +21,9 @@
     "UNHANDLED_MONGO": "An internal mongo server error occurred",
     "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred",
 
-    "NOCLIENTID": "No client_id provided",
-    "NOREDIRECT": "No redirect_uri provided",
-    "NOSTATE": "No state provided"
+    "NO_CLIENT_ID": "No client_id provided",
+    "NO_REDIRECT_URI": "No redirect_uri provided",
+    "NO_STATE": "No state provided",
+    "INCORRECT_CLIENT_ID": "Incorrect client_id"
   }
 }
