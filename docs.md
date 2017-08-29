@@ -42,8 +42,8 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 
 Name | Type | Description
 --- | --- | ---
-date_from | date string (e.g. 2017-08-20) | All returned events should have a startTime later than or equal to 00:00 on this date, if supplied.
-date_to | date string (e.g. 2017-08-20) | All returned events should have a startTime earlier than this date, if supplied.
+date_from | date string in the form "YYYY-MM-DD" | All returned events should have a startTime later than or equal to 00:00 on this date, if supplied.
+date_to | date string in the form "YYYY-MM-DD" | All returned events should have a startTime earlier than this date, if supplied.
 
 **Sample Response**
 ```
