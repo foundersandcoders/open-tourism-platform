@@ -38,6 +38,13 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 ### Get all events
 `GET /events`
 
+**Query parameters**
+
+Name | Type | Description
+--- | --- | ---
+date_from | date string in the form "YYYY-MM-DD" | All returned events should have a startTime later than or equal to 00:00 on this date, if supplied.
+date_to | date string in the form "YYYY-MM-DD" | All returned events should have a startTime earlier than this date, if supplied.
+
 **Sample Response**
 ```
 Status: 200 OK
