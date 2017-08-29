@@ -24,6 +24,15 @@ tape('emptying db.', t => {
 
 // Tests for: GET /oauth/authorize
 // should render page or redirect to login if not authorized
+tape('GET /oauth/authorize without required query params', t => {
+  supertest(server)
+    .get('/oauth/authorize')
+    .query({ state: 'random' })
+    .expect(400)
+  .then(res => t.end())
+  .catch(err => t.end(err))
+})
+
 tape('GET /oauth/authorize without authorization token, should redirect to login', t => {
   Client.create(client)
   .then(createdClient => supertest(server)
