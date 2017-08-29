@@ -3,6 +3,7 @@ const qs = require('querystring')
 
 const OAuthServer = require('express-oauth-server')
 const authModel = require('../authModel')
+const { messages: errMessages } = require('../constants/errors')
 
 const { rejectIfNull } = require('../db/utils')
 
@@ -16,15 +17,14 @@ const oauth = new OAuthServer({ model: authModel })
 const oauthController = module.exports = {}
 
 oauthController.getAuthorizePage = (req, res, next) => {
-  // TODO: change these to next(boomError)?
   if (!req.query || !req.query.client_id) {
-    return res.boom.badRequest('no client_id provided')
+    return res.boom.badRequest(errMessages.NOCLIENTID)
   }
   if (!req.query.redirect_uri) {
-    return res.boom.badRequest('no redirect_uri provided')
+    return res.boom.badRequest(errMessages.NOREDIRECT)
   }
   if (!req.query.state) {
-    return res.boom.badRequest('no state provided')
+    return res.boom.badRequest(errMessages.NOSTATE)
   }
 
   if (!req.user) {
@@ -41,7 +41,7 @@ oauthController.getAuthorizePage = (req, res, next) => {
     .then(client => {
       if (!client.user) {
         // should error?
-        client.user = { username: '<user not found>'}
+        client.user = { username: '<user not found>' }
       }
       res.render('authorize', {
         name: client.name,

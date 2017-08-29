@@ -63,7 +63,7 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
 //         t.ok(res.text.includes('action="/oauth/authorize?'), 'rendered html should contain the string "action=\"/oauth/authorize?"')
 //         t.ok(res.text.includes('If you authorize this app'), 'html page should contain correct text')
 //         t.end()
-//       })   
+//       })
 //   })
 //   .catch(err => t.end(err))
 // })

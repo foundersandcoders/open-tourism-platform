@@ -19,6 +19,10 @@
 
     "UNHANDLED_CUSTOM": "An internal server error occurred",
     "UNHANDLED_MONGO": "An internal mongo server error occurred",
-    "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred"
+    "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred",
+
+    "NOCLIENTID": "No client_id provided",
+    "NOREDIRECT": "No redirect_uri provided",
+    "NOSTATE": "No state provided"
   }
 }
