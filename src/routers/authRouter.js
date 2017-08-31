@@ -3,7 +3,7 @@ const sessionController = require('../controllers/session')
 const appsController = require('../controllers/apps')
 
 const validateJWT = require('../middleware/validateJWT.js')
-const authenticateUser = require('../middleware/authenticateUser.js')
+const validateUser = require('../middleware/validateUser.js')
 const checkRole = require('../middleware/rolePermission.js')
 
 const roles = require('../constants/roles.js')
@@ -33,7 +33,7 @@ router.route('/oauth/token')
 router.route('/apps')
   .get(
     validateJWT(),
-    authenticateUser,
+    validateUser,
     checkRole({ minRole: roles.SUPER }),
     appsController.get
   )

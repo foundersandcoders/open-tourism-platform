@@ -1,6 +1,6 @@
 const OAuthServer = require('express-oauth-server')
 const authModel = require('../authModel')
-const { authenticateUserAndAddId } = require('../middleware/authenticateUser.js')
+const { validateUserAndAddId } = require('../middleware/validateUser.js')
 
 // models
 const Client = require('../models/auth/Client')
@@ -30,7 +30,7 @@ oauthController.getAuthorizePage = (req, res, next) => {
 
 oauthController.getAuthorizationCode = oauth.authorize({
   authenticateHandler: {
-    handle: authenticateUserAndAddId
+    handle: validateUserAndAddId
   }
 })
 

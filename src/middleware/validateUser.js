@@ -2,7 +2,7 @@ const User = require('../models/User')
 const { auth } = require('../constants/errors.json')
 const boom = require('boom')
 
-const authenticateUserAndAddId = (req) => {
+const validateUserAndAddId = (req) => {
   return User.findOne({ username: req.user.username })
     .then(user => {
       if (!user) {
@@ -16,9 +16,9 @@ const authenticateUserAndAddId = (req) => {
 }
 
 module.exports = (req, res, next) => {
-  authenticateUserAndAddId(req)
+  validateUserAndAddId(req)
     .then(() => next())
     .catch(next)
 }
 
-module.exports.authenticateUserAndAddId = authenticateUserAndAddId
+module.exports.validateUserAndAddId = validateUserAndAddId

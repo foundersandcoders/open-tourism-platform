@@ -1,5 +1,5 @@
 const { rolePermissionIsSufficient } = require('../../src/middleware/rolePermission.js')
-const { authenticateUserAndAddId } = require('../../src/middleware/authenticateUser.js')
+const { validateUserAndAddId } = require('../../src/middleware/validateUser.js')
 const { getToken } = require('../../src/middleware/validateJWT.js')
 const roles = require('../../src/constants/roles.js')
 const { auth } = require('../../src/constants/errors.json')
@@ -80,13 +80,13 @@ tape('rolePermissionIsSufficient with minRole BASIC, user role SUPER', t => {
   t.end()
 })
 
-tape('test authenticateUserAndAddId with non existant user', t => {
+tape('test validateUserAndAddId with non existant user', t => {
   const req = {
     user: {
       username: 'notreal'
     }
   }
-  authenticateUserAndAddId(req)
+  validateUserAndAddId(req)
     .catch(err => {
       t.ok(err, 'Non existant user is rejected')
       t.equal(err.message, auth.UNAUTHORIZED, 'Rejected with correct message')
@@ -94,7 +94,7 @@ tape('test authenticateUserAndAddId with non existant user', t => {
     })
 })
 
-tape('test authenticateUserAndAddId with existant user', t => {
+tape('test validateUserAndAddId with existant user', t => {
   const req = {
     user: {
       username: validUser1.username
@@ -102,7 +102,7 @@ tape('test authenticateUserAndAddId with existant user', t => {
   }
   User.create(validUser1)
     .then((addedUser) => {
-      authenticateUserAndAddId(req)
+      validateUserAndAddId(req)
       .then(result => {
         t.equal(result.username, addedUser.username, 'returns req.user')
         t.ok(req.user.id, 'id has been attached to request object')
