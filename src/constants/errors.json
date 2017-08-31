@@ -20,5 +20,11 @@
     "UNHANDLED_CUSTOM": "An internal server error occurred",
     "UNHANDLED_MONGO": "An internal mongo server error occurred",
     "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred"
+  },
+  "auth": {
+    "UNAUTHORIZED":"You are not authorised to access this resource",
+    "WRONGUSERORPW": "username / password combination do not exist",
+    "PASSWORDSDONOTMATCH":"Passwords do not match",
+    "USERNAMEEXISTS":"username already exists"
   }
 }

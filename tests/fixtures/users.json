@@ -2,6 +2,10 @@
 	"validUser1": {"username":"mattlub","password":"pword", "en":{"name":"matt"},"email":"xxx","role":"SUPER","isPublic":false},
 	"validUser2": {"username":"m4v15","password":"pword","ar":{"name":"mavis"},"email":"xxx","role":"SUPER","isPublic":false},
 	"invalidUser1": {"username":"des-des","password":"pword", "email":"xxx","role":"SUPER","isPublic":false},
+	"validBasicUser": {"username":"m4v155","password":"pword","ar":{"name":"mavis"},"email":"xxx","role":"BASIC","isPublic":false},
+	"validAdminUser": {"username":"m4v1555","password":"pword","ar":{"name":"mavis"},"email":"xxx","role":"ADMIN","isPublic":false},
+
+
 	"user": {
 		"_id": "5986abad5e2d852cb1ee6bce",
 		"username": "mantagen",
@@ -12,5 +16,12 @@
 		"en": {
 		  "name":"matt"
 		}
+	},
+	"regUser":{
+			"username": "m4v15",
+			"password": "hashthis",
+			"confirm-password":"hashthis",
+			"email": "newemail",
+			"name_en":"mavis"
 	}
 }

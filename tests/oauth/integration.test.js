@@ -11,6 +11,7 @@ const User = require('../../src/models/User.js')
 const AuthorizationCode = require('../../src/models/auth/AuthorizationCode.js')
 const Token = require('../../src/models/auth/Token.js')
 
+const { makeLoggedInToken } = require('../../src/controllers/session.js')
 const { client } = require('../fixtures/auth/clients.json')
 const { user } = require('../fixtures/users.json')
 
@@ -50,11 +51,13 @@ tape('POST /oauth/authorize should successfully redirect and create authorizatio
   // add valid user, client
   .then(() => User.create(user))
   .then(() => Client.create(client))
+  .then(() => makeLoggedInToken(user))
   // do the test
-  .then(() => {
+  .then((token) => {
     const randomState = 'randomString'
     supertest(server)
       .post('/oauth/authorize')
+      .set('Cookie', `token=${token}`)
       .query({
         client_id: client._id,
         redirect_uri: client.redirectUris[0],

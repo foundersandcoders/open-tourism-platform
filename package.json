@@ -7,7 +7,7 @@
     "test": "NODE_ENV=test tape tests/index.test.js | tap-spec",
     "start": "node src/start.js",
     "lint": "standard --verbose | snazzy",
-    "lintFix": "standard --fix | snazzy",
+    "lint:fix": "standard --fix | snazzy",
     "dev": "NODE_ENV=development nodemon src/start.js",
     "coverage": "NODE_ENV=test istanbul cover ./tests/index.test.js",
     "coveralls": "cat ./coverage/lcov.info | ./node_modules/.bin/coveralls"
@@ -27,13 +27,18 @@
   },
   "homepage": "https://github.com/foundersandcoders/open-tourism-platform#readme",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
+    "boom": "^5.2.0",
+    "cookie-parser": "^1.4.3",
     "cors": "^2.8.4",
     "dotenv": "^4.0.0",
     "express": "^4.15.3",
     "express-boom": "^2.0.0",
+    "express-jwt": "^5.3.0",
     "express-handlebars": "^3.0.0",
     "express-oauth-server": "^2.0.0-b1",
+    "jsonwebtoken": "^7.4.1",
     "mongodb": "^2.2.30",
     "mongoose": "^4.11.1"
   },
