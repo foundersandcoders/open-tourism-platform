@@ -48,21 +48,19 @@ tape('POST /register with new user', t => {
 
 tape('POST /login with validUser1', t => {
   addUserWithHashedPassword(validUser1)
-  .then(() => {
-    supertest(server)
+  .then(() => supertest(server)
     .post('/login')
     .send({ username: validUser1.username, password: validUser1.password })
     .expect(200)
     .expect('Content-Type', /text/)
-    .then(res => {
-      t.equal(res.text, 'success', 'should return \'success\'')
-      t.ok(res.headers['set-cookie'], 'set cookie header exists')
-      t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
-      const token = res.headers['set-cookie'][0].split('=')[1].split(';')[0]
-      testToken(t, token, validUser1, validUser1.role)
-      dropCollectionAndEnd(User, t)
-    })
-    .catch(err => t.end(err))
+  )
+  .then(res => {
+    t.equal(res.text, 'success', 'should return \'success\'')
+    t.ok(res.headers['set-cookie'], 'set cookie header exists')
+    t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
+    const token = res.headers['set-cookie'][0].split('=')[1].split(';')[0]
+    testToken(t, token, validUser1, validUser1.role)
+    dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
 })
