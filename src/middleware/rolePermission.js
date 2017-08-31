@@ -6,6 +6,10 @@ const boom = require('boom')
 const rolePermissionIsSufficient = ({ minRole }) => user => {
   const rolesOrder = [roles.BASIC, roles.ADMIN, roles.SUPER]
 
+  if (rolesOrder.indexOf(minRole) === -1) {
+    throw boom.badImplementation()
+  }
+
   return (rolesOrder.indexOf(user.role) >= rolesOrder.indexOf(minRole))
 }
 
