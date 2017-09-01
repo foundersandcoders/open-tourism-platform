@@ -3,12 +3,12 @@ const qs = require('querystring')
 
 const OAuthServer = require('express-oauth-server')
 const authModel = require('../authModel')
-const { messages: errMessages } = require('../constants/errors')
 
+const { messages: errMessages } = require('../constants/errors')
 const { rejectIfNull } = require('../db/utils')
+const { validateUserAndAddId } = require('../middleware/validateUser.js')
 
 // models
-const User = require('../models/User')
 const Client = require('../models/auth/Client')
 
 // create new OAuthServer
@@ -52,11 +52,7 @@ oauthController.getAuthorizePage = (req, res, next) => {
 
 oauthController.getAuthorizationCode = oauth.authorize({
   authenticateHandler: {
-    // dummy function for now, just finds a user
-    // DANGER: currently insecure
-    handle: req => {
-      return User.findOne({})
-    }
+    handle: validateUserAndAddId
   }
 })
 

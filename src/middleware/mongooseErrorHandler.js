@@ -21,7 +21,6 @@ module.exports = (err, req, res, next) => {
     case errNames.MONGOOSE_CAST:
       res.boom.badRequest(errMessages.INVALID_ID)
       break
-
     // unhandled
     default:
       next(err)

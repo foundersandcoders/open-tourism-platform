@@ -25,5 +25,11 @@
     "NO_REDIRECT_URI": "No redirect_uri provided",
     "NO_STATE": "No state provided",
     "INCORRECT_CLIENT_ID": "Incorrect client_id"
+  },
+  "auth": {
+    "UNAUTHORIZED":"You are not authorised to access this resource",
+    "WRONGUSERORPW": "username / password combination do not exist",
+    "PASSWORDSDONOTMATCH":"Passwords do not match",
+    "USERNAMEEXISTS":"username already exists"
   }
 }

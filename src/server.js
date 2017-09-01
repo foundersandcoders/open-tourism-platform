@@ -5,11 +5,13 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const boom = require('express-boom')
 const path = require('path')
+const cookieParser = require('cookie-parser')
 const expressHandlebars = require('express-handlebars')
 
 const customErrorHandler = require('./middleware/customErrorHandler')
 const mongoErrorHandler = require('./middleware/mongoErrorHandler')
 const mongooseErrorHandler = require('./middleware/mongooseErrorHandler')
+const boomErrorHandler = require('./middleware/boomErrorHandler')
 const finalErrorHandler = require('./middleware/finalErrorHandler')
 
 const expressHandlebarsConfig = {
@@ -29,6 +31,7 @@ server.use(express.static(path.join(__dirname, 'public')))
 server.use(bodyParser.urlencoded({ extended: true }))
 server.use(bodyParser.json({ extended: true }))
 server.use(boom())
+server.use(cookieParser())
 
 server.use(apiRouter)
 server.use(authRouter)
@@ -36,6 +39,7 @@ server.use(authRouter)
 server.use(customErrorHandler)
 server.use(mongoErrorHandler)
 server.use(mongooseErrorHandler)
+server.use(boomErrorHandler)
 server.use(finalErrorHandler)
 
 module.exports = server
