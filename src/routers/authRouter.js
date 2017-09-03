@@ -11,19 +11,18 @@ const roles = require('../constants/roles.js')
 const router = require('express').Router()
 
 router.route('/login')
-  .get((req, res) => {
-    res.render('login')
-  })
+  .get((req, res) => res.render('login'))
   .post(sessionController.login)
 
 router.route('/register')
-  .get((req, res) => {
-    res.render('register')
-  })
+  .get((req, res) => res.render('register'))
   .post(sessionController.registerAndLogOn)
 
 router.route('/oauth/authorize')
-  .get(oauthController.getAuthorizePage)
+  .get(
+    validateJWT({ credentialsRequired: false }),
+    oauthController.getAuthorizePage
+  )
   .post(validateJWT(), oauthController.getAuthorizationCode)
 
 router.route('/oauth/token')
