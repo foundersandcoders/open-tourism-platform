@@ -66,6 +66,8 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
   .then(res => {
     const parsedLocationUrl = url.parse(res.headers.location)
     const locationQueries = qs.parse(parsedLocationUrl.query)
+    t.equal(locationQueries.client_id, createdClient.id, 'Correct client id in redirect query')
+    t.ok(locationQueries.return_to.includes('state=random'), 'return_to query added')
     t.end()
   })
   .catch(err => t.end(err))
