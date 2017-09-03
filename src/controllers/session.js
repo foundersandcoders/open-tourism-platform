@@ -85,13 +85,13 @@ sessionController.registerAndLogOn = (req, res, next) => {
 sessionController.getLoginPage = (req, res) => {
   if (req.query && req.query.client_id && req.query.return_to) {
     return Client.findById(req.query.client_id)
-    .then(client => {
-      res.render('login', {
-        client: client.name,
-        return_to: req.query.return_to
+      .then(client => {
+        res.render('login', {
+          client: client.name,
+          return_to: req.query.return_to
+        })
       })
-    })
-    .catch(res.render('login'))
+      .catch(() => res.render('login'))
   }
   res.render('login')
 }
