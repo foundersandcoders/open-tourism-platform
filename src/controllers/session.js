@@ -3,7 +3,8 @@ const jwt = require('jsonwebtoken')
 const boom = require('boom')
 const isProduction = process.env.NODE_ENV === 'production'
 
-const Users = require('../models/User.js')
+const User = require('../models/User')
+const Client = require('../models/auth/Client')
 const roles = require('../constants/roles.js')
 const { auth: authErr } = require('../constants/errors.json')
 
@@ -35,7 +36,7 @@ const registerNewUser = (data) => {
   if (data.password !== data['confirm-password']) {
     return Promise.reject(boom.badRequest(authErr.PASSWORDSDONOTMATCH))
   }
-  return Users.findOne({ username: data.username }).then(notNewUsername => {
+  return User.findOne({ username: data.username }).then(notNewUsername => {
     if (notNewUsername) {
       return Promise.reject(boom.badRequest(authErr.USERNAMEEXISTS))
     }
@@ -56,7 +57,7 @@ const registerNewUser = (data) => {
         organisationDescription: data.organisationDescription_ar
       }
       : null
-    return Users.create(
+    return User.create(
       {
         username,
         password: passwordHash,
@@ -81,8 +82,22 @@ sessionController.registerAndLogOn = (req, res, next) => {
     }).catch(next)
 }
 
+sessionController.getLoginPage = (req, res) => {
+  if (req.query && req.query.client_id && req.query.return_to) {
+    Client.findById(client_id)
+    .then(client => {
+      res.render('login', {
+        client: client.name,
+        return_to: req.query.return_to
+      })
+    })
+    .catch(res.render('login'))
+  }
+  else res.render('login')
+}
+
 sessionController.login = (req, res, next) => {
-  Users.findOne({ username: req.body.username }).then(existingUser => {
+  User.findOne({ username: req.body.username }).then(existingUser => {
     if (!existingUser) {
       return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
     }
