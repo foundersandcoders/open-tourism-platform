@@ -2,7 +2,6 @@ const tape = require('tape')
 const supertest = require('supertest')
 const url = require('url')
 const qs = require('querystring')
-
 const server = require('../../src/server')
 
 const Client = require('../../src/models/auth/Client.js')
@@ -10,20 +9,40 @@ const User = require('../../src/models/User.js')
 const AuthorizationCode = require('../../src/models/auth/AuthorizationCode.js')
 const Token = require('../../src/models/auth/Token.js')
 
+const { makeLoggedInToken } = require('../../src/controllers/session.js')
+const { validUser1 } = require('../fixtures/users.json')
 const { client } = require('../fixtures/auth/clients.json')
 
 tape('emptying db.', t => {
-  Promise.resolve()
-  .then(() => User.remove({}))
-  .then(() => Client.remove({}))
-  .then(() => AuthorizationCode.remove({}))
-  .then(() => Token.remove({}))
+  Promise.all([
+    User.remove({}),
+    Client.remove({}),
+    AuthorizationCode.remove({}),
+    Token.remove({})
+  ])
   .then(() => t.end())
+  .catch(err => t.end(err))
+})
+
+// initiate variables to hold data added to the database, to be used in tests
+let createdClient, token
+
+tape('filling db.', t => {
+  Promise.all([
+    Client.create(client),
+    makeLoggedInToken(validUser1)
+  ])
+  .then(([_client, _token]) => {
+    createdClient = _client
+    token = _token
+    t.end()
+  })
   .catch(err => t.end(err))
 })
 
 // Tests for: GET /oauth/authorize
 // should render page or redirect to login if not authorized
+
 tape('GET /oauth/authorize without required query params', t => {
   supertest(server)
     .get('/oauth/authorize')
@@ -34,8 +53,7 @@ tape('GET /oauth/authorize without required query params', t => {
 })
 
 tape('GET /oauth/authorize without authorization token, should redirect to login', t => {
-  Client.create(client)
-  .then(createdClient => supertest(server)
+  supertest(server)
     .get('/oauth/authorize')
     .query({
       client_id: createdClient.id,
@@ -45,7 +63,6 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
     .expect(302)
     .expect('Location', /login/)
     .expect('Location', /return_to/)
-  )
   .then(res => {
     const parsedLocationUrl = url.parse(res.headers.location)
     const locationQueries = qs.parse(parsedLocationUrl.query)
@@ -54,25 +71,21 @@ tape('GET /oauth/authorize without authorization token, should redirect to login
   .catch(err => t.end(err))
 })
 
-// TODO: add a JWT to this request
-// tape('GET /oauth/authorize with token, should return form page', t => {
-//   Promise.resolve()
-//   .then(() => Client.create(client))
-//   .then(createdClient => {
-//     supertest(server)
-//       .get('/oauth/authorize')
-//       .query({
-//         client_id: createdClient.id,
-//         redirect_uri: createdClient.redirectUris[0]
-//       })
-//       .expect(200)
-//       .expect('Content-Type', /html/)
-//       .end((err, res) => {
-//         t.error(err)
-//         t.ok(res.text.includes('action="/oauth/authorize?'), 'rendered html should contain the string "action=\"/oauth/authorize?"')
-//         t.ok(res.text.includes('If you authorize this app'), 'html page should contain correct text')
-//         t.end()
-//       })
-//   })
-//   .catch(err => t.end(err))
-// })
+tape('GET /oauth/authorize with token, should return form page', t => {
+  supertest(server)
+    .get('/oauth/authorize')
+    .set('Cookie', `token=${token}`)
+    .query({
+      client_id: createdClient.id,
+      redirect_uri: createdClient.redirectUris[0],
+      state: 'random'
+    })
+    .expect(200)
+    .expect('Content-Type', /html/)
+  .then(res => {
+    t.ok(res.text.includes('<h2>Authorization request</h2>'), 'rendered html should be correct')
+    t.ok(res.text.includes(createdClient.name), 'html page should contain client name')
+    t.end()
+  })
+  .catch(err => t.end(err))
+})

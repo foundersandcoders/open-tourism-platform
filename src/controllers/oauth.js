@@ -41,7 +41,7 @@ oauthController.getAuthorizePage = (req, res, next) => {
     .then(client => {
       res.render('authorize', {
         name: client.name,
-        user: client.user.username,
+        user: client.user && client.user.username,
         redirect_uri: req.query.redirect_uri,
         client_id: req.query.client_id,
         state: req.query.state
