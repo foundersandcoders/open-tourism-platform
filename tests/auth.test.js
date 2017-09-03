@@ -9,8 +9,8 @@ tape('GET /login', t => {
     .expect(200)
     .expect('Content-Type', /html/)
     .end((err, res) => {
-      if (err) t.fail(err)
-      t.ok(res.text.includes('login'), 'should return page including "login"')
+      t.error(err)
+      t.ok(res.text.includes('action="/login"'), 'should return form with correct action')
       t.end()
     })
 })
@@ -21,7 +21,7 @@ tape('GET /register', t => {
     .expect(200)
     .expect('Content-Type', /html/)
     .end((err, res) => {
-      if (err) t.fail(err)
+      t.error(err)
       t.ok(res.text.includes('register'), 'should return page including "register"')
       t.end()
     })

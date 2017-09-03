@@ -93,7 +93,10 @@ sessionController.getLoginPage = (req, res) => {
     })
     .catch(res.render('login'))
   }
-  else res.render('login')
+  else {
+    console.log('rendering')
+    res.render('login')
+  }
 }
 
 sessionController.login = (req, res, next) => {
