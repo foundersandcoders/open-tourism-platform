@@ -44,7 +44,6 @@ tape('GET /login, with redirect queries to return to OAuth authorize page', t =>
     .expect('Content-Type', /html/)
     .end((err, res) => {
       t.error(err)
-      console.log(res.text)
       t.ok(res.text.includes('action="/login?return_to'), 'should return form with correct action')
       t.ok(res.text.includes(client.name), 'should render page with client name')
       t.end()
