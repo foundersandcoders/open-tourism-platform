@@ -41,6 +41,9 @@ dbConnection.once('open', () => {
   // test auth routes
   require('./auth.test.js')
 
+  // test oauth routes
+  require('./oauth/authorize.test.js')
+
   // test oauth flow
   require('./oauth/integration.test.js')
 

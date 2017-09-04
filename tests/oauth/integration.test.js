@@ -25,22 +25,7 @@ tape('emptying db.', t => {
   .catch(err => t.end(err))
 })
 
-// Tests for: GET /oauth/authorize
-// should return custom page (handlebars?) showing the app, the owner, the requested permissions (if we implement this)
-// tape('GET /oauth/authorize, should return form page', t => {
-//   supertest(server)
-//     .get('/oauth/authorize')
-//     .query({
-//       client_id: 'testClientId',
-//       redirect_uri: 'testRedirect'
-//     })
-//     .expect(200)
-//     .expect('Content-Type', /html/)
-//     .end((err, res) => {
-//       t.error(err)
-//       t.end()
-//     })
-// })
+// TODO: complete this by adding a JWT for authentication when the auth handler function is completed
 
 // the first test creates the authCode, the second test uses it
 let authCode
