@@ -16,7 +16,7 @@ const oauth = new OAuthServer({ model: authModel })
 
 const oauthController = module.exports = {}
 
-// export the oauth server 
+// export the oauth server
 oauthController.oauthServer = oauth
 
 oauthController.getAuthorizePage = (req, res, next) => {

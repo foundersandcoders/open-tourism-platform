@@ -2,6 +2,9 @@ const userController = require('../controllers/user')
 const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
+const apiAuth = require('../middleware/apiAuth')
+
+const User = require('../models/User')
 
 const router = require('express').Router()
 
@@ -9,9 +12,17 @@ const router = require('express').Router()
 router.route('/users')
   .get(userController.getAll)
   .post(userController.create)
+
 router.route('/users/:id')
   .get(userController.getById)
-  .put(userController.update)
+  .put(
+    apiAuth({
+      minSufficientRole: 'ADMIN',
+      resource: User,
+      resourceOwnerIsSufficient: true
+    }),
+    userController.update
+  )
   .delete(userController.delete)
 
   // place routes
