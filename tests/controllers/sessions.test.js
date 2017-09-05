@@ -82,7 +82,6 @@ tape('POST /login with return_to query param', t => {
     t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
     const token = res.headers['set-cookie'][0].split('=')[1].split(';')[0]
     testToken(t, token, validUser1, validUser1.role)
-    console.log(res.headers.location)
     t.equal(res.headers.location, returnUri, 'should be correct redirect location')
     dropCollectionAndEnd(User, t)
   })
