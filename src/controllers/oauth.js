@@ -16,6 +16,9 @@ const oauth = new OAuthServer({ model: authModel })
 
 const oauthController = module.exports = {}
 
+// export the oauth server 
+oauthController.oauthServer = oauth
+
 oauthController.getAuthorizePage = (req, res, next) => {
   if (!req.query || !req.query.client_id) {
     return res.boom.badRequest(errMessages.NO_CLIENT_ID)
