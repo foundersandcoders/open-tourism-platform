@@ -31,8 +31,7 @@ const checkUserIsPermitted =
   }
 
 module.exports = opts => (req, res, next) => {
-  oauthServer.authenticate()
-  .then(token => checkUserIsPermitted(opts)(token.user, req.params.id))
+  checkUserIsPermitted(opts)(req.user, req.params.id)
   .then(() => next())
   .catch(err => next(err))
 }

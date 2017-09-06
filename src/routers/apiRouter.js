@@ -2,7 +2,6 @@ const userController = require('../controllers/user')
 const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
-const apiAuth = require('../middleware/apiAuth')
 
 const User = require('../models/User')
 
@@ -15,14 +14,7 @@ router.route('/users')
 
 router.route('/users/:id')
   .get(userController.getById)
-  .put(
-    apiAuth({
-      minSufficientRole: 'ADMIN',
-      resource: User,
-      resourceOwnerIsSufficient: true
-    }),
-    userController.update
-  )
+  .put(userController.update)
   .delete(userController.delete)
 
   // place routes
