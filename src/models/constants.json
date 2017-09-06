@@ -5,18 +5,18 @@
     "SUPER"
   ],
   "accessibilityOptions": [
-    "Audio Recordings",
+    "Audio recordings",
     "Braille",
-    "Big Fonts",
+    "Big fonts",
     "Carer",
-    "Place for Guide Dog",
+    "Place for guide dog",
     "SMS messaging",
-    "Sign Language",
-    "Good Lighting",
+    "Sign language",
+    "Good lighting",
     "Carer",
-    "WheelChair Access",
-    "Disabled Parking",
-    "Disabled Toilets",
+    "Wheelchair access",
+    "Disabled parking",
+    "Disabled toilets",
     "Carer"
   ],
   "placeCategories": [
@@ -40,7 +40,7 @@
     "launch",
     "party",
     "wedding",
-    "cultural event",
+    "culture",
     "miscellaneous"
   ],
   "productCategories": [
