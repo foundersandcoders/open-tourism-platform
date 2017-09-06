@@ -16,7 +16,7 @@ const placeTranslatedFieldsSchema = mongoose.Schema(
 const placeSchema = mongoose.Schema(
   {
     // id of owner in user table
-    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     location: { type: [Number], index: '2dsphere' },
     // categories can be an array of one or more strings from the enum, is not required here
     categories: { type: [{ type: String, enum: placeCategories }] },
