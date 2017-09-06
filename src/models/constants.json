@@ -1,23 +1,58 @@
 {
-   "roles":[
-      "BASIC",
-      "ADMIN",
-      "SUPER"
-   ],
-   "accessibilityOptions": [
-      "braille-menu",
-      "wheelchair-friendly"
-   ],
-   "placeCategories": [
-      "restaurant",
-      "cafe"
-   ],
-   "eventCategories": [
-      "music",
-      "dining"
-   ],
-   "productCategories": [
-      "handicraft",
-      "clothing"
-   ]
+  "roles": [
+    "BASIC",
+    "ADMIN",
+    "SUPER"
+  ],
+  "accessibilityOptions": [
+    "Audio Recordings",
+    "Braille",
+    "Big Fonts",
+    "Carer",
+    "Place for Guide Dog",
+    "SMS messaging",
+    "Sign Language",
+    "Good Lighting",
+    "Carer",
+    "WheelChair Access",
+    "Disabled Parking",
+    "Disabled Toilets",
+    "Carer"
+  ],
+  "placeCategories": [
+    "cafe",
+    "music venue",
+    "religious site",
+    "food and drink",
+    "education",
+    "retail",
+    "sport",
+    "municipal",
+    "healthcare"
+  ],
+  "eventCategories": [
+    "music",
+    "dining",
+    "educational",
+    "conference",
+    "sport",
+    "competition",
+    "launch",
+    "party",
+    "wedding",
+    "cultural event",
+    "miscellaneous"
+  ],
+  "productCategories": [
+    "jewellery",
+    "clothing",
+    "crochet",
+    "calligraphy",
+    "embroidery",
+    "metalwork",
+    "food",
+    "drink",
+    "pottery",
+    "glassware"
+  ]
 }

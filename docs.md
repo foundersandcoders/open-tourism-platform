@@ -33,6 +33,11 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Update user](#update-user)
 - [Delete user](#delete-user)
 
+**Categories**
+- [Accessibility Options](#accessibility-options)
+- [Places](#place-categories)
+- [Event](#event-categories)
+- [Producs](#product-categories)
 ## Events
 
 ### Get all events
@@ -77,8 +82,8 @@ Status: 200 OK
     },
     "_id": "5981e634b6e958614d64e111",
     "accessibilityOptions": [
-      "braille-menu",
-      "wheelchair-friendly"
+      "Braille",
+      "Wheelchair access"
     ],
     "categories": [
       "music",
@@ -122,8 +127,8 @@ Status: 200 OK
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
     "music",
@@ -162,8 +167,8 @@ description* | string | More information about event.
   ],
   "place": "9348293df12398123885930a",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
@@ -196,8 +201,8 @@ Status: 201 Created
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
     "music",
@@ -255,8 +260,8 @@ Status: 200 OK
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
     "music",
@@ -305,11 +310,11 @@ Status: 200 OK
     },
     "_id": "597eeb64aecdd6283a873898",
     "accessibilityOptions": [
-      "braille-menu",
-      "wheelchair-friendly"
+      "Braille",
+      "Wheelchair access"
     ],
     "categories": [
-      "restaurant",
+      "food and drink",
       "cafe"
     ]
   }
@@ -344,11 +349,11 @@ Status: 200 OK
   },
   "_id": "597eeb64aecdd6283a873898",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ]
 }
@@ -385,12 +390,12 @@ openingHours* | string | Place opening hours.
     32.2968133
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ],
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "imageUrl": "imgIsHere.com/12345",
   "website": "myWebsite.com",
@@ -430,11 +435,11 @@ Status: 201 Created
   },
   "_id": "597eeb64aecdd6283a873898",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ]
 }
@@ -496,11 +501,11 @@ Status: 200 OK
   },
   "_id": "597eeb64aecdd6283a873898",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ]
 }
@@ -538,7 +543,7 @@ Status: 200 OK
     },
     "_id": "597f1b96e19cb32c342c0be0",
     "categories": [
-      "handicraft",
+      "pottery",
       "clothing"
     ]
   }
@@ -565,7 +570,7 @@ Status: 200 OK
   },
   "_id": "597f1b96e19cb32c342c0be0",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ]
 }
@@ -592,7 +597,7 @@ description* | string | Product description.
 {
   "owner": "8496873ea34958810182138c",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ],
   "imageUrl": "imgIsHere.com/12345",
@@ -621,7 +626,7 @@ Status: 201 Created
   },
   "_id": "597f1b96e19cb32c342c0be0",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ]
 }
@@ -669,7 +674,7 @@ Status: 200 OK
   },
   "_id": "597f1b96e19cb32c342c0be0",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ]
 }
@@ -858,3 +863,57 @@ Status: 200 OK
 ```
 Status: 204 No Content
 ```
+
+## Categories
+
+Below are listed the options avaliable for each of the categories across the API:
+
+### Accessibility options
+  - Audio Recordings
+  - Braille
+  - Big Fonts
+  - Carer
+  - Place for Guide Dog
+  - SMS messaging
+  - Sign Language
+  - Good Lighting
+  - Carer
+  - WheelChair Access
+  - Disabled Parking
+  - Disabled Toilets
+  - Carer
+### Place Categories
+  - cafe
+  - music venue
+  - religious site
+  - food and drink
+  - education
+  - retail
+  - sport
+  - municipal
+  - healthcare
+
+### Event Categories
+  - music
+  - dining
+  - educational
+  - conference
+  - sport
+  - competition
+  - launch
+  - party
+  - wedding
+  - cultural event
+  - miscellaneous-
+
+### Product Categories
+  - jewellery
+  - clothing
+  - crochet
+  - calligraphy
+  - embroidery
+  - metalwork
+  - food
+  - drink
+  - pottery
+  - glassware
