@@ -55,7 +55,7 @@ Status: 200 OK
     "updatedAt": "2017-08-02T14:48:20.989Z",
     "createdAt": "2017-08-02T14:48:20.989Z",
     "ownerId": "8496873ea34958810182138c",
-    "placeId": {
+    "place": {
       _id: '599152711fd6dc190c9940c1',
       "updatedAt": "2017-08-14T07:34:09.985Z",
       "createdAt": "2017-08-14T07:34:09.985Z",
@@ -100,7 +100,7 @@ Status: 200 OK
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "placeId": "placeId": {
+  "place": "place": {
     _id: '599152711fd6dc190c9940c1',
     "updatedAt": "2017-08-14T07:34:09.985Z",
     "createdAt": "2017-08-14T07:34:09.985Z",
@@ -141,7 +141,7 @@ Name | Type | Description
 ---|---|---
 ownerId | mongoose ObjectId | id of event owner.
 categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
-placeId | mongoose ObjectId | id of event location.
+place | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
@@ -160,7 +160,7 @@ description* | string | More information about event.
     "music",
     "dining"
   ],
-  "placeId": "9348293df12398123885930a",
+  "place": "9348293df12398123885930a",
   "accessibilityOptions": [
     "braille-menu",
     "wheelchair-friendly"
@@ -185,7 +185,7 @@ Status: 201 Created
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "placeId": "9348293df12398123885930a",
+  "place": "9348293df12398123885930a",
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
   "cost": "100 shekels",
@@ -215,7 +215,7 @@ Name | Type | Description
 ---|---|---
 ownerId | mongoose ObjectId | id of event owner.
 categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
-placeId | mongoose ObjectId | id of event location.
+place | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
@@ -244,7 +244,7 @@ Status: 200 OK
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
   "ownerId": "8496873ea34958810182138c",
-  "placeId": "9348293df12398123885930a",
+  "place": "9348293df12398123885930a",
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
   "cost": "100 shekels",
