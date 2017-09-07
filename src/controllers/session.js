@@ -74,6 +74,16 @@ const registerNewUser = (data) => {
 
 const sessionController = module.exports = {}
 
+sessionController.getRegisterPage = (req, res) => {
+  if (req.query && req.query.client && req.query.return_to) {
+    return res.render('register', {
+      client: req.query.client,
+      return_to: qs.escape(req.query.return_to)
+    })
+  }
+  res.render('register')
+}
+
 sessionController.registerAndLogOn = (req, res, next) => {
   registerNewUser(req.body)
     .then(makeLoggedInToken)
