@@ -55,7 +55,7 @@ tape('GET /events, with and without query parameters', t => {
 tape('GET /events, check place field is populated', t => {
   Place.create(validPlace1)
     .then(createdPlace => {
-      const event = Object.assign(validEvent1, { placeId: createdPlace.id })
+      const event = Object.assign(validEvent1, { place: createdPlace.id })
       return Event.create(event)
     })
     .then(createdEvent => {
@@ -65,7 +65,7 @@ tape('GET /events, check place field is populated', t => {
         .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) t.fail(err)
-          t.equal(typeof res.body[0].placeId, 'object', 'returned event should have placeId field populated')
+          t.equal(typeof res.body[0].place, 'object', 'returned event should have place field populated')
           dropCollectionsAndEnd([Place, Event], t)
         })
     })
@@ -100,7 +100,7 @@ tape('GET /events/:id with valid id of something not in the database', t => {
 tape('GET /events/:id, check place field is populated', t => {
   Place.create(validPlace1)
     .then(createdPlace => {
-      const event = Object.assign(validEvent1, { placeId: createdPlace.id })
+      const event = Object.assign(validEvent1, { place: createdPlace.id })
       return Event.create(event)
     })
     .then(createdEvent => {
@@ -111,7 +111,7 @@ tape('GET /events/:id, check place field is populated', t => {
         .end((err, res) => {
           if (err) t.fail(err)
           t.equal(res.body.en.name, validEvent1.en.name, 'should get event with correct name.')
-          t.equal(typeof res.body.placeId, 'object', 'returned event should have placeId field populated')
+          t.equal(typeof res.body.place, 'object', 'returned event should have place field populated')
           dropCollectionsAndEnd([Place, Event], t)
         })
     })
@@ -134,7 +134,7 @@ tape('POST /events adding invalid event', t => {
     })
 })
 
-tape('POST /events adding event with invalid placeId field', t => {
+tape('POST /events adding event with invalid place field', t => {
   supertest(server)
     .post('/events')
     .send(invalidEvent2)
