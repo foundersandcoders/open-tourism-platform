@@ -78,6 +78,9 @@ sessionController.registerAndLogOn = (req, res, next) => {
     .then(makeLoggedInToken)
     .then(token => {
       setTokenCookie(res, token)
+      if (req.query && req.query.return_to) {
+        return res.redirect(req.query.return_to)
+      }
       res.send('registered!')
     }).catch(next)
 }
