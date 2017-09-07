@@ -9,6 +9,7 @@ const { auth } = require('../../src/constants/errors.json')
 const roles = require('../../src/constants/roles.js')
 const { addUserWithHashedPassword } = require('../helpers/index.js')
 const { makeLoggedInToken } = require('../../src/controllers/session.js')
+const qs = require('querystring')
 
 // set of tests to check a token
 const testToken = (t, token, user, role) => {
@@ -63,6 +64,25 @@ tape('POST /register with return_to query param', t => {
       testToken(t, token, regUser, roles.BASIC)
       t.equal(res.headers.location, returnUri, 'should be correct redirect location')
       dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+})
+
+tape('GET /register with return_to query param', t => {
+  const returnUri = '/oauth/authorize?client_id=xxx&redirect_uri=https%3A%2F%2Fwww.test.com&state=random'
+  const client = 'testClient'
+  const encodedReturn = qs.escape(returnUri)
+  supertest(server)
+    .get('/register')
+    .query({
+      return_to: returnUri,
+      client
+    })
+    .expect(200)
+    .then(res => {
+      t.ok(res.text.includes(`to continue to <strong>${client}</strong>`), 'Client prompt on register page')
+      t.ok(res.text.includes(`return_to=${encodedReturn}`), 'Form action is changed')
+      t.end()
     })
     .catch(err => t.end(err))
 })
