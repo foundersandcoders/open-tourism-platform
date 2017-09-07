@@ -1,5 +1,5 @@
 {
-   "validProduct1": { "en":{"name":"hand-made mug"}, "categories":"handicraft" },
+   "validProduct1": { "en":{"name":"hand-made mug"}, "categories":"pottery" },
    "validProduct2": { "en":{"name":"small knitted scarf"}, "categories":"clothing" },
    "invalidProduct1": { "description":"super cheap sunglasses $$$" }
 }

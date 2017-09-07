@@ -82,7 +82,7 @@ name | type | required | permissions
 id | KEY | true |-
 createdAt| DATE | - | -
 updatedAt| DATE | - | -
-ownerId | FOREIGN KEY | false | ADMIN
+owner | FOREIGN KEY | false | ADMIN
 isVerified | BOOL | true | ADMIN
 name| STRING | | OWNER
 address | ADDRESS | true | OWNER
@@ -116,7 +116,7 @@ name | type | required | permissions
 id | KEY | true |-
 createdAt| DATE | - | -
 updatedAt| DATE | - | -
-ownerId | FOREIGN KEY | false | ADMIN
+owner | FOREIGN KEY | false | ADMIN
 name| STRING | | OWNER
 location| LOCATION | | OWNER
 category|  | OWNER
@@ -147,7 +147,7 @@ name | type | required | scope
 id | KEY | true |-
 createdAt| DATE | - | -
 updatedAt| DATE | - | -
-ownerId | FOREIGN KEY | false | ADMIN
+owner | FOREIGN KEY | false | ADMIN
 name| STRING | | OWNER
 category| ENUM | | OWNER
 description| TEXT | | OWNER
