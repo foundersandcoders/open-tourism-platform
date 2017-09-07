@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const boom = require('boom')
+const qs = require('querystring')
 const isProduction = process.env.NODE_ENV === 'production'
 
 const User = require('../models/User')
@@ -91,7 +92,7 @@ sessionController.getLoginPage = (req, res) => {
       .then(client => {
         res.render('login', {
           client: client.name,
-          return_to: req.query.return_to
+          return_to: qs.escape(req.query.return_to)
         })
       })
       .catch(() => res.render('login'))
