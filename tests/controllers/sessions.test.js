@@ -46,6 +46,27 @@ tape('POST /register with new user', t => {
     .catch(t.end)
 })
 
+tape('POST /register with return_to query param', t => {
+  const returnUri = '/oauth/authorize?client_id=xxx&redirect_uri=https%3A%2F%2Fwww.test.com&state=random'
+  supertest(server)
+    .post('/register')
+    .query({
+      return_to: returnUri
+    })
+    .send(regUser)
+    .expect(302)
+    .expect('Location', /oauth/)
+    .then(res => {
+      t.ok(res.headers['set-cookie'], 'set cookie header exists')
+      t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
+      const token = res.headers['set-cookie'][0].split('=')[1].split(';')[0]
+      testToken(t, token, regUser, roles.BASIC)
+      t.equal(res.headers.location, returnUri, 'should be correct redirect location')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+})
+
 tape('POST /login with validUser1', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => supertest(server)
