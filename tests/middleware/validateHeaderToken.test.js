@@ -14,7 +14,7 @@ server.get('/test/validateHeaderToken',
   validateHeaderToken({ credentialsRequired: false }),
   (req, res) => {
     res.send(req.user)
-})
+  })
 
 tape('emptying db.', t => {
   Promise.all([
@@ -45,4 +45,3 @@ tape('test for validateHeaderToken middleware', t => {
   })
   .catch(err => t.end(err))
 })
-

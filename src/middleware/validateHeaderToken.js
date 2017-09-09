@@ -8,7 +8,7 @@ module.exports = opts => (req, res, next) => {
     credentialsRequired: false
   }
   const options = Object.assign(defaultOptions, opts)
-  
+
   if (!req.headers.authorization) {
     return options.credentialsRequired
       ? next(boom.unauthorized(auth.UNAUTHORIZED))
@@ -25,6 +25,5 @@ module.exports = opts => (req, res, next) => {
     return options.credentialsRequired
     ? next(err)
     : next()
-  }) 
-
+  })
 }
