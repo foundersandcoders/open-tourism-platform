@@ -1,6 +1,7 @@
 const boom = require('boom')
-const { oauthServer: oauth } = require('../controllers/oauth')
+const { oauthServer } = require('../controllers/oauth')
 const { auth } = require('../constants/errors.json')
+const { Request, Response } = require('oauth2-server')
 
 module.exports = opts => (req, res, next) => {
   const defaultOptions = {
@@ -8,19 +9,22 @@ module.exports = opts => (req, res, next) => {
   }
   const options = Object.assign(defaultOptions, opts)
   
-  if (!req.headers.Authentication) {
+  if (!req.headers.authorization) {
     return options.credentialsRequired
       ? next(boom.unauthorized(auth.UNAUTHORIZED))
       : next()
   }
 
-  oauth.authenticate()
+  oauthServer.server.authenticate(new Request(req), new Response(res))
   .then(token => {
+    // everything about the user is stored on the request
     req.user = token.user
     next()
   })
-  .catch(err => options.credentialsRequired
+  .catch(err => {
+    return options.credentialsRequired
     ? next(err)
     : next()
-  )
+  }) 
+
 }
