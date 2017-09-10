@@ -1,6 +1,4 @@
-const boom = require('boom')
 const { oauthServer } = require('../controllers/oauth')
-const { auth } = require('../constants/errors.json')
 const { Request, Response } = require('oauth2-server')
 
 module.exports = (req, res, next) => {
@@ -10,5 +8,5 @@ module.exports = (req, res, next) => {
     req.user = token.user
     next()
   })
-  .catch(err => next())
+  .catch(() => next())
 }
