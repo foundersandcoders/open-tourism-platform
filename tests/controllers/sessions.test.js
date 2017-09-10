@@ -65,6 +65,29 @@ tape('POST /login with validUser1', t => {
   .catch(err => t.end(err))
 })
 
+tape('POST /login with return_to query param', t => {
+  const returnUri = '/oauth/authorize?client_id=xxx&redirect_uri=https%3A%2F%2Fwww.test.com&state=random'
+  addUserWithHashedPassword(validUser1)
+  .then(() => supertest(server)
+    .post('/login')
+    .query({
+      return_to: returnUri
+    })
+    .send({ username: validUser1.username, password: validUser1.password })
+    .expect(302)
+    .expect('Location', /oauth/)
+  )
+  .then(res => {
+    t.ok(res.headers['set-cookie'], 'set cookie header exists')
+    t.ok(res.headers['set-cookie'][0].includes('token'), 'Cookie header contains token')
+    const token = res.headers['set-cookie'][0].split('=')[1].split(';')[0]
+    testToken(t, token, validUser1, validUser1.role)
+    t.equal(res.headers.location, returnUri, 'should be correct redirect location')
+    dropCollectionAndEnd(User, t)
+  })
+  .catch(err => t.end(err))
+})
+
 tape('POST /login with wrong password', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => supertest(server)

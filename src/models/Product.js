@@ -14,7 +14,7 @@ const productTranslatedFieldsSchema = mongoose.Schema(
 const productSchema = mongoose.Schema(
   {
     // id of owner in user table
-    ownerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     // categories can be an array of one or more strings from the enum, is required here
     categories: { type: [{ type: String, enum: productCategories }], required: true },
     imageUrl: String,

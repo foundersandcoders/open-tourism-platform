@@ -19,7 +19,7 @@ eventController.getAll = (req, res, next) => {
   }
 
   Event.find(queries)
-    .populate('placeId')
+    .populate('place')
     .sort('startTime')
     .then(events => res.status(200).send(events))
     .catch(next)
@@ -30,7 +30,7 @@ eventController.getById = (req, res, next) => {
   // sends back one event or errors
   const id = req.params.id
   Event.findById(id)
-    .populate('placeId')
+    .populate('place')
     .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
     .then(event => res.status(200).send(event))
     .catch(next)
