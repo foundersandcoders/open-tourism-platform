@@ -14,6 +14,9 @@ module.exports = (err, req, res, next) => {
     case errMessages.DELETE_ID_NOT_FOUND:
       res.boom.badRequest(err.message)
       break
+    case errMessages.INCORRECT_CLIENT_ID:
+      res.boom.badRequest(err.message)
+      break
 
     // unhandled custom error
     default:
