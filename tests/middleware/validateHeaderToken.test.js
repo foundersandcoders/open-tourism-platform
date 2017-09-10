@@ -11,11 +11,11 @@ const { token } = require('../fixtures/auth/tokens.json')
 
 // add route for testing
 server.get('/test/validateHeaderToken',
-  validateHeaderToken({ credentialsRequired: false }),
-  (req, res) => {
-    res.send(req.user)
-  })
+  validateHeaderToken,
+  (req, res) => res.status(200).send(req.user)
+)
 
+// prepare the db
 tape('emptying db.', t => {
   Promise.all([
     User.remove({}),
@@ -34,7 +34,16 @@ tape('filling db.', t => {
   .catch(err => t.end(err))
 })
 
-tape('test for validateHeaderToken middleware', t => {
+// the tests
+tape('test for validateHeaderToken middleware with no token', t => {
+  supertest(server)
+  .get('/test/validateHeaderToken')
+  .expect(200)
+  .then(res => t.end())
+  .catch(err => t.end(err))
+})
+
+tape('test for validateHeaderToken middleware with token', t => {
   supertest(server)
   .get('/test/validateHeaderToken')
   .set('Authorization', 'Bearer ' + token.accessToken)

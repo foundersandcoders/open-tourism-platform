@@ -16,7 +16,7 @@ router.route('/users/:id')
   .get(userController.getById)
   .put(
     validateJWT({ credentialsRequired: false }),
-    validateHeaderToken(),
+    validateHeaderToken,
     userController.update
   )
   .delete(userController.delete)
