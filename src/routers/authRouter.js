@@ -4,7 +4,7 @@ const appsController = require('../controllers/apps')
 
 const validateJWT = require('../middleware/validateJWT.js')
 const validateUser = require('../middleware/validateUser.js')
-const checkRole = require('../middleware/rolePermission.js')
+const permissions = require('../middleware/permissions.js')
 
 const roles = require('../constants/roles.js')
 
@@ -33,7 +33,7 @@ router.route('/apps')
   .get(
     validateJWT(),
     validateUser,
-    checkRole({ minSufficientRole: roles.SUPER }),
+    permissions({ minSufficientRole: roles.SUPER }),
     appsController.get
   )
 

@@ -1,4 +1,4 @@
-const { hasSufficientRole } = require('../../src/middleware/rolePermission.js')
+const { hasSufficientRole } = require('../../src/middleware/permissions.js')
 const { validateUserAndAddId } = require('../../src/middleware/validateUser.js')
 const { getToken } = require('../../src/middleware/validateJWT.js')
 const roles = require('../../src/constants/roles.js')
