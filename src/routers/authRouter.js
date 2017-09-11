@@ -33,7 +33,7 @@ router.route('/apps')
   .get(
     validateJWT(),
     validateUser,
-    checkRole({ minRole: roles.SUPER }),
+    checkRole({ minSufficientRole: roles.SUPER }),
     appsController.get
   )
 

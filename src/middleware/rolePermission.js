@@ -1,28 +1,53 @@
-const roles = require('../constants/roles.js')
-const { auth } = require('../constants/errors.json')
 const boom = require('boom')
+const roles = require('../constants/roles.js')
+const { auth, messages: errMessages } = require('../constants/errors.json')
+const { rejectIfNull } = require('../db/utils')
+const { oauthServer } = require('../controllers/oauth')
 
-// Recieves req.user from addUserIdToSession, and we extract the user's role from that
-const rolePermissionIsSufficient = ({ minRole }) => user => {
-  const rolesOrder = [roles.BASIC, roles.ADMIN, roles.SUPER]
+const hasSufficientRole = ({ minSufficientRole }) => user => {
+  const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
 
-  if (rolesOrder.indexOf(minRole) === -1) {
+  // throw error on initialisation if passed option is not valid
+  if (!orderedRoles.includes(minSufficientRole)) {
     throw boom.badImplementation()
   }
 
-  return (rolesOrder.indexOf(user.role) >= rolesOrder.indexOf(minRole))
+  return orderedRoles.indexOf(user.role) >= orderedRoles.indexOf(minSufficientRole)
 }
 
-module.exports = opts => (req, res, next) => {
-  // Check if logged in
-  if (!req.user) {
-    next(boom.unauthorized(auth.UNAUTHORIZED))
-  // Check required role
-  } else if (!(rolePermissionIsSufficient(opts)(req.user))) {
-    next(boom.unauthorized(auth.UNAUTHORIZED))
-  }
-  next()
+const checkUserOwnsResource = ({ resourceType, resourceId }) => user => {
+  resourceType.findById(resourceId)
+  .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
+  .then(doc => doc.user === user.id
+    ? Promise.resolve()
+    : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
+  )
+}
+
+module.exports =
+  ({ minSufficientRole, resourceType, owningResourceIsSufficient }) => (req, res, next) => {
+    // throw error on initialisation if passed options are not valid
+    if (owningResourceIsSufficient && !resourceType) {
+      throw boom.badImplementation()
+    }
+
+    // Check if logged in
+    if (!req.user) {
+      return next(boom.unauthorized(auth.UNAUTHORIZED))
+    } 
+    else if (hasSufficientRole({ minSufficientRole })(req.user)) {
+      return next()
+    }
+    else if (!owningResourceIsSufficient) {
+      return next(boom.unauthorized(auth.UNAUTHORIZED))
+    } else {
+      const resourceId = req.params.id
+      return checkUserOwnsResource({ resourceType, resourceId })(req.user)
+      .then(() => next())
+      .catch(err => next(err))
+    }
 }
 
 // export functions for testing
-module.exports.rolePermissionIsSufficient = rolePermissionIsSufficient
+module.exports.hasSufficientRole = hasSufficientRole
+module.exports.checkUserOwnsResource = checkUserOwnsResource
