@@ -14,7 +14,11 @@ const rolePermissionIsSufficient = ({ minRole }) => user => {
 }
 
 module.exports = opts => (req, res, next) => {
-  if (!(rolePermissionIsSufficient(opts)(req.user))) {
+  // Check if logged in
+  if (!req.user) {
+    next(boom.unauthorized(auth.UNAUTHORIZED))
+  // Check required role
+  } else if (!(rolePermissionIsSufficient(opts)(req.user))) {
     next(boom.unauthorized(auth.UNAUTHORIZED))
   }
   next()
