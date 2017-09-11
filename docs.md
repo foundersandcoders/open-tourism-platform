@@ -869,18 +869,18 @@ Status: 204 No Content
 Below are listed the options avaliable for each of the categories across the API:
 
 ### Accessibility options
-  - Audio Recordings
+  - Audio recordings
   - Braille
-  - Big Fonts
+  - Big fonts
   - Carer
-  - Place for Guide Dog
+  - Place for guide dog
   - SMS messaging
-  - Sign Language
-  - Good Lighting
+  - Sign language
+  - Good lighting
   - Carer
-  - WheelChair Access
-  - Disabled Parking
-  - Disabled Toilets
+  - WheelChair access
+  - Disabled parking
+  - Disabled toilets
   - Carer
 ### Place Categories
   - cafe
