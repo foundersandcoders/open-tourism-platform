@@ -1,9 +1,11 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const boom = require('boom')
+const qs = require('querystring')
 const isProduction = process.env.NODE_ENV === 'production'
 
-const Users = require('../models/User.js')
+const User = require('../models/User')
+const Client = require('../models/auth/Client')
 const roles = require('../constants/roles.js')
 const { auth: authErr } = require('../constants/errors.json')
 
@@ -35,7 +37,7 @@ const registerNewUser = (data) => {
   if (data.password !== data['confirm-password']) {
     return Promise.reject(boom.badRequest(authErr.PASSWORDSDONOTMATCH))
   }
-  return Users.findOne({ username: data.username }).then(notNewUsername => {
+  return User.findOne({ username: data.username }).then(notNewUsername => {
     if (notNewUsername) {
       return Promise.reject(boom.badRequest(authErr.USERNAMEEXISTS))
     }
@@ -56,7 +58,7 @@ const registerNewUser = (data) => {
         organisationDescription: data.organisationDescription_ar
       }
       : null
-    return Users.create(
+    return User.create(
       {
         username,
         password: passwordHash,
@@ -72,17 +74,44 @@ const registerNewUser = (data) => {
 
 const sessionController = module.exports = {}
 
+sessionController.getRegisterPage = (req, res) => {
+  if (req.query && req.query.client && req.query.return_to) {
+    return res.render('register', {
+      client: req.query.client,
+      return_to: qs.escape(req.query.return_to)
+    })
+  }
+  res.render('register')
+}
+
 sessionController.registerAndLogOn = (req, res, next) => {
   registerNewUser(req.body)
     .then(makeLoggedInToken)
     .then(token => {
       setTokenCookie(res, token)
+      if (req.query && req.query.return_to) {
+        return res.redirect(req.query.return_to)
+      }
       res.send('registered!')
     }).catch(next)
 }
 
+sessionController.getLoginPage = (req, res) => {
+  if (req.query && req.query.client_id && req.query.return_to) {
+    return Client.findById(req.query.client_id)
+      .then(client => {
+        res.render('login', {
+          client: client.name,
+          return_to: qs.escape(req.query.return_to)
+        })
+      })
+      .catch(() => res.render('login'))
+  }
+  res.render('login')
+}
+
 sessionController.login = (req, res, next) => {
-  Users.findOne({ username: req.body.username }).then(existingUser => {
+  User.findOne({ username: req.body.username }).then(existingUser => {
     if (!existingUser) {
       return Promise.reject(boom.badRequest(authErr.WRONGUSERORPW))
     }
@@ -92,8 +121,13 @@ sessionController.login = (req, res, next) => {
       }
       return existingUser
     })
-  }).then(makeLoggedInToken).then(token => {
+  })
+  .then(makeLoggedInToken)
+  .then(token => {
     setTokenCookie(res, token)
+    if (req.query && req.query.return_to) {
+      return res.redirect(req.query.return_to)
+    }
     res.send('success')
   }).catch(next)
 }

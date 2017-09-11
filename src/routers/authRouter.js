@@ -11,11 +11,11 @@ const roles = require('../constants/roles.js')
 const router = require('express').Router()
 
 router.route('/login')
-  .get((req, res) => res.render('login'))
+  .get(sessionController.getLoginPage)
   .post(sessionController.login)
 
 router.route('/register')
-  .get((req, res) => res.render('register'))
+  .get(sessionController.getRegisterPage)
   .post(sessionController.registerAndLogOn)
 
 router.route('/oauth/authorize')

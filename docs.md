@@ -33,6 +33,11 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Update user](#update-user)
 - [Delete user](#delete-user)
 
+**Categories**
+- [Accessibility Options](#accessibility-options)
+- [Places](#place-categories)
+- [Event](#event-categories)
+- [Producs](#product-categories)
 ## Events
 
 ### Get all events
@@ -54,8 +59,8 @@ Status: 200 OK
     "__v": 0,
     "updatedAt": "2017-08-02T14:48:20.989Z",
     "createdAt": "2017-08-02T14:48:20.989Z",
-    "ownerId": "8496873ea34958810182138c",
-    "placeId": {
+    "owner": "8496873ea34958810182138c",
+    "place": {
       _id: '599152711fd6dc190c9940c1',
       "updatedAt": "2017-08-14T07:34:09.985Z",
       "createdAt": "2017-08-14T07:34:09.985Z",
@@ -77,8 +82,8 @@ Status: 200 OK
     },
     "_id": "5981e634b6e958614d64e111",
     "accessibilityOptions": [
-      "braille-menu",
-      "wheelchair-friendly"
+      "Braille",
+      "Wheelchair access"
     ],
     "categories": [
       "music",
@@ -99,8 +104,8 @@ Status: 200 OK
   "__v": 0,
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
-  "ownerId": "8496873ea34958810182138c",
-  "placeId": "placeId": {
+  "owner": "8496873ea34958810182138c",
+  "place": "place": {
     _id: '599152711fd6dc190c9940c1',
     "updatedAt": "2017-08-14T07:34:09.985Z",
     "createdAt": "2017-08-14T07:34:09.985Z",
@@ -122,8 +127,8 @@ Status: 200 OK
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
     "music",
@@ -139,9 +144,9 @@ Status: 200 OK
 
 Name | Type | Description
 ---|---|---
-ownerId | mongoose ObjectId | id of event owner.
+owner | mongoose ObjectId | id of event owner.
 categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
-placeId | mongoose ObjectId | id of event location.
+place | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
@@ -155,15 +160,15 @@ description* | string | More information about event.
 **Sample Request**
 ```
 {
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "categories": [
     "music",
     "dining"
   ],
-  "placeId": "9348293df12398123885930a",
+  "place": "9348293df12398123885930a",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
@@ -184,8 +189,8 @@ Status: 201 Created
   "__v": 0,
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
-  "ownerId": "8496873ea34958810182138c",
-  "placeId": "9348293df12398123885930a",
+  "owner": "8496873ea34958810182138c",
+  "place": "9348293df12398123885930a",
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
   "cost": "100 shekels",
@@ -196,8 +201,8 @@ Status: 201 Created
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
     "music",
@@ -213,9 +218,9 @@ Status: 201 Created
 
 Name | Type | Description
 ---|---|---
-ownerId | mongoose ObjectId | id of event owner.
+owner | mongoose ObjectId | id of event owner.
 categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
-placeId | mongoose ObjectId | id of event location.
+place | mongoose ObjectId | id of event location.
 accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 startTime | date | Event start time.
 endTime | date | Event end time.
@@ -243,8 +248,8 @@ Status: 200 OK
   "__v": 0,
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
-  "ownerId": "8496873ea34958810182138c",
-  "placeId": "9348293df12398123885930a",
+  "owner": "8496873ea34958810182138c",
+  "place": "9348293df12398123885930a",
   "startTime": "2001-01-01T00:00:00.000Z",
   "endTime": "2002-02-02T00:00:00.000Z",
   "cost": "100 shekels",
@@ -255,8 +260,8 @@ Status: 200 OK
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
     "music",
@@ -288,7 +293,7 @@ Status: 200 OK
     "__v": 0,
     "updatedAt": "2017-07-31T08:33:40.199Z",
     "createdAt": "2017-07-31T08:33:40.199Z",
-    "ownerId": "8496873ea34958810182138c",
+    "owner": "8496873ea34958810182138c",
     "location": [
       32.701358,
       32.2968133
@@ -305,11 +310,11 @@ Status: 200 OK
     },
     "_id": "597eeb64aecdd6283a873898",
     "accessibilityOptions": [
-      "braille-menu",
-      "wheelchair-friendly"
+      "Braille",
+      "Wheelchair access"
     ],
     "categories": [
-      "restaurant",
+      "food and drink",
       "cafe"
     ]
   }
@@ -327,7 +332,7 @@ Status: 200 OK
   "__v": 0,
   "updatedAt": "2017-07-31T08:33:40.199Z",
   "createdAt": "2017-07-31T08:33:40.199Z",
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "location": [
     32.701358,
     32.2968133
@@ -344,11 +349,11 @@ Status: 200 OK
   },
   "_id": "597eeb64aecdd6283a873898",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ]
 }
@@ -361,7 +366,7 @@ Status: 200 OK
 
 Name | Type | Description
 ---|---|---
-ownerId | mongoose ObjectId | id of owner in user table.
+owner | mongoose ObjectId | id of owner in user table.
 location | array of numbers | Location coordinates.
 categories | array of strings | Place [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
 accessibilityOptions | array of strings | Place [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
@@ -379,18 +384,18 @@ openingHours* | string | Place opening hours.
 **Sample Request**
 ```
 {
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "location": [
     32.701358,
     32.2968133
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ],
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "imageUrl": "imgIsHere.com/12345",
   "website": "myWebsite.com",
@@ -413,7 +418,7 @@ Status: 201 Created
   "__v": 0,
   "updatedAt": "2017-07-31T08:33:40.199Z",
   "createdAt": "2017-07-31T08:33:40.199Z",
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "location": [
     32.701358,
     32.2968133
@@ -430,11 +435,11 @@ Status: 201 Created
   },
   "_id": "597eeb64aecdd6283a873898",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ]
 }
@@ -447,7 +452,7 @@ Status: 201 Created
 
 Name | Type | Description
 ---|---|---
-ownerId | mongoose ObjectId | id of owner in user table.
+owner | mongoose ObjectId | id of owner in user table.
 location | array of numbers | Location coordinates.
 categories | array of strings | Place [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
 accessibilityOptions | array of strings | Place [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
@@ -479,7 +484,7 @@ Status: 200 OK
   "__v": 1,
   "updatedAt": "2017-07-31T08:33:40.199Z",
   "createdAt": "2017-07-31T08:33:40.199Z",
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "location": [
     32.701358,
     32.2968133
@@ -496,11 +501,11 @@ Status: 200 OK
   },
   "_id": "597eeb64aecdd6283a873898",
   "accessibilityOptions": [
-    "braille-menu",
-    "wheelchair-friendly"
+    "Braille",
+    "Wheelchair access"
   ],
   "categories": [
-    "restaurant",
+    "food and drink",
     "cafe"
   ]
 }
@@ -529,7 +534,7 @@ Status: 200 OK
     "__v": 0,
     "updatedAt": "2017-07-31T11:59:18.624Z",
     "createdAt": "2017-07-31T11:59:18.624Z",
-    "ownerId": "8496873ea34958810182138c",
+    "owner": "8496873ea34958810182138c",
     "imageUrl": "imgIsHere.com/12345",
     "cost": 1000,
     "en": {
@@ -538,7 +543,7 @@ Status: 200 OK
     },
     "_id": "597f1b96e19cb32c342c0be0",
     "categories": [
-      "handicraft",
+      "pottery",
       "clothing"
     ]
   }
@@ -556,7 +561,7 @@ Status: 200 OK
   "__v": 0,
   "updatedAt": "2017-07-31T11:59:18.624Z",
   "createdAt": "2017-07-31T11:59:18.624Z",
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "imageUrl": "imgIsHere.com/12345",
   "cost": 1000,
   "en": {
@@ -565,7 +570,7 @@ Status: 200 OK
   },
   "_id": "597f1b96e19cb32c342c0be0",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ]
 }
@@ -578,7 +583,7 @@ Status: 200 OK
 
 Name | Type | Description
 ---|---|---
-ownerId | mongoose ObjectId | id of owner in user table.
+owner | mongoose ObjectId | id of owner in user table.
 categories | array of strings | Product [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
 imageUrl | string | Link to image of product.
 cost | number | Product cost.
@@ -590,9 +595,9 @@ description* | string | Product description.
 **Sample Request**
 ```
 {
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ],
   "imageUrl": "imgIsHere.com/12345",
@@ -612,7 +617,7 @@ Status: 201 Created
   "__v": 0,
   "updatedAt": "2017-07-31T11:59:18.624Z",
   "createdAt": "2017-07-31T11:59:18.624Z",
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "imageUrl": "imgIsHere.com/12345",
   "cost": 1000,
   "en": {
@@ -621,7 +626,7 @@ Status: 201 Created
   },
   "_id": "597f1b96e19cb32c342c0be0",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ]
 }
@@ -634,7 +639,7 @@ Status: 201 Created
 
 Name | Type | Description
 ---|---|---
-ownerId | mongoose ObjectId | id of owner in user table.
+owner | mongoose ObjectId | id of owner in user table.
 categories | array of strings | Product [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
 imageUrl | string | Link to image of product.
 cost | number | Product cost.
@@ -660,7 +665,7 @@ Status: 200 OK
   "__v": 1,
   "updatedAt": "2017-07-31T11:59:18.624Z",
   "createdAt": "2017-07-31T11:59:18.624Z",
-  "ownerId": "8496873ea34958810182138c",
+  "owner": "8496873ea34958810182138c",
   "imageUrl": "imgIsHere.com/12345",
   "cost": 1000,
   "en": {
@@ -669,7 +674,7 @@ Status: 200 OK
   },
   "_id": "597f1b96e19cb32c342c0be0",
   "categories": [
-    "handicraft",
+    "pottery",
     "clothing"
   ]
 }
@@ -858,3 +863,57 @@ Status: 200 OK
 ```
 Status: 204 No Content
 ```
+
+## Categories
+
+Below are listed the options avaliable for each of the categories across the API:
+
+### Accessibility options
+  - Audio recordings
+  - Braille
+  - Big fonts
+  - Carer
+  - Place for guide dog
+  - SMS messaging
+  - Sign language
+  - Good lighting
+  - Carer
+  - WheelChair access
+  - Disabled parking
+  - Disabled toilets
+  - Carer
+### Place Categories
+  - cafe
+  - music venue
+  - religious site
+  - food and drink
+  - education
+  - retail
+  - sport
+  - municipal
+  - healthcare
+
+### Event Categories
+  - music
+  - dining
+  - educational
+  - conference
+  - sport
+  - competition
+  - launch
+  - party
+  - wedding
+  - cultural event
+  - miscellaneous-
+
+### Product Categories
+  - jewellery
+  - clothing
+  - crochet
+  - calligraphy
+  - embroidery
+  - metalwork
+  - food
+  - drink
+  - pottery
+  - glassware
