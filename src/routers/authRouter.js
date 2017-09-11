@@ -15,7 +15,7 @@ router.route('/login')
   .post(sessionController.login)
 
 router.route('/register')
-  .get((req, res) => res.render('register'))
+  .get(sessionController.getRegisterPage)
   .post(sessionController.registerAndLogOn)
 
 router.route('/oauth/authorize')

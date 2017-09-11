@@ -1,4 +1,8 @@
-<form class="{{> classes/form }}" method="POST" action="/register">
+{{#if client}}
+  <span>Register on the <strong>Nazareth Open Tourism Platform</strong> to continue to <strong>{{ client }}</strong>.</span>
+{{/if}}
+
+<form class="{{> classes/form }}" method="POST" action={{> paths/register }}>
 
   <h2 class="{{> classes/formTitle }}">Register for the Nazareth Open Tourism Platform</h2>
 
