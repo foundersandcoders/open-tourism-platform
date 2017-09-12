@@ -50,11 +50,11 @@ grant_type | string | **Required.** Must be 'authorization_code'.
 **Response**
 
 The response takes the following form:
-```js
+```
 {
   access_token: <access_token>
   token_type: 'Bearer'
-  expires_in: <number of minutes>
+  expires_in: <number_of_minutes>
   refresh_token: <refresh_token>
 }
 ```
