@@ -39,6 +39,8 @@ dbConnection.once('open', () => {
   require('./middleware/authHelpers.test.js')
   require('./middleware/validateHeaderToken.test.js')
 
+  require('./middleware/permissions.test.js')
+
   // test auth routes
   require('./auth.test.js')
 

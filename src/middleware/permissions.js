@@ -3,6 +3,7 @@ const roles = require('../constants/roles.js')
 const { auth, messages: errMessages } = require('../constants/errors.json')
 const { rejectIfNull } = require('../db/utils')
 const { oauthServer } = require('../controllers/oauth')
+const User = require('../models/User')
 
 const hasSufficientRole = ({ minSufficientRole }) => user => {
   const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
@@ -16,7 +17,7 @@ const hasSufficientRole = ({ minSufficientRole }) => user => {
 }
 
 const checkUserOwnsResource = resourceType => resourceId => user => {
-  resourceType.findById(resourceId)
+  return resourceType.findById(resourceId)
   .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
   .then(doc => {
     // the 'owner' of a User is the user themself
