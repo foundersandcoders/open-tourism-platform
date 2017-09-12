@@ -18,10 +18,15 @@ const hasSufficientRole = ({ minSufficientRole }) => user => {
 const checkUserOwnsResource = ({ resourceType, resourceId }) => user => {
   resourceType.findById(resourceId)
   .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
-  .then(doc => doc.user === user.id
-    ? Promise.resolve()
-    : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
-  )
+  .then(doc => {
+    // the 'owner' of a User is the user themself
+    const ownerId = resourceType === User
+      ? doc.id
+      : doc.user
+    return ownerId === user.id
+      ? Promise.resolve()
+      : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
+  })
 }
 
 module.exports =
