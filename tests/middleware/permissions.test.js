@@ -4,19 +4,20 @@ const server = require('../../src/server')
 const permissions = require('../../src/middleware/permissions.js')
 const roles = require('../../src/constants/roles.js')
 
+const checkUserOwnsResource = permissions.checkUserOwnsResource
+
 const User = require('../../src/models/User')
-const Product = require('../../src/models/Product')
 const Event = require('../../src/models/Event')
-const Place = require('../../src/models/Place')
 
 const { user } = require('../fixtures/users.json')
-
-const checkUserOwnsResource = permissions.checkUserOwnsResource
+const { event } = require('../fixtures/events.json')
+const wrongUser = { id: 'wrong' }
 
 // prepare the db
 tape('emptying db.', t => {
   Promise.all([
-    User.remove({})
+    User.remove({}),
+    Event.remove({})
   ])
   .then(() => t.end())
   .catch(err => t.end(err))
@@ -24,7 +25,8 @@ tape('emptying db.', t => {
 
 tape('filling db.', t => {
   Promise.all([
-    User.create(user)
+    User.create(user),
+    Event.create(event)
   ])
   .then(() => t.end())
   .catch(err => t.end(err))
@@ -32,14 +34,25 @@ tape('filling db.', t => {
 
 // the tests
 tape('checkUserOwnsResource with resource \'User\', and the correct user', t => {
-  checkUserOwnsResource(User)(user._id)(user)
+  checkUserOwnsResource(User)(user.id)(user)
   .then(() => t.end())
   .catch(err => t.end(err))
 })
 
 tape('checkUserOwnsResource with resource \'User\', and an incorrect user', t => {
-  const wrongUser = { id: 'wrong' }
-  checkUserOwnsResource(User)(user._id)(wrongUser)
+  checkUserOwnsResource(User)(user.id)(wrongUser)
+  .then(() => t.end('promise should reject, as user is wrong'))
+  .catch(err => t.end())
+})
+
+tape('checkUserOwnsResource with resource \'Event\', and the correct user', t => {
+  checkUserOwnsResource(Event)(event.id)(user)
+  .then(() => t.end())
+  .catch(err => t.end(err))
+})
+
+tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t => {
+  checkUserOwnsResource(Event)(event.id)(wrongUser)
   .then(() => t.end('promise should reject, as user is wrong'))
   .catch(err => t.end())
 })

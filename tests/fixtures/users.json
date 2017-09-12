@@ -18,11 +18,11 @@
 		  "name":"matt"
 		}
 	},
-	"regUser":{
-			"username": "m4v15",
-			"password": "hashthis",
-			"confirm-password":"hashthis",
-			"email": "newemail",
-			"name_en":"mavis"
+	"regUser": {
+		"username": "m4v15",
+		"password": "hashthis",
+		"confirm-password":"hashthis",
+		"email": "newemail",
+		"name_en":"mavis"
 	}
 }

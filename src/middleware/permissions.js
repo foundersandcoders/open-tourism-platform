@@ -17,17 +17,19 @@ const hasSufficientRole = ({ minSufficientRole }) => user => {
 }
 
 const checkUserOwnsResource = resourceType => resourceId => user => {
-  return resourceType.findById(resourceId)
-  .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
-  .then(doc => {
-    // the 'owner' of a User is the user themself
-    const ownerId = resourceType === User
-      ? doc.id
-      : doc.user
-    return ownerId === user.id
+  if (resourceType === User) {
+    return resourceId === user.id.toString()
       ? Promise.resolve()
       : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
-  })
+  }
+
+  return resourceType.findById(resourceId)
+  .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
+  // currently using toString(), may be better to use <mongoid>.equals(<mongoid>)
+  .then(doc => doc.owner.toString() === user.id.toString()
+    ? Promise.resolve()
+    : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
+  )
 }
 
 module.exports =
@@ -37,7 +39,7 @@ module.exports =
       throw boom.badImplementation()
     }
 
-    if (!req.user) {
+    if (!req.user || !req.user.id) {
       return next(boom.unauthorized(auth.UNAUTHORIZED))
     } else if (hasSufficientRole({ minSufficientRole })(req.user)) {
       return next()
