@@ -43,10 +43,9 @@ Name | Type | Description
 --- | --- | ---
 client_id | string | **Required.** The client ID you received from Nazareth Open Tourism Platform for your app.
 client_secret | string | **Required.** The client secret you received from Nazareth Open Tourism Platform for your app.
-code | string | **Required.**The code you received as a response to Step 1.
+code | string | **Required.** The code you received as a response to Step 1.
 redirect_uri | string | **Required.** The URL in your application where users are sent after authorization.
 grant_type | string | **Required.** Must be 'authorization_code'.
-state | string | **Required.** The unguessable random string you provided in step 1.
 
 **Response**
 
