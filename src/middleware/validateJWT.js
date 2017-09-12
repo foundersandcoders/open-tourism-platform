@@ -12,6 +12,7 @@ const getToken = req => {
 module.exports = opts => {
   const fixedOptions = {
     secret: process.env.JWT_SECRET,
+    credentialsRequired: false,
     getToken
   }
   const jwtOptions = Object.assign(fixedOptions, opts)
