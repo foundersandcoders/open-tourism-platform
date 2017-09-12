@@ -15,7 +15,7 @@ const hasSufficientRole = ({ minSufficientRole }) => user => {
   return orderedRoles.indexOf(user.role) >= orderedRoles.indexOf(minSufficientRole)
 }
 
-const checkUserOwnsResource = ({ resourceType, resourceId }) => user => {
+const checkUserOwnsResource = resourceType => resourceId => user => {
   resourceType.findById(resourceId)
   .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
   .then(doc => {
@@ -44,7 +44,7 @@ module.exports =
       return next(boom.unauthorized(auth.UNAUTHORIZED))
     } else {
       const resourceId = req.params.id
-      return checkUserOwnsResource({ resourceType, resourceId })(req.user)
+      return checkUserOwnsResource(resourceType)(resourceId)(req.user)
       .then(() => next())
       .catch(err => next(err))
     }
