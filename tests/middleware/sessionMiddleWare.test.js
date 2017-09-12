@@ -15,19 +15,19 @@ const checkRole = require('../../src/middleware/rolePermission.js')
 const boomErrors = require('../../src/middleware/boomErrorHandler.js')
 
 // dummy secure route to test on
-server.get('/apps',
+server.get('/test',
   validateJWT(),
   validateUser,
   checkRole({ minRole: roles.SUPER }),
-  (req, res, next) => res.send('RESULTS')
+  (req, res, next) => res.send('RESULTS'),
+  boomErrors
 )
-server.use(boomErrors)
 
-tape('POST /apps with validToken', t => {
+tape('POST /test with validToken', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => makeLoggedInToken(validUser1))
   .then(token => supertest(server)
-    .get('/apps')
+    .get('/test')
     .set('Cookie', `token=${token}`)
     .expect(200)
     .expect('Content-Type', /text/)
@@ -39,11 +39,11 @@ tape('POST /apps with validToken', t => {
   .catch(err => t.end(err))
 })
 
-tape('POST /apps with invalidToken (of a non-existent user)', t => {
+tape('POST /test with invalidToken (of a non-existent user)', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => makeLoggedInToken(validUser2))
   .then(token => supertest(server)
-    .get('/apps')
+    .get('/test')
     .set('Cookie', `token=${token}`)
     .expect(401)
     .expect('Content-Type', /json/)
@@ -56,11 +56,11 @@ tape('POST /apps with invalidToken (of a non-existent user)', t => {
   .catch(err => t.end(err))
 })
 
-tape('POST /apps with validToken, unauthorized role', t => {
+tape('POST /test with validToken, unauthorized role', t => {
   addUserWithHashedPassword(validBasicUser)
   .then(() => makeLoggedInToken(validBasicUser))
   .then(token => supertest(server)
-    .get('/apps')
+    .get('/test')
     .set('Cookie', `token=${token}`)
     .expect(401)
     .expect('Content-Type', /json/)
