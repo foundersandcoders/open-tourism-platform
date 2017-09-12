@@ -1,6 +1,7 @@
 const oauthController = require('../controllers/oauth')
 const sessionController = require('../controllers/session')
 const appsController = require('../controllers/apps')
+const oauthClientController = require('../controllers/oauthClient')
 
 const validateJWT = require('../middleware/validateJWT.js')
 const validateUser = require('../middleware/validateUser.js')
@@ -27,6 +28,10 @@ router.route('/oauth/authorize')
 
 router.route('/oauth/token')
   .post(oauthController.getToken)
+
+router.route('/oauth/clients')
+  .get(validateJWT(), oauthClientController.getAll)
+  .post(validateJWT(), validateUser, oauthClientController.create)
 
 // secure route with dummy handler for now
 router.route('/apps')

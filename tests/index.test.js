@@ -28,6 +28,7 @@ dbConnection.once('open', () => {
 
   // test sessions controller
   require('./controllers/sessions.test.js')
+  require('./controllers/oauthClient.test.js')
 
   // test error handlers
   require('./middleware/customErrorHandler.test.js')
