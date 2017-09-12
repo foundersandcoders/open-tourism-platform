@@ -1,6 +1,7 @@
 const tape = require('tape')
 const supertest = require('supertest')
 const server = require('../../src/server')
+const validateHeaderToken = require('../../src/middleware/validateHeaderToken')
 const permissions = require('../../src/middleware/permissions.js')
 const roles = require('../../src/constants/roles.js')
 
@@ -57,3 +58,15 @@ tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t =
   .catch(err => t.end())
 })
 
+tape('permissions middleware implementation with bad options', t => {
+  const badOptions = {
+    minSufficientRole: roles.ADMIN,
+    owningResourceIsSufficient: true
+  }
+  try {
+    permissions(badOptions)()
+    t.end('should throw a bad implementation error')
+  } catch (err) {
+    t.end()
+  }
+})
