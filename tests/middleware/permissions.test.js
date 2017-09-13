@@ -58,15 +58,3 @@ tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t =
   .catch(err => t.end())
 })
 
-tape('permissions middleware implementation with bad options', t => {
-  const badOptions = {
-    minSufficientRole: roles.ADMIN,
-    owningResourceIsSufficient: true
-  }
-  try {
-    permissions(badOptions)()
-    t.end('should throw a bad implementation error')
-  } catch (err) {
-    t.end()
-  }
-})

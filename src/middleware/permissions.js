@@ -1,9 +1,21 @@
+const url = require('url')
 const boom = require('boom')
 const roles = require('../constants/roles.js')
 const { auth, messages: errMessages } = require('../constants/errors.json')
 const { rejectIfNull } = require('../db/utils')
 const { oauthServer } = require('../controllers/oauth')
+
+const Event = require('../models/Event')
+const Place = require('../models/Place')
+const Product = require('../models/Product')
 const User = require('../models/User')
+
+const routeResourceMapping = {
+  events: Event,
+  places: Place,
+  products: Product,
+  users: User
+}
 
 const hasSufficientRole = ({ minSufficientRole }) => user => {
   const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
@@ -33,10 +45,13 @@ const checkUserOwnsResource = resourceType => resourceId => user => {
 }
 
 module.exports =
-  ({ minSufficientRole, resourceType, owningResourceIsSufficient }) => (req, res, next) => {
-    // throw error on initialisation if passed options are not valid
+  ({ minSufficientRole, owningResourceIsSufficient }) => (req, res, next) => {
+    const pathName = url.parse(req.url).pathname
+    // currently needs url to be of the form e.g. '/events/:id'
+    const resourceType = routeResourceMapping[pathName.split('/')[1]]
+
     if (owningResourceIsSufficient && !resourceType) {
-      throw boom.badImplementation()
+      next(boom.badImplementation())
     }
 
     if (!req.user || !req.user.id) {
