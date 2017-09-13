@@ -16,7 +16,7 @@ module.exports = fieldsMinRoles => (req, res, next) => {
 
   if (unauthorizedFields.length > 0) {
     const message = errMessages.FIELD_UNAUTHORIZED + unauthorizedFields.join(', ')
-    return next(boom.unauthorized(message)
+    return next(boom.unauthorized(message))
   }
 
   next()
