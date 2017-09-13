@@ -5,9 +5,11 @@ const productController = require('../controllers/product')
 
 const validateJWT = require('../middleware/validateJWT')
 const validateHeaderToken = require('../middleware/validateHeaderToken')
+const objectToDotNotation = require('../middleware/objectToDotNotation')
 
 const router = require('express').Router()
 
+router.use(objectToDotNotation)
 // user routes
 router.route('/users')
   .get(userController.getAll)
