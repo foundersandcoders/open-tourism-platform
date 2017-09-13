@@ -10,13 +10,6 @@ const Place = require('../models/Place')
 const Product = require('../models/Product')
 const User = require('../models/User')
 
-const routeResourceMapping = {
-  events: Event,
-  places: Place,
-  products: Product,
-  users: User
-}
-
 const hasSufficientRole = ({ minSufficientRole }) => user => {
   const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
 
@@ -44,11 +37,21 @@ const checkUserOwnsResource = resourceType => resourceId => user => {
   )
 }
 
+const getResourceType = req => {
+  // currently needs url to be of the form '/<resource>/:id'
+  const routeResourceMapping = {
+    events: Event,
+    places: Place,
+    products: Product,
+    users: User
+  }
+  const pathName = url.parse(req.url).pathname
+  return routeResourceMapping[pathName.split('/')[1]]
+}
+
 module.exports =
   ({ minSufficientRole, owningResourceIsSufficient }) => (req, res, next) => {
-    const pathName = url.parse(req.url).pathname
-    // currently needs url to be of the form e.g. '/events/:id'
-    const resourceType = routeResourceMapping[pathName.split('/')[1]]
+    const resourceType = getResourceType(req)
 
     if (owningResourceIsSufficient && !resourceType) {
       next(boom.badImplementation())
