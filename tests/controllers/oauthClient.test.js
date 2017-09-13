@@ -21,7 +21,6 @@ tape('emptying db.', t => {
   .catch(err => t.end(err))
 })
 
-// Tests for: GET /users
 tape('GET /oauth/clients when nothing in database', t => {
   addUserWithHashedPassword(validUser1)
   .then(() => makeLoggedInToken(validUser1))
