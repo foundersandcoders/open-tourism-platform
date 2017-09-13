@@ -3,7 +3,6 @@ const boom = require('boom')
 const roles = require('../constants/roles.js')
 const { auth, messages: errMessages } = require('../constants/errors.json')
 const { rejectIfNull } = require('../db/utils')
-const { oauthServer } = require('../controllers/oauth')
 
 const Event = require('../models/Event')
 const Place = require('../models/Place')

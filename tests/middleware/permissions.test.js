@@ -1,9 +1,5 @@
 const tape = require('tape')
-const supertest = require('supertest')
-const server = require('../../src/server')
-const validateHeaderToken = require('../../src/middleware/validateHeaderToken')
 const permissions = require('../../src/middleware/permissions.js')
-const roles = require('../../src/constants/roles.js')
 
 const checkUserOwnsResource = permissions.checkUserOwnsResource
 
@@ -43,7 +39,7 @@ tape('checkUserOwnsResource with resource \'User\', and the correct user', t => 
 tape('checkUserOwnsResource with resource \'User\', and an incorrect user', t => {
   checkUserOwnsResource(User)(user.id)(wrongUser)
   .then(() => t.end('promise should reject, as user is wrong'))
-  .catch(err => t.end())
+  .catch(() => t.end())
 })
 
 tape('checkUserOwnsResource with resource \'Event\', and the correct user', t => {
@@ -55,6 +51,5 @@ tape('checkUserOwnsResource with resource \'Event\', and the correct user', t =>
 tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t => {
   checkUserOwnsResource(Event)(event.id)(wrongUser)
   .then(() => t.end('promise should reject, as user is wrong'))
-  .catch(err => t.end())
+  .catch(() => t.end())
 })
-
