@@ -9,6 +9,7 @@ const objectToDotNotation = require('../middleware/objectToDotNotation')
 
 const router = require('express').Router()
 
+// Use custom middleware that flattens req.body objects
 router.use(objectToDotNotation)
 // user routes
 router.route('/users')

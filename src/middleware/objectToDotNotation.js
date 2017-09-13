@@ -1,4 +1,3 @@
-
 const flattenObject = (oldObject) => {
   const setObject = {}
   Object.keys(oldObject).forEach((key) => {
@@ -20,3 +19,5 @@ module.exports = (req, res, next) => {
   }
   return next()
 }
+
+module.exports.flattenObject = flattenObject
