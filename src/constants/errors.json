@@ -25,7 +25,9 @@
     "NO_CLIENT_ID": "No client_id provided",
     "NO_REDIRECT_URI": "No redirect_uri provided",
     "NO_STATE": "No state provided",
-    "INCORRECT_CLIENT_ID": "Incorrect client_id"
+    "INCORRECT_CLIENT_ID": "Incorrect client_id",
+
+    "EXPIRED_JWT": "jwt expired"
   },
   "auth": {
     "UNAUTHORIZED":"You are not authorised to access this resource",
