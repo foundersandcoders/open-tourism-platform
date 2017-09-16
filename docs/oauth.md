@@ -38,14 +38,15 @@ state | string | **Required.** An unguessable random string. It is used to prote
 
 If the user accepts your request, Nazareth Open Tourism Platform redirects back to your site with a temporary authorization code in a `code` query parameter in the URL, as well as the state you provided in the previous step in a `state` query parameter. If the states don't match, the request was created by a (potentially malicious) third party and the process should be aborted.
 
-Exchange the `code` for an access token by sending an https `POST` request to the following URL (including the parameters below in the body of the request):
+Exchange the `code` for an access token by sending an https `POST` request to the following URL (including the parameters below in the payload of the request):
 
 ```
 POST https://nazareth-open-tourism-platform.herokuapp.com/oauth/token
 ```
 
-Notes:
+**Important Notes:**
 - The request must be sent with the `Content-Type` header set to `application/x-www-form-urlencoded`.
+- The payload of the request must be in a querystring format, e.g. using the Node core module [querystring](https://nodejs.org/api/querystring.html#querystring_querystring_stringify_obj_sep_eq_options):
 - The request should be sent as soon as the authorization code is received.
 
 **Parameters**
@@ -82,6 +83,10 @@ The access token allows you to make requests to the API on a behalf of a user (S
 ```
 Authorization: Bearer <access_token>
 ```
+
+You may also want to:
+- encrypt the access_token and store it in a cookie or token
+- store the `access_token` in a database
 
 ### Refresh Tokens
 
