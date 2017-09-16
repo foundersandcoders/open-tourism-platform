@@ -17,7 +17,7 @@ const boomErrors = require('../../src/middleware/boomErrorHandler.js')
 // dummy secure route to test on
 server.get('/test',
   validateJWT(),
-  validateUser,
+  validateUser(),
   checkRole({ minRole: roles.SUPER }),
   (req, res, next) => res.send('RESULTS'),
   boomErrors

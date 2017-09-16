@@ -15,10 +15,10 @@ router.route('/register')
 
 router.route('/oauth/authorize')
   .get(
-    validateJWT({ credentialsRequired: false }),
+    validateJWT(),
     oauthController.getAuthorizePage
   )
-  .post(validateJWT(), oauthController.getAuthorizationCode)
+  .post(validateJWT({ credentialsRequired: true }), oauthController.getAuthorizationCode)
 
 router.route('/oauth/token')
   .post(oauthController.getToken)
