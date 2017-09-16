@@ -63,3 +63,15 @@ tape('GET /register', t => {
       t.end()
     })
 })
+
+tape('GET /oauth/register-app route', t => {
+  supertest(server)
+    .get('/oauth/register-app')
+    .expect(200)
+    .expect('Content-Type', /html/)
+    .end((err, res) => {
+      if (err) t.fail(err)
+      t.ok(res.text.includes('Register an app'), 'should return page including "Register an app"')
+      t.end()
+    })
+})

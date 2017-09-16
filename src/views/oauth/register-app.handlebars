@@ -1,0 +1,21 @@
+<form class="{{> classes/form }}" method="POST" action="/oauth/register-app">
+
+  <h2 class="{{> classes/formTitle }}">Register an app</h2>
+
+  <span>(required fields are signalled with a *)</span>
+
+  <label class="{{> classes/formLabel }}">App Name:*
+    <input class="{{> classes/formInput }}" type="text" name="name" required>
+  </label>
+
+  <label class="{{> classes/formLabel }}">Redirect URI option 1:*
+    <input class="{{> classes/formInput }}" type="text" name="redirectUri" required>
+  </label>
+
+  <label class="{{> classes/formLabel }}">Redirect URI option 2:
+    <input class="{{> classes/formInput }}" type="text" name="redirectUri_2">
+  </label>
+
+  <button class="{{> classes/formSubmit }}" type="submit" value="submit">Submit</button>
+
+</form>
