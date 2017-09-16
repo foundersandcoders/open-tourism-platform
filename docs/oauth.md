@@ -36,9 +36,9 @@ state | string | **Required.** An unguessable random string. It is used to prote
 
 ### 3. Receive a temporary "authorization code" and request an "access_token"
 
-If the user accepts your request, Nazareth Open Tourism Platform redirects back to your site with a temporary authorization code in a `code` query parameter in the URL as well as the state you provided in the previous step in a `state` query parameter. If the states don't match, the request was created by a (potentially malicious) third party and the process should be aborted.
+If the user accepts your request, Nazareth Open Tourism Platform redirects back to your site with a temporary authorization code in a `code` query parameter in the URL, as well as the state you provided in the previous step in a `state` query parameter. If the states don't match, the request was created by a (potentially malicious) third party and the process should be aborted.
 
-Exchange the `code` for an access token by sending an https `POST` request to the following URL (including the query parameters below):
+Exchange the `code` for an access token by sending an https `POST` request to the following URL (including the parameters below in the body of the request):
 
 ```
 POST https://nazareth-open-tourism-platform.herokuapp.com/oauth/token
@@ -48,7 +48,7 @@ Notes:
 - The request must be sent with the `Content-Type` header set to `application/x-www-form-urlencoded`.
 - The request should be sent as soon as the authorization code is received.
 
-**Query parameters**
+**Parameters**
 
 Name | Type | Description
 --- | --- | ---
