@@ -7,7 +7,7 @@ const User = require('../../src/models/User')
 const Event = require('../../src/models/Event')
 
 const { user } = require('../fixtures/users.json')
-const { event } = require('../fixtures/events.json')
+const { validEvent1 } = require('../fixtures/events.json')
 const wrongUser = { id: 'wrong' }
 
 // prepare the db
@@ -23,7 +23,7 @@ tape('emptying db.', t => {
 tape('filling db.', t => {
   Promise.all([
     User.create(user),
-    Event.create(event)
+    Event.create(validEvent1)
   ])
   .then(() => t.end())
   .catch(err => t.end(err))
@@ -43,13 +43,13 @@ tape('checkUserOwnsResource with resource \'User\', and an incorrect user', t =>
 })
 
 tape('checkUserOwnsResource with resource \'Event\', and the correct user', t => {
-  checkUserOwnsResource(Event)(event.id)(user)
+  checkUserOwnsResource(Event)(validEvent1.id)(user)
   .then(() => t.end())
   .catch(err => t.end(err))
 })
 
 tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t => {
-  checkUserOwnsResource(Event)(event.id)(wrongUser)
+  checkUserOwnsResource(Event)(validEvent1.id)(wrongUser)
   .then(() => t.end('promise should reject, as user is wrong'))
   .catch(() => t.end())
 })
