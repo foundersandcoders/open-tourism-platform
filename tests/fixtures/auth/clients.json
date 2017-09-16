@@ -4,7 +4,7 @@
 		"name": "the client",
 		"user": "5986abad5e2d852cb1ee6bce",
 		"secret": "secret",
-		"grants": [ "authorization_code" ],
+		"grants": [ "authorization_code", "refresh_token" ],
 		"redirectUris": [ "https://www.test.com" ]
 	}
 }

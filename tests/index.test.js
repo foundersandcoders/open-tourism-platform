@@ -18,33 +18,33 @@ dbConnection.once('open', () => {
     .catch(err => t.end(err))
   })
   // test the test helper functions
-  require('./helpers/index.test.js')
+  // require('./helpers/index.test.js')
 
-  // test api controllers
-  require('./controllers/user.test.js')
-  require('./controllers/place.test.js')
-  require('./controllers/event.test.js')
-  require('./controllers/product.test.js')
+  // // test api controllers
+  // require('./controllers/user.test.js')
+  // require('./controllers/place.test.js')
+  // require('./controllers/event.test.js')
+  // require('./controllers/product.test.js')
 
-  // test sessions controller
-  require('./controllers/sessions.test.js')
+  // // test sessions controller
+  // require('./controllers/sessions.test.js')
 
-  // test error handlers
-  require('./middleware/customErrorHandler.test.js')
-  require('./middleware/mongoErrorHandler.test.js')
-  require('./middleware/mongooseErrorHandler.test.js')
-  require('./middleware/boomErrorHandler.test.js')
+  // // test error handlers
+  // require('./middleware/customErrorHandler.test.js')
+  // require('./middleware/mongoErrorHandler.test.js')
+  // require('./middleware/mongooseErrorHandler.test.js')
+  // require('./middleware/boomErrorHandler.test.js')
 
-  // test auth middleware
-  require('./middleware/authHelpers.test.js')
-  require('./middleware/validateHeaderToken.test.js')
-  require('./middleware/sessionMiddleware.test.js')
+  // // test auth middleware
+  // require('./middleware/authHelpers.test.js')
+  // require('./middleware/validateHeaderToken.test.js')
+  // require('./middleware/sessionMiddleware.test.js')
 
-  // test auth routes
-  require('./auth.test.js')
+  // // test auth routes
+  // require('./auth.test.js')
 
-  // test oauth routes
-  require('./oauth/authorize.test.js')
+  // // test oauth routes
+  // require('./oauth/authorize.test.js')
 
   // test oauth flow
   require('./oauth/integration.test.js')

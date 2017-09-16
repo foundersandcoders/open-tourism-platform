@@ -29,6 +29,7 @@ tape('emptying db.', t => {
 
 // the first test creates the authCode, the second test uses it
 let authCode
+let refreshToken
 
 // Tests for: POST /oauth/authorize
 tape('POST /oauth/authorize should successfully redirect and create authorization code', t => {
@@ -80,6 +81,31 @@ tape('POST /oauth/token should send back a token', t => {
     .expect(200)
     .end((err, res) => {
       t.error(err)
+      t.ok(res.body.access_token, 'response body should contain access_token')
+      t.equal(res.body.token_type, 'Bearer', 'response body.token_type should be "Bearer"')
+      t.ok(res.body.expires_in, 'response body should contain expires_in')
+      t.ok(res.body.refresh_token, 'response body should contain refresh_token')
+      refreshToken = res.body.refresh_token
+      // console.log(refreshToken)
+      t.end()
+    })
+})
+
+tape('POST /oauth/token with refresh should send back a token', t => {
+  supertest(server)
+    .post('/oauth/token')
+    .set('Content-Type', 'application/x-www-form-urlencoded')
+    .send({
+      grant_type: 'refresh_token',
+      client_id: client._id,
+      client_secret: client.secret,
+      redirect_uri: client.redirectUris[0],
+      refresh_token: refreshToken
+    })
+    // .expect(200)
+    .end((err, res) => {
+      t.error(err)
+      // console.log(res)
       t.ok(res.body.access_token, 'response body should contain access_token')
       t.equal(res.body.token_type, 'Bearer', 'response body.token_type should be "Bearer"')
       t.ok(res.body.expires_in, 'response body should contain expires_in')
