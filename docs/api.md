@@ -870,51 +870,49 @@ Below are listed the options avaliable for each of the categories across the API
 
 ### Accessibility options
   - Audio recordings
-  - Braille
   - Big fonts
+  - Braille
   - Carer
-  - Place for guide dog
-  - SMS messaging
-  - Sign language
-  - Good lighting
-  - Carer
-  - WheelChair access
   - Disabled parking
   - Disabled toilets
-  - Carer
+  - Good lighting
+  - Place for guide dog
+  - Sign language
+  - SMS messaging
+  - Wheelchair access
 
 ### Place categories
   - cafe
+  - education
+  - food and drink
+  - healthcare
+  - municipal
   - music venue
   - religious site
-  - food and drink
-  - education
   - retail
   - sport
-  - municipal
-  - healthcare
 
 ### Event categories
-  - music
+  - competition
+  - conference
+  - cultural event
   - dining
   - educational
-  - conference
-  - sport
-  - competition
   - launch
-  - party
-  - wedding
-  - cultural event
+  - music
   - miscellaneous-
+  - party
+  - sport
+  - wedding
 
 ### Product categories
-  - jewellery
+  - calligraphy
   - clothing
   - crochet
-  - calligraphy
-  - embroidery
-  - metalwork
-  - food
   - drink
-  - pottery
+  - embroidery
+  - food
   - glassware
+  - jewellery
+  - metalwork
+  - pottery
