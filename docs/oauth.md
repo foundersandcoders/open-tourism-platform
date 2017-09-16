@@ -7,13 +7,20 @@ Use this guide to enable other users to authorize your OAuth app.
 ## Web Application Flow
 The flow to authorize users for your app is:
 
-- Users are prompted to authorize your app
-- Users are redirected back to your site by Nazareth Open Tourism Platform
+- Register your app with Nazareth Open Tourism Platform to obtain a `client_id` and `client_secret`
+- Prompt users to authorize your app
+- Receive a temporary `authorization_code` and request an `access_token`
 - Access the Nazareth Open Tourism Platform API with the user's access token
 
-### 1. Users are prompted to authorize your app
+### 1. Register your app with Nazareth Open Tourism Platform to obtain a "client_id" and "client_secret"
 
-When users select to log in to your app with the Nazareth Open Tourism Platform, they should be redirected to the page to authorize your app, at the URL below. If necessary, the user will be prompted to log in to the Nazareth Open Tourism Platform before reaching this page.
+If you want to allow users to log in to your app using their Nazareth Open Tourism Platform account, first you must register your app with the Nazareth Open Tourism Platform. Currently the way to do this is to contact us or raise an issue [here](https://github.com/foundersandcoders/open-tourism-platform/issues) to indicate you would like to register your app. We will provide you with a `client_id` and `client_secret`, which must not be made public. 
+
+> N.B. In the OAuth flow, the term `client` refers to the app which is using login via the Nazareth Open Tourism Platform.
+
+### 2. Prompt users to authorize your app
+
+When users select to log in to your app with the Nazareth Open Tourism Platform, they should be redirected to the page to authorize your app, at the following URL (including the query parameters listed below):
 
 ```
 GET https://nazareth-open-tourism-platform.herokuapp.com/oauth/authorize
@@ -25,13 +32,16 @@ Name | Type | Description
 --- | --- | ---
 client_id | string | **Required.** The client ID you received from Nazareth Open Tourism Platform for your app.
 redirect_uri | string | **Required.** The URL in your application where users will be sent after authorization.
-state | string | **Required.** An unguessable random string. It is used to protect against cross-site request forgery attacks.
+state | string | **Required.** An unguessable random string. It is used to protect against malicious cross-site request forgery attacks.
 
-### 2. Users are redirected back to your site by Nazareth Open Tourism Platform
+### 3. Receive a temporary "authorization code" and request an "access_token"
 
-If the user accepts your request, Nazareth Open Tourism Platform redirects back to your site with a temporary authorizaion code in a `code` parameter as well as the state you provided in the previous step in a `state` parameter. If the states don't match, the request was created by a third party and the process should be aborted.
+If the user accepts your request, Nazareth Open Tourism Platform redirects back to your site with a temporary authorization code in a `code` query parameter in the URL as well as the state you provided in the previous step in a `state` query parameter. If the states don't match, the request was created by a (potentially malicious) third party and the process should be aborted.
 
-Exchange the `code` for an access token:
+Exchange the `code` for an access token by sending a request (immediately) to the following URL (including the query parameters below):
+
+> N.B. The request should be sent with the following header:
+'Content-Type': 'application/x-www-form-urlencoded'
 
 ```
 POST https://nazareth-open-tourism-platform.herokuapp.com/oauth/token
@@ -43,13 +53,13 @@ Name | Type | Description
 --- | --- | ---
 client_id | string | **Required.** The client ID you received from Nazareth Open Tourism Platform for your app.
 client_secret | string | **Required.** The client secret you received from Nazareth Open Tourism Platform for your app.
-code | string | **Required.** The code you received as a response to Step 1.
+code | string | **Required.** The authorization code you received as a response to Step 1.
 redirect_uri | string | **Required.** The URL in your application where users are sent after authorization.
 grant_type | string | **Required.** Must be 'authorization_code'.
 
 **Response**
 
-The response takes the following form:
+The response body takes the following form:
 ```
 {
   access_token: <access_token>
@@ -64,7 +74,7 @@ The response takes the following form:
 - `expires_in` will be the number of minutes until the token expires
 - `refresh_token` is another token which can be used to get a new access_token when the previous one has expired.
 
-### 3. Access the Nazareth Open Tourism Platform API with the user's access token
+### 4. Access the Nazareth Open Tourism Platform API with the user's access token
 
 The access token allows you to make requests to the API on a behalf of a user (See the API docs [here](./api.md)). You should pass the access_token in the `Authorization` header like so:
 
