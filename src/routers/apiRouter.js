@@ -2,6 +2,8 @@ const userController = require('../controllers/user')
 const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
+const validateJWT = require('../middleware/validateJWT')
+const validateHeaderToken = require('../middleware/validateHeaderToken')
 
 const router = require('express').Router()
 
@@ -11,7 +13,11 @@ router.route('/users')
   .post(userController.create)
 router.route('/users/:id')
   .get(userController.getById)
-  .put(userController.update)
+  .put(
+    validateJWT(),
+    validateHeaderToken,
+    userController.update
+  )
   .delete(userController.delete)
 
   // place routes
