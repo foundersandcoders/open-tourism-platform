@@ -1,7 +1,7 @@
 const roles = require('./roles')
 
 module.exports = {
-	User: {
+  User: {
     put: {
       minRole: roles.ADMIN,
       ownerIsPermitted: true
