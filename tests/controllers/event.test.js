@@ -3,9 +3,14 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const Place = require('../../src/models/Place.js')
 const Event = require('../../src/models/Event.js')
+const User = require('../../src/models/User.js')
+
 const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 const { validPlace1 } = require('../fixtures/places.json')
+const { validUser1, validBasicUser } = require('../fixtures/users.json')
+
+const { makeLoggedInToken } = require('../../src/controllers/session.js')
 
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
@@ -214,6 +219,31 @@ tape('POST /events adding events with invalid categories - empty array', t => {
 })
 
 // Tests for: PUT /events/:id
+tape('PUT /events/:id, unauthorized as not logged in', t => {
+  supertest(server)
+    .put('/events/id')
+    .send(validEvent1)
+    .expect(401)
+  .then(() => t.end())
+  .catch(err => t.end(err))
+})
+
+tape('PUT /events/:id, unauthorized as basic user', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser),
+    Event.create(validEvent1)
+  ])
+  .then(([ _, token, event ]) => supertest(server)
+    .put(`/events/${event.id}`)
+    .set('Cookie', `token=${token}`)
+    .send(validEvent1)
+    .expect(401)
+  )
+  .then(() => t.end())
+  .catch(err => t.end(err))
+})
+
 tape('PUT /events/:id with invalid id', t => {
   supertest(server)
     .put('/events/invalidId')

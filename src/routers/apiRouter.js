@@ -51,7 +51,14 @@ router.route('/events')
   .post(eventController.create)
 router.route('/events/:id')
   .get(eventController.getById)
-  .put(eventController.update)
+  .put(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Event.update),
+    fieldPermissions(api.Event.fields),
+    eventController.update
+  )
   .delete(eventController.delete)
 
   // product routes
