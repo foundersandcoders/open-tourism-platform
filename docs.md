@@ -875,7 +875,7 @@ Status: 204 No Content
 
 This is a secure route and requires users to be logged in directly on the platform to access it.
 
-Users can register clients on the platform to allow Oauth2 flow with users.
+Users can register clients on the platform to allow Oauth2 flow with users. This `GET` route allows logged in users to see which clients they have created.
 
 
 **Sample Response**
@@ -884,11 +884,11 @@ Status: 200 OK
 
 [
 {
-  "_id": "59b685121d63cc14069a5f82",
+  "_id": "59b685121d63cc14069a4f82",
   "name": "myNewApp",
-  "secret": "idXgKKRGZ9mnahkl",
+  "secret": "idXgKKRGZ9mnbhkl",
   "__v": 0,
-  "user": "59abbd1ec76ace6d19534033",
+  "user": "59abbd1ec76ace6d19534073",
   "redirectUris": [
   "http://localhost:8000/token"
   ],
