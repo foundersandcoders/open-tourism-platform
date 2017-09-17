@@ -5,25 +5,25 @@ const { hasSufficientRole } = require('./permissions')
 
 // const checkFieldPermission = permissionedFields => field =>
 
-const getUnauthorizedFields = fieldToPermissionsMapping => fieldsToChange => user => {
-  const permissionedFields = Object.keys(fieldToPermissionsMapping)
+const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
+  const permissionedFields = Object.keys(fieldPermissions)
   return fieldsToChange
     // filter out fields which are not permissioned
     .filter(field => permissionedFields.includes(field))
       // filter down to fields which user is not permitted to write to
     .filter(field => {
-      const { minRole, ownerIsPermitted } = fieldToPermissionsMapping[field]
+      const { minRole, ownerIsPermitted } = fieldPermissions[field]
       return !hasSufficientRole({ minRole })(user) &&
         !(ownerIsPermitted && user && user.isResourceOwner)
     })
 }
 
-module.exports = fieldToPermissionsMapping => (req, res, next) => {
-  const permissionedFields = Object.keys(fieldToPermissionsMapping)
+module.exports = fieldPermissions => (req, res, next) => {
+  const permissionedFields = Object.keys(fieldPermissions)
   const fieldsToChange = Object.keys(req.body)
 
   const unauthorizedFields =
-    getUnauthorizedFields(fieldToPermissionsMapping)(fieldsToChange)(req.user)
+    getUnauthorizedFields(fieldPermissions)(fieldsToChange)(req.user)
 
   if (unauthorizedFields.length > 0) {
     const message = errMessages.FIELD_UNAUTHORIZED + unauthorizedFields.join(', ')
