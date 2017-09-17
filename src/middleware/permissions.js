@@ -75,7 +75,6 @@ module.exports =
       next()
     })
     .catch(err => next(err))
-    
   }
 
 // export functions for testing

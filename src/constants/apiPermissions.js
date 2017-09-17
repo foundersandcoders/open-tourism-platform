@@ -20,5 +20,14 @@ module.exports = {
       _id: { minRole: roles.SUPER },
       username: { minRole: roles.SUPER, ownerIsPermitted: true }
     }
+  },
+  Event: {
+
+  },
+  Product: {
+
+  },
+  Place: {
+
   }
 }

@@ -10,7 +10,6 @@ const permissions = require('../middleware/permissions')
 const fieldPermissions = require('../middleware/fieldPermissions')
 
 const api = require('../constants/apiPermissions')
-const roles = require('../constants/roles')
 
 const router = require('express').Router()
 
