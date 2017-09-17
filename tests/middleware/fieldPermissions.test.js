@@ -1,6 +1,4 @@
 const tape = require('tape')
-const supertest = require('supertest')
-const server = require('../../src/server')
 
 const { getUnauthorizedFields } = require('../../src/middleware/fieldPermissions.js')
 const roles = require('../../src/constants/roles.js')
@@ -53,4 +51,3 @@ tape('test getUnauthorizedFields with varied fields', t => {
   )
   t.end()
 })
-
