@@ -6,7 +6,7 @@ module.exports = {
   },
   Event: {
     update: {
-      minRole: roles.ADMIN
+      minRole: roles.ADMIN,
       ownerIsPermitted: true  
     },
     delete: {
