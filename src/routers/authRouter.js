@@ -1,13 +1,9 @@
 const oauthController = require('../controllers/oauth')
 const sessionController = require('../controllers/session')
-const appsController = require('../controllers/apps')
 const oauthClientController = require('../controllers/oauthClient')
 
 const validateJWT = require('../middleware/validateJWT.js')
 const validateUser = require('../middleware/validateUser.js')
-const checkRole = require('../middleware/rolePermission.js')
-
-const roles = require('../constants/roles.js')
 
 const router = require('express').Router()
 
@@ -21,25 +17,16 @@ router.route('/register')
 
 router.route('/oauth/authorize')
   .get(
-    validateJWT({ credentialsRequired: false }),
+    validateJWT(),
     oauthController.getAuthorizePage
   )
-  .post(validateJWT(), oauthController.getAuthorizationCode)
+  .post(validateJWT({ credentialsRequired: true }), oauthController.getAuthorizationCode)
 
 router.route('/oauth/token')
   .post(oauthController.getToken)
 
 router.route('/oauth/clients')
-  .get(validateJWT(), oauthClientController.getAll)
-  .post(validateJWT(), validateUser, oauthClientController.create)
-
-// secure route with dummy handler for now
-router.route('/apps')
-  .get(
-    validateJWT(),
-    validateUser,
-    checkRole({ minRole: roles.SUPER }),
-    appsController.get
-  )
+  .get(validateJWT({ credentialsRequired: true }), oauthClientController.getAll)
+  .post(validateJWT({ credentialsRequired: true }), validateUser(), oauthClientController.create)
 
 module.exports = router

@@ -7,7 +7,7 @@ const oauthClientController = module.exports = {}
 
 oauthClientController.getAll = (req, res, next) => {
   // sends back array of users, filtered by queries
-  Client.find(req.query)
+  Client.find()
     .then(clients => res.status(200).send(clients))
     .catch(next)
 }
