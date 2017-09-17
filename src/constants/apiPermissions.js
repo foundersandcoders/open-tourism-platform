@@ -3,7 +3,7 @@ const roles = require('./roles')
 module.exports = {
   User: {
     put: {
-      minRole: roles.ADMIN,
+      minRole: roles.SUPER,
       ownerIsPermitted: true
     },
     delete: {
