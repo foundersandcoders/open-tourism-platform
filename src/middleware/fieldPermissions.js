@@ -12,7 +12,7 @@ module.exports = fieldsPermissions => (req, res, next) => {
       const { minRole, ownerIsPermitted } = fieldsPermissions[field]
       // filter down to fields which user is not permitted to write to
       return !hasSufficientRole({ minRole })(req.user)
-        && !(ownerIsPermitted && req.user.isResourceOwner)
+        && !(ownerIsPermitted && req.user && req.user.isResourceOwner)
     })
 
   if (unauthorizedFields.length > 0) {

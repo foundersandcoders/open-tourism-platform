@@ -17,7 +17,7 @@ const hasSufficientRole = ({ minRole }) => user => {
     throw boom.badImplementation()
   }
 
-  return orderedRoles.indexOf(user.role) >= orderedRoles.indexOf(minRole)
+  return user && (orderedRoles.indexOf(user.role) >= orderedRoles.indexOf(minRole))
 }
 
 const checkUserOwnsResource = resourceType => resourceId => user => {
