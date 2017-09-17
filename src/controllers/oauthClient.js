@@ -13,8 +13,8 @@ oauthClientController.getAll = (req, res, next) => {
 }
 
 oauthClientController.create = (req, res, next) => {
-  // receives json for user in body
-  // sends back created user
+  // receives json for client in body
+  // sends back created client with secret and id
   const secret = randtoken.generate(16)
   const newClient = new Client({
     name: req.body.name,
