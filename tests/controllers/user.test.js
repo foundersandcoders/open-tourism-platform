@@ -5,44 +5,56 @@ const User = require('../../src/models/User.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validUser1, validUser2, invalidUser1 } = require('../fixtures/users.json')
 
+const { makeLoggedInToken } = require('../../src/controllers/session.js')
+
 // Tests for: GET /users
-tape('GET /users when nothing in database', t => {
+tape('GET /users when not logged in', t => {
   supertest(server)
     .get('/users')
-    .expect(200)
+    .expect(401)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.length, 0, 'should initially return empty array')
-      dropCollectionAndEnd(User, t)
+      t.pass('Denied access')
+      t.end()
     })
 })
 
-tape('GET /users, with and without query parameters', t => {
+tape('GET /users, when logged in, without query parameters', t => {
   User.create(validUser1, validUser2)
-    .then(() => {
-      supertest(server)
+    .then(() => makeLoggedInToken(validUser1))
+    .then((token) => {
+      return supertest(server)
         .get('/users')
         .expect(200)
+        .set('Cookie', `token=${token}`)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          // check our get path returns that user correctly
-          t.equal(res.body.length, 2, 'response body should be an array with length 2')
-          t.ok(res.body.map((user) => user.username).includes(validUser1.username), 'mattlub has been added')
-          t.ok(res.body.map((user) => user.username).includes(validUser2.username), 'm4v15 has been added')
-        })
-      supertest(server)
+    })
+    .then(res => {
+      // check our get path returns that user correctly
+      t.equal(res.body.length, 2, 'response body should be an array with length 2')
+      t.ok(res.body.map((user) => user.username).includes(validUser1.username), 'mattlub has been added')
+      t.ok(res.body.map((user) => user.username).includes(validUser2.username), 'm4v15 has been added')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+})
+
+tape('GET /users, when logged in, with query parameters', t => {
+  User.create(validUser1, validUser2)
+    .then(() => makeLoggedInToken(validUser1))
+    .then((token) => {
+      return supertest(server)
         .get('/users?username=mattlub')
         .expect(200)
+        .set('Cookie', `token=${token}`)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          // check our get path returns that user correctly
-          t.equal(res.body.length, 1, 'query response body should be an array with length 1')
-          t.equal(res.body[0].username, 'mattlub', 'results should be filtered correctly by url query parameters')
-          dropCollectionAndEnd(User, t)
-        })
+    })
+    .then(res => {
+      // check our get path returns that user correctly
+      t.equal(res.body.length, 1, 'query response body should be an array with length 1')
+      t.equal(res.body[0].username, 'mattlub', 'results should be filtered correctly by url query parameters')
+      dropCollectionAndEnd(User, t)
     })
     .catch(err => t.end(err))
 })

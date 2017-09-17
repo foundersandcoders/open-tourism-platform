@@ -16,7 +16,13 @@ const router = require('express').Router()
 
 // user routes
 router.route('/users')
-  .get(userController.getAll)
+  .get( 
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.User.getAll),
+    userController.getAll
+  )
   .post(
     // validateJWT(),
     // validateUser(),

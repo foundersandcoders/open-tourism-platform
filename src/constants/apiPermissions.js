@@ -2,7 +2,13 @@ const roles = require('./roles')
 
 module.exports = {
   User: {
-    put: {
+    getAll: { minRole: roles.SUPER },
+    getById: {
+      minRole: roles.SUPER,
+      ownerIsPermitted: true
+    },
+    create: { minRole: roles.SUPER },
+    update: {
       minRole: roles.ADMIN,
       ownerIsPermitted: true
     },
