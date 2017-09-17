@@ -9,15 +9,15 @@ const Place = require('../models/Place')
 const Product = require('../models/Product')
 const User = require('../models/User')
 
-const hasSufficientRole = ({ minSufficientRole }) => user => {
+const hasSufficientRole = ({ minRole }) => user => {
   const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
 
   // throw error on initialisation if passed option is not valid
-  if (!orderedRoles.includes(minSufficientRole)) {
+  if (!orderedRoles.includes(minRole)) {
     throw boom.badImplementation()
   }
 
-  return orderedRoles.indexOf(user.role) >= orderedRoles.indexOf(minSufficientRole)
+  return orderedRoles.indexOf(user.role) >= orderedRoles.indexOf(minRole)
 }
 
 const checkUserOwnsResource = resourceType => resourceId => user => {
@@ -49,23 +49,32 @@ const getResourceType = req => {
 }
 
 module.exports =
-  ({ minSufficientRole, owningResourceIsSufficient }) => (req, res, next) => {
+  ({ minRole, ownerIsPermitted }) => (req, res, next) => {
     const resourceType = getResourceType(req)
 
-    if (owningResourceIsSufficient && !resourceType) {
+    if (ownerIsPermitted && !resourceType) {
       next(boom.badImplementation())
     }
 
     if (!req.user || !req.user.id) {
       return next(boom.unauthorized(auth.UNAUTHORIZED))
-    } else if (hasSufficientRole({ minSufficientRole })(req.user)) {
+    }
+
+    else if (hasSufficientRole({ minRole })(req.user)) {
       return next()
-    } else if (!owningResourceIsSufficient) {
+    }
+
+    else if (!ownerIsPermitted) {
       return next(boom.unauthorized(auth.UNAUTHORIZED))
-    } else {
+    }
+
+    else {
       const resourceId = req.params.id
       return checkUserOwnsResource(resourceType)(resourceId)(req.user)
-      .then(() => next())
+      .then(() => {
+        req.user.isResourceOwner = true
+        next()
+      })
       .catch(err => next(err))
     }
   }
