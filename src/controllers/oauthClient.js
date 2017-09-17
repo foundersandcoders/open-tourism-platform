@@ -6,7 +6,7 @@ const randtoken = require('rand-token')
 const oauthClientController = module.exports = {}
 
 oauthClientController.getAll = (req, res, next) => {
-  // sends back array of users, filtered by queries
+  // sends back array of clients owned by the logged in user
   Client.find({ user: req.user.id })
     .then(clients => res.status(200).send(clients))
     .catch(next)
