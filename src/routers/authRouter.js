@@ -1,6 +1,5 @@
 const oauthController = require('../controllers/oauth')
 const sessionController = require('../controllers/session')
-const appsController = require('../controllers/apps')
 
 const validateJWT = require('../middleware/validateJWT.js')
 const validateUser = require('../middleware/validateUser.js')
@@ -20,21 +19,12 @@ router.route('/register')
 
 router.route('/oauth/authorize')
   .get(
-    validateJWT({ credentialsRequired: false }),
+    validateJWT(),
     oauthController.getAuthorizePage
   )
-  .post(validateJWT(), oauthController.getAuthorizationCode)
+  .post(validateJWT({ credentialsRequired: true }), oauthController.getAuthorizationCode)
 
 router.route('/oauth/token')
   .post(oauthController.getToken)
-
-// secure route with dummy handler for now
-router.route('/apps')
-  .get(
-    validateJWT(),
-    validateUser,
-    permissions({ minSufficientRole: roles.SUPER }),
-    appsController.get
-  )
 
 module.exports = router
