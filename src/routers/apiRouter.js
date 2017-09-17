@@ -16,7 +16,7 @@ const router = require('express').Router()
 
 // user routes
 router.route('/users')
-  .get( 
+  .get(
     validateJWT(),
     validateUser(),
     validateHeaderToken,
