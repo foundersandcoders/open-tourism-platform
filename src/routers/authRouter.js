@@ -26,7 +26,7 @@ router.route('/oauth/token')
   .post(oauthController.getToken)
 
 router.route('/oauth/clients')
-  .get(validateJWT({ credentialsRequired: true }), oauthClientController.getAll)
+  .get(validateJWT({ credentialsRequired: true }), validateUser(), oauthClientController.getAll)
   .post(validateJWT({ credentialsRequired: true }), validateUser(), oauthClientController.create)
 
 module.exports = router
