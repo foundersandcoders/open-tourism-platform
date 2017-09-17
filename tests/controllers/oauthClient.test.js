@@ -43,7 +43,7 @@ tape('filling db', t => {
   .catch(err => t.end(err))
 })
 
-tape('GET /oauth/clients when something in database', t => {
+tape('GET /oauth/clients when logged in user has a client in the database', t => {
   addUserWithHashedPassword(user)
   .then(() => makeLoggedInToken(user))
   .then(token => {
@@ -54,6 +54,27 @@ tape('GET /oauth/clients when something in database', t => {
   })
   .then(res => {
     t.equal(res.body.length, 1, 'should return length 1 array')
+    for (let key in client) {
+      if (client.hasOwnProperty(key)) {
+        t.deepEqual(res.body[0][key], client[key], `returned ${key} field is correct`)
+      }
+    }
+    dropCollectionsAndEnd([Client, User], t)
+  })
+  .catch(err => t.end(err))
+})
+
+tape('GET /oauth/clients when logged in user has no client in the database', t => {
+  addUserWithHashedPassword(validUser1)
+  .then(() => makeLoggedInToken(validUser1))
+  .then(token => {
+    return supertest(server)
+    .get('/oauth/clients')
+    .set('Cookie', `token=${token}`)
+    .expect(200)
+  })
+  .then(res => {
+    t.equal(res.body.length, 0, 'should return length 0 array')
     dropCollectionsAndEnd([Client, User], t)
   })
   .catch(err => t.end(err))
