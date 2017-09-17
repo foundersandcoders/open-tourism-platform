@@ -18,7 +18,7 @@ const boomErrors = require('../../src/middleware/boomErrorHandler.js')
 server.get('/test',
   validateJWT(),
   validateUser(),
-  permissions({ minSufficientRole: roles.SUPER }),
+  permissions({ minRole: roles.SUPER }),
   (req, res, next) => res.send('RESULTS'),
   boomErrors
 )
