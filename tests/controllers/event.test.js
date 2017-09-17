@@ -240,21 +240,31 @@ tape('PUT /events/:id, unauthorized as basic user', t => {
     .send(validEvent1)
     .expect(401)
   )
+  .then(() => Promise.all([
+    User.remove({}),
+    Event.remove({})
+  ]))
   .then(() => t.end())
   .catch(err => t.end(err))
 })
 
 tape('PUT /events/:id with invalid id', t => {
-  supertest(server)
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ])
+  .then(([ _, token]) => supertest(server)
     .put('/events/invalidId')
+    .set('Cookie', `token=${token}`)
     .send(validEvent1)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
-      dropCollectionAndEnd(Event, t)
-    })
+  )
+  .then(res => {
+    t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
+    dropCollectionAndEnd(Event, t)
+  })
+  .catch(err => t.end(err))
 })
 
 tape('PUT /events/:id with valid id and valid new event data', t => {
