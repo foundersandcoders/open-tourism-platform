@@ -107,6 +107,10 @@ tape('POST /oauth/clients', t => {
       t.deepEqual(res.body.redirectUris, clientFromFormData.redirectUris, 'correct redirectUris added')
       t.deepEqual(res.body.grants, [grants.authCode], 'correct grants added')
       t.ok(res.body._id, 'client given an id')
+      return Client.findById(res.body._id)
+    })
+    .then(newClient => {
+      t.equal(newClient.name, clientFromFormData.name, 'client is in the database')
       dropCollectionsAndEnd([Client, User], t)
     })
     .catch(err => t.end(err))
