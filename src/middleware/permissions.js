@@ -60,23 +60,22 @@ module.exports =
       return next(boom.unauthorized(auth.UNAUTHORIZED))
     }
 
-    else if (hasSufficientRole({ minRole })(req.user)) {
+    if (hasSufficientRole({ minRole })(req.user)) {
       return next()
     }
 
-    else if (!ownerIsPermitted) {
+    if (!ownerIsPermitted) {
       return next(boom.unauthorized(auth.UNAUTHORIZED))
     }
 
-    else {
-      const resourceId = req.params.id
-      return checkUserOwnsResource(resourceType)(resourceId)(req.user)
-      .then(() => {
-        req.user.isResourceOwner = true
-        next()
-      })
-      .catch(err => next(err))
-    }
+    const resourceId = req.params.id
+    return checkUserOwnsResource(resourceType)(resourceId)(req.user)
+    .then(() => {
+      req.user.isResourceOwner = true
+      next()
+    })
+    .catch(err => next(err))
+    
   }
 
 // export functions for testing

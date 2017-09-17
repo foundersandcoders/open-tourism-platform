@@ -19,7 +19,6 @@ const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
 }
 
 module.exports = fieldPermissions => (req, res, next) => {
-  const permissionedFields = Object.keys(fieldPermissions)
   const fieldsToChange = Object.keys(req.body)
 
   const unauthorizedFields =
