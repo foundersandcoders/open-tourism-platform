@@ -3,7 +3,7 @@ const supertest = require('supertest')
 const server = require('../../src/server.js')
 const User = require('../../src/models/User.js')
 const { dropCollectionAndEnd } = require('../helpers/index.js')
-const { validUser1, validUser2, invalidUser1 } = require('../fixtures/users.json')
+const { validUser1, validUser2, invalidUser1, validAdminUser } = require('../fixtures/users.json')
 
 const { makeLoggedInToken } = require('../../src/controllers/session.js')
 
@@ -89,14 +89,18 @@ tape('GET /users/:id with id of something in the database', t => {
 })
 
 // Tests for: POST /users
-tape('POST /users adding user', t => {
-  supertest(server)
-    .post('/users')
-    .send(validUser1)
-    .expect(201)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+tape('POST /users adding user with authorised role (super)', t => {
+  User.create(validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
+        .post('/users')
+        .send(validUser1)
+        .expect(201)
+        .set('Cookie', `token=${token}`)
+        .expect('Content-Type', /json/)
+    })
+    .then(res => {
       t.equal(res.body.username, validUser1.username, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
@@ -110,35 +114,60 @@ tape('POST /users adding user', t => {
           dropCollectionAndEnd(User, t)
         })
     })
+    .catch(err => t.end(err))
+})
+
+// Tests for: POST /users
+tape('POST /users adding user with unauthorised role (admin)', t => {
+  User.create(validAdminUser)
+    .then(() => makeLoggedInToken(validAdminUser))
+    .then((token) => {
+      return supertest(server)
+        .post('/users')
+        .send(validUser1)
+        .set('Cookie', `token=${token}`)
+        .expect(401)
+        .expect('Content-Type', /json/)
+    })
+    .then(res => {
+      t.pass('Denied access')
+      t.end()
+    })
+    .catch(err => t.end(err))
 })
 
 tape('POST /users adding invalid user', t => {
-  supertest(server)
-    .post('/users')
-    .send(invalidUser1)
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.ok(res.body.message, 'A message is sent back')
+  User.create(validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
+        .post('/users')
+        .send(invalidUser1)
+        .expect(400)
+        .set('Cookie', `token=${token}`)
+        .expect('Content-Type', /json/)
+    })
+    .then(res => {
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       dropCollectionAndEnd(User, t)
     })
+    .catch(err => t.end(err))
 })
 
 tape('POST /users/ with user violating unique username constraint', t => {
-  User.create(validUser1)
-    .then(() => {
-      supertest(server)
+  User.create(validUser1, validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
         .post('/users')
         .send(validUser1)
         .expect(400)
+        .set('Cookie', `token=${token}`)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          t.equal(res.body.message, 'Data violates unique constraints validation', 'Correct message is sent back')
-          dropCollectionAndEnd(User, t)
-        })
+    })
+    .then(res => {
+      t.equal(res.body.message, 'Data violates unique constraints validation', 'Correct message is sent back')
+      dropCollectionAndEnd(User, t)
     })
     .catch(err => t.end(err))
 })

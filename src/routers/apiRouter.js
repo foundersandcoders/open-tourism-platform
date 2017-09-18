@@ -23,10 +23,10 @@ router.route('/users')
     userController.getAll
   )
   .post(
-    // validateJWT(),
-    // validateUser(),
-    // validateHeaderToken,
-    // fieldPermissions(api.User.fields),
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.User.create),
     userController.create
   )
 
