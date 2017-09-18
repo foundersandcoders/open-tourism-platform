@@ -59,7 +59,13 @@ router.route('/events/:id')
     fieldPermissions(api.Event.fields),
     eventController.update
   )
-  .delete(eventController.delete)
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Event.delete),
+    eventController.delete
+  )
 
   // product routes
 router.route('/products')
