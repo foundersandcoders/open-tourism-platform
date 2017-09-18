@@ -31,7 +31,13 @@ router.route('/users')
   )
 
 router.route('/users/:id')
-  .get(userController.getById)
+  .get(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.User.getById),
+    userController.getById
+  )
   .put(
     // validateJWT(),
     // validateUser(),

@@ -60,30 +60,74 @@ tape('GET /users, when logged in, with query parameters', t => {
 })
 
 // GET /users/:id
-tape('GET /users/:id with valid id of something not in the database', t => {
+tape('GET /users/:id wwhen not logged in', t => {
   supertest(server)
     .get('/users/507f1f77bcf86cd799439011')
-    .expect(404)
+    .expect(401)
     .expect('Content-Type', /json/)
     .end((err, res) => {
       if (err) t.fail(err)
-      t.equal(res.body.message, 'No document matching that id', 'response message is correct')
-      dropCollectionAndEnd(User, t)
+      t.pass('Denied access')
+      t.end()
     })
 })
 
-tape('GET /users/:id with id of something in the database', t => {
+tape('GET /users/:id with valid id of something not in the database', t => {
   User.create(validUser1)
-    .then(result => {
-      supertest(server)
-        .get(`/users/${result.id}`)
-        .expect(200)
+    .then(() => makeLoggedInToken(validUser1))
+    .then((token) => {
+      return supertest(server)
+        .get('/users/507f1f77bcf86cd799439011')
+        .expect(404)
+        .set('Cookie', `token=${token}`)
         .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          t.equal(res.body.username, validUser1.username, 'should get user with correct username.')
-          dropCollectionAndEnd(User, t)
-        })
+    })
+    .then(res => {
+      // check our get path returns that user correctly
+      t.equal(res.body.message, 'No document matching that id', 'response message is correct')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
+})
+
+tape('GET /users/:id with id of logged in user (i.e. as the owner)', t => {
+  User.create(validUser1)
+    .then((userInDB) => {
+      makeLoggedInToken(validUser1)
+      .then((token) => {
+        return supertest(server)
+          .get(`/users/${userInDB.id}`)
+          .expect(200)
+          .set('Cookie', `token=${token}`)
+          .expect('Content-Type', /json/)
+      })
+      .then(res => {
+        // check our get path returns that user correctly
+        t.equal(res.body.username, validUser1.username, 'should get user with correct username.')
+        dropCollectionAndEnd(User, t)
+      })
+      .catch(err => t.end(err))
+    })
+    .catch(err => t.end(err))
+})
+
+tape('GET /users/:id with id of not the logged in user (i.e. as not owner)', t => {
+  User.create(validUser1, validAdminUser)
+    .then((userInDB) => {
+      makeLoggedInToken(validAdminUser)
+      .then((token) => {
+        return supertest(server)
+          .get(`/users/${userInDB.id}`)
+          .expect(401)
+          .set('Cookie', `token=${token}`)
+          .expect('Content-Type', /json/)
+      })
+      .then(res => {
+        // check our get path returns that user correctly
+        t.pass('Denied access')
+        dropCollectionAndEnd(User, t)
+      })
+      .catch(err => t.end(err))
     })
     .catch(err => t.end(err))
 })
