@@ -249,6 +249,7 @@ tape('PUT /users/:id with id of something not in the database', t => {
       t.equal(res.body.message, 'Cannot find document to update', 'Correct message is sent back')
       dropCollectionAndEnd(User, t)
     })
+    .catch(err => t.end(err))
 })
 
 tape('PUT /users/:id with valid id and valid new user data', t => {
@@ -274,47 +275,60 @@ tape('PUT /users/:id with valid id and valid new user data', t => {
 
 // Tests for: DELETE /users/:id
 tape('DELETE /users/:id with invalid id', t => {
-  supertest(server)
-    .delete('/users/invalid')
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.ok(res.body.message, 'Message sent back')
-      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
-      t.end()
+  User.create(validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
+        .delete('/users/invalidid')
+        .expect(400)
+        .set('Cookie', `token=${token}`)
+        .expect('Content-Type', /json/)
     })
+    .then(res => {
+      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
 })
 
 tape('DELETE /users/:id returns error with id of something not in the database', t => {
-  supertest(server)
-    .delete('/users/507f1f77bcf86cd799439011')
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.ok(res.body.message, 'Message sent back')
-      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
-      t.end()
+  User.create(validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
+        .delete('/users/507f1f77bcf86cd799439014')
+        .expect(400)
+        .set('Cookie', `token=${token}`)
+        .expect('Content-Type', /json/)
     })
+    .then(res => {
+      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
+      dropCollectionAndEnd(User, t)
+    })
+    .catch(err => t.end(err))
 })
 
 tape('DELETE /users/:id with good ID', t => {
   User.create(validUser1, validUser2)
-    .then(addedUser => {
-      supertest(server)
-        .delete(`/users/${addedUser.id}`)
-        .expect(204)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
-          // check our database now has one fewer user
-          User.find()
-            .then(users => {
-              t.equal(users.length, 1, 'Users should now be length 1')
-              dropCollectionAndEnd(User, t)
-            })
-        })
+  // note that when you do bulk create, mongoose returns the details of the first thing you create
+    .then(createdUser1 => {
+      makeLoggedInToken(validUser2)
+      .then(token => {
+        return supertest(server)
+          .delete(`/users/${createdUser1.id}`)
+          .expect(204)
+          .set('Cookie', `token=${token}`)
+      })
+      .then((res) => {
+        t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+        User.find()
+          .then(users => {
+            t.equal(users.length, 1, 'Users should now be length 1')
+            t.equal(users[0].username, validUser2.username, 'Correct user has been deleted')
+            dropCollectionAndEnd(User, t)
+          })
+      })
+      .catch(err => t.end(err))
     })
     .catch(err => t.end(err))
 })

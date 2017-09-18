@@ -46,7 +46,13 @@ router.route('/users/:id')
     fieldPermissions(api.User.fields),
     userController.update
   )
-  .delete(userController.delete)
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.User.delete),
+    userController.delete
+  )
 
   // place routes
 router.route('/places')
