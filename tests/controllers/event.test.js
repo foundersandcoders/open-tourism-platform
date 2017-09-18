@@ -4,11 +4,14 @@ const server = require('../../src/server.js')
 const Place = require('../../src/models/Place.js')
 const Event = require('../../src/models/Event.js')
 const User = require('../../src/models/User.js')
+const Token = require('../../src/models/auth/Token.js')
 
-const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 const { validPlace1 } = require('../fixtures/places.json')
-const { validUser1, validBasicUser } = require('../fixtures/users.json')
+const { validUser1, validBasicUser, user } = require('../fixtures/users.json')
+const { token } = require('../fixtures/auth/tokens.json')
+
+const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
 
 const { makeLoggedInToken } = require('../../src/controllers/session.js')
 
@@ -268,29 +271,29 @@ tape('PUT /events/:id with invalid id', t => {
 })
 
 tape('PUT /events/:id with valid id and valid new event data', t => {
-  Event.create(validEvent1)
-    .then(createdEvent => {
-      supertest(server)
-        .put(`/events/${createdEvent.id}`)
-        .send(validEvent2)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          t.equal(res.body.en.name, validEvent2.en.name, 'event should be correctly updated, and the updated event returned')
-          // check event has been updated
-          Event.findById(res.body._id)
-            .then(event => {
-              t.equal(event.categories[0], res.body.categories[0], 'Event is in the database')
-              dropCollectionAndEnd(Event, t)
-            })
-            .catch(err => {
-              t.fail(err)
-              dropCollectionAndEnd(Event, t)
-            })
-        })
-    })
-    .catch(err => t.end(err))
+  Promise.all([
+    User.create(user),
+    Token.create(token),
+    Event.create(validEvent1)  
+  ])
+  .then(([ _, token, createdEvent ]) => 
+    supertest(server)
+    .put(`/events/${createdEvent.id}`)
+    .set('Authorization', 'Bearer ' + token.accessToken)
+    .send(validEvent2)
+    .expect(200)
+    .expect('Content-Type', /json/)
+  )
+  .then(res => {
+    t.equal(res.body.en.name, validEvent2.en.name, 'event should be correctly updated, and the updated event returned')
+    // check event has been updated
+    return Promise.all([ Event.findById(res.body._id), Promise.resolve(res) ])
+  })
+  .then(([ event, res ]) => {
+    t.equal(event.categories[0], res.body.categories[0], 'Event is in the database')
+    dropCollectionsAndEnd([ Event, Token ], t)
+  })
+  .catch(err => t.end(err))
 })
 
 // Tests for: DELETE /events/:id
