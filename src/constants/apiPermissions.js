@@ -18,7 +18,9 @@ module.exports = {
     },
     fields: {
       _id: { minRole: roles.SUPER },
-      username: { minRole: roles.SUPER, ownerIsPermitted: true }
+      username: { minRole: roles.SUPER, ownerIsPermitted: true },
+      role: { minRole: roles.SUPER },
+      password: { minRole: roles.SUPER }
     }
   },
   Event: {
