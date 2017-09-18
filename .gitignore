@@ -57,3 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
+# markdown preview docs created in sublime
+docs.html
