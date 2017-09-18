@@ -218,26 +218,34 @@ tape('POST /users/ with user violating unique username constraint', t => {
 
 // Tests for: PUT /users/:id
 tape('PUT /users/:id with invalid id', t => {
-  supertest(server)
-    .put('/users/invalidid')
-    .send(validUser1)
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+  User.create(validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
+        .put('/users/invalidid')
+        .send(validUser1)
+        .expect(400)
+        .set('Cookie', `token=${token}`)
+        .expect('Content-Type', /json/)
+    })
+    .then(res => {
       t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
       dropCollectionAndEnd(User, t)
     })
 })
 
 tape('PUT /users/:id with id of something not in the database', t => {
-  supertest(server)
-    .put('/users/507f1f77bcf86cd799439011')
-    .send(validUser1)
-    .expect(400)
-    .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+  User.create(validUser2)
+    .then(() => makeLoggedInToken(validUser2))
+    .then((token) => {
+      return supertest(server)
+        .put('/users/507f1f77bcf86cd799439014')
+        .send(validUser1)
+        .expect(400)
+        .set('Cookie', `token=${token}`)
+        .expect('Content-Type', /json/)
+    })
+    .then(res => {
       t.equal(res.body.message, 'Cannot find document to update', 'Correct message is sent back')
       dropCollectionAndEnd(User, t)
     })
@@ -246,16 +254,20 @@ tape('PUT /users/:id with id of something not in the database', t => {
 tape('PUT /users/:id with valid id and valid new user data', t => {
   User.create(validUser1)
     .then(createdUser => {
-      supertest(server)
-        .put(`/users/${createdUser.id}`)
-        .send(validUser2)
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          t.equal(res.body.username, validUser2.username, 'user should be correctly updated, and the updated user returned')
-          dropCollectionAndEnd(User, t)
-        })
+      makeLoggedInToken(validUser1)
+      .then(token => {
+        return supertest(server)
+          .put(`/users/${createdUser.id}`)
+          .send(validUser2)
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .set('Cookie', `token=${token}`)
+      })
+      .then((res) => {
+        t.equal(res.body.username, validUser2.username, 'user should be correctly updated, and the updated user returned')
+        dropCollectionAndEnd(User, t)
+      })
+      .catch(err => t.end(err))
     })
     .catch(err => t.end(err))
 })

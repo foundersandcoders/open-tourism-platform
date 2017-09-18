@@ -39,11 +39,11 @@ router.route('/users/:id')
     userController.getById
   )
   .put(
-    // validateJWT(),
-    // validateUser(),
-    // validateHeaderToken,
-    // permissions(api.User.put),
-    // fieldPermissions(api.User.fields),
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.User.update),
+    fieldPermissions(api.User.fields),
     userController.update
   )
   .delete(userController.delete)
