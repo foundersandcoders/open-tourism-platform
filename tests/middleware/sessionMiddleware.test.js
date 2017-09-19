@@ -11,14 +11,16 @@ const { makeLoggedInToken } = require('../../src/controllers/session.js')
 
 const validateJWT = require('../../src/middleware/validateJWT.js')
 const validateUser = require('../../src/middleware/validateUser.js')
-const checkRole = require('../../src/middleware/rolePermission.js')
+const permissions = require('../../src/middleware/permissions.js')
 const boomErrors = require('../../src/middleware/boomErrorHandler.js')
 
 // dummy secure route to test on
 server.get('/test',
   validateJWT(),
   validateUser(),
-  checkRole({ minRole: roles.SUPER }),
+  permissions({
+    authorizedRoles: [ roles.SUPER ]
+  }),
   (req, res, next) => res.send('RESULTS'),
   boomErrors
 )

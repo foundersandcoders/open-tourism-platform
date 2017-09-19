@@ -1,9 +1,55 @@
 {
-   "validEvent1": { "startTime":"2017-08-08", "en":{"name": "Party at the Guesthouse"}, "categories": "music" },
-   "validEvent2": { "startTime":"2017-05-08", "en":{"name": "Dinner at Liwan"}, "categories": "dining" },
-   "validEvent3": { "startTime":"2017-02-28", "en":{"name": "MG fails at flipping pancakes"}, "categories": "dining" },
-   "invalidEvent1": {},
-   "invalidEvent2": { "en":{"name": "Dinner at Alreda"}, "categories": ["eating"] },
-   "invalidEvent3": { "en":{"name": "Dinner at Alreda"}, "categories": [null, "dining"] },
-   "invalidEvent4": { "en":{"name": "Dinner at Alreda"}, "categories": []}
+  "validEvent1":{
+    "id":"59b79c142fd5e7623186008a",
+    "_id":"59b79c142fd5e7623186008a",
+    "owner":"5986abad5e2d852cb1ee6bce",
+    "startTime":"2017-08-08",
+    "endTime":"2017-08-08T23:00:00",
+    "en":{
+      "name":"Party at the Guesthouse"
+    },
+    "categories":"music"
+  },
+  "validEvent2":{
+    "startTime":"2017-05-08",
+    "en":{
+      "name":"Dinner at Liwan"
+    },
+    "categories":"dining"
+  },
+  "validEvent3":{
+    "startTime":"2017-02-28",
+    "en":{
+      "name":"MG fails at flipping pancakes"
+    },
+    "categories":"dining"
+  },
+  "invalidEvent1":{
+
+  },
+  "invalidEvent2":{
+    "en":{
+      "name":"Dinner at Alreda"
+    },
+    "categories":[
+      "eating"
+    ]
+  },
+  "invalidEvent3":{
+    "en":{
+      "name":"Dinner at Alreda"
+    },
+    "categories":[
+      null,
+      "dining"
+    ]
+  },
+  "invalidEvent4":{
+    "en":{
+      "name":"Dinner at Alreda"
+    },
+    "categories":[
+
+    ]
+  }
 }
