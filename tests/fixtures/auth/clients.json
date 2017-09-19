@@ -6,5 +6,9 @@
 		"secret": "secret",
 		"grants": [ "authorization_code" ],
 		"redirectUris": [ "https://www.test.com" ]
-	}
+	},
+  "clientFromFormData": {
+    "name": "another client",
+    "redirectUris": ["www.foundersandcoders.com"]
+  }
 }
