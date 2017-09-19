@@ -30,6 +30,6 @@ router.route('/oauth/token')
 
 router.route('/oauth/clients')
   .get(validateJWT({ credentialsRequired: true }), validateUser(), permission({ minRole: roles.SUPER }), oauthClientController.getAll)
-  .post(validateJWT({ credentialsRequired: true }), validateUser(),permission({ minRole: roles.SUPER }), oauthClientController.create)
+  .post(validateJWT({ credentialsRequired: true }), validateUser(), permission({ minRole: roles.SUPER }), oauthClientController.create)
 
 module.exports = router
