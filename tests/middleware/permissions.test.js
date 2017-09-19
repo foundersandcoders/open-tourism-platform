@@ -5,6 +5,7 @@ const checkUserOwnsResource = permissions.checkUserOwnsResource
 
 const User = require('../../src/models/User')
 const Event = require('../../src/models/Event')
+const roles = require('../../src/constants/roles')
 
 const { user } = require('../fixtures/users.json')
 const { validEvent1 } = require('../fixtures/events.json')
@@ -52,4 +53,40 @@ tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t =
   checkUserOwnsResource(Event)(validEvent1.id)(wrongUser)
   .then(() => t.end('promise should reject, as user is wrong'))
   .catch(() => t.end())
+})
+
+tape('permissions initialization with bad implementation', t => {
+  try {
+    permissions({ authorizedRoles: [ roles.OWNER ] })
+    t.end('should throw bad implementation')
+  } catch (err) {
+    t.end()
+  }
+})
+
+tape('permissions initialization with another bad implementation', t => {
+  try {
+    permissions({ authorizedRoles: [ roles.SUPER, roles.ADMIN ] })
+    t.end('should throw bad implementation')
+  } catch (err) {
+    t.end()
+  }
+})
+
+tape('permissions initialization', t => {
+  try {
+    permissions({ authorizedRoles: [ roles.SUPER, roles.OWNER ] })
+    t.end()
+  } catch (err) {
+    t.end(err)
+  }
+})
+
+tape('another permissions initialization', t => {
+  try {
+    permissions({ authorizedRoles: [ roles.BASIC ] })
+    t.end()
+  } catch (err) {
+    t.end(err)
+  }
 })

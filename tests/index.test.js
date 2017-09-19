@@ -26,8 +26,9 @@ dbConnection.once('open', () => {
   require('./controllers/event.test.js')
   // require('./controllers/product.test.js')
 
-  // // test sessions controller
+  // test sessions controller
   // require('./controllers/sessions.test.js')
+  // require('./controllers/oauthClient.test.js')
 
   // // test error handlers
   // require('./middleware/customErrorHandler.test.js')

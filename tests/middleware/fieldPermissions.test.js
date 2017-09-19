@@ -1,6 +1,8 @@
 const tape = require('tape')
 
-const { getUnauthorizedFields } = require('../../src/middleware/fieldPermissions.js')
+const fieldPermissions = require('../../src/middleware/fieldPermissions.js')
+const getUnauthorizedFields = fieldPermissions.getUnauthorizedFields
+
 const roles = require('../../src/constants/roles.js')
 
 // the tests
@@ -26,12 +28,12 @@ tape('test getUnauthorizedFields with varied fields', t => {
   }
 
   const fieldPermissions = {
-    'f1': { minRole: roles.SUPER },
-    'f2': { minRole: roles.ADMIN },
-    'f3': { minRole: roles.BASIC },
-    'f4': { minRole: roles.SUPER, ownerIsPermitted: true },
-    'f5': { minRole: roles.ADMIN, ownerIsPermitted: true },
-    'f6': { minRole: roles.BASIC, ownerIsPermitted: true }
+    'f1': [ roles.SUPER ],
+    'f2': [ roles.ADMIN ],
+    'f3': [ roles.BASIC ],
+    'f4': [ roles.SUPER, roles.OWNER ],
+    'f5': [ roles.ADMIN, roles.OWNER ],
+    'f6': [ roles.BASIC, roles.OWNER ]
   }
   const fieldsToChange = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6']
 
@@ -50,4 +52,27 @@ tape('test getUnauthorizedFields with varied fields', t => {
     'should return correct unauthorized fields for admin user'
   )
   t.end()
+})
+
+tape('fieldPermissions initialization with bad implementation', t => {
+  try {
+    fieldPermissions({
+      id: [ roles.SUPER, roles.ADMIN ]
+    })
+    t.end('should throw bad implementation')
+  } catch (err) {
+    t.end()
+  }
+})
+
+tape('fieldPermissions initialization', t => {
+  try {
+    fieldPermissions({
+      id: [ roles.SUPER, roles.OWNER ],
+      name: [ roles.BASIC ]
+    })
+    t.end()
+  } catch (err) {
+    t.end(err)
+  }
 })

@@ -5,16 +5,11 @@ module.exports = {
 
   },
   Event: {
-    update: {
-      minRole: roles.ADMIN,
-      ownerIsPermitted: true  
-    },
-    delete: {
-      minRole: roles.SUPER
-    },
+    update: { authorizedRoles: [ roles.ADMIN, roles.OWNER ] },
+    delete: { authorizedRoles: [ roles.SUPER ] },
     fields: {
-      _id: { minRole: roles.SUPER },
-      owner: { minRole: roles.ADMIN }
+      _id: [ roles.SUPER ],
+      owner: [ roles.ADMIN ]
     }
   },
   Product: {

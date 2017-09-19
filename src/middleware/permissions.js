@@ -9,9 +9,9 @@ const Place = require('../models/Place')
 const Product = require('../models/Product')
 const User = require('../models/User')
 
-const hasSufficientRole = ({ minRole }) => user => {
-  const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
+const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
 
+const hasSufficientRole = ({ minRole }) => user => {
   // throw error on initialisation if passed option is not valid
   if (!orderedRoles.includes(minRole)) {
     throw boom.badImplementation()
@@ -48,8 +48,24 @@ const getResourceType = req => {
   return routeResourceMapping[pathName.split('/')[1]]
 }
 
-module.exports =
-  ({ minRole, ownerIsPermitted }) => (req, res, next) => {
+module.exports = ({ authorizedRoles }) => {
+  // authorizedRoles should be an array [ minRole [, OWNER] ]
+  // - minRole should be one of the fixed roles
+  // - OWNER is optional, its appearance indicating the resource owner is also permitted
+  //   even if not having the given minRole
+
+  const [ minRole, owner ] = authorizedRoles
+  const ownerIsPermitted = !!owner
+
+  if (!orderedRoles.includes(minRole)) {
+    throw boom.badImplementation()
+  }
+
+  if (owner && owner !== roles.OWNER) {
+    throw boom.badImplementation()
+  }
+
+  return (req, res, next) => {
     const resourceType = getResourceType(req)
 
     if (ownerIsPermitted && !resourceType) {
@@ -76,6 +92,7 @@ module.exports =
     })
     .catch(err => next(err))
   }
+}
 
 // export functions for testing
 module.exports.hasSufficientRole = hasSufficientRole
