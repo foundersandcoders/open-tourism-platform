@@ -9,7 +9,7 @@ const grants = require('../../src/constants/grants.js')
 const { addUserWithHashedPassword } = require('../helpers/index.js')
 const { makeLoggedInToken } = require('../../src/controllers/session.js')
 const { dropCollectionsAndEnd } = require('../helpers/index.js')
-const { user, validUser1 } = require('../fixtures/users.json')
+const { superUser, validUser1 } = require('../fixtures/users.json')
 const { client, clientFromFormData } = require('../fixtures/auth/clients.json')
 
 tape('emptying db.', t => {
@@ -44,8 +44,8 @@ tape('filling db', t => {
 })
 
 tape('GET /oauth/clients when logged in user has a client in the database', t => {
-  addUserWithHashedPassword(user)
-  .then(() => makeLoggedInToken(user))
+  addUserWithHashedPassword(superUser)
+  .then(() => makeLoggedInToken(superUser))
   .then(token => {
     return supertest(server)
     .get('/oauth/clients')
