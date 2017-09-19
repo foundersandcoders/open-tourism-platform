@@ -310,9 +310,9 @@ tape('DELETE /events/:id with invalid id', t => {
     })
 })
 
-tape('DELETE /users/:id with id of something not in the database', t => {
+tape('DELETE /events/:id with id of something not in the database', t => {
   supertest(server)
-    .delete('/users/507f1f77bcf86cd799439011')
+    .delete('/events/507f1f77bcf86cd799439011')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
