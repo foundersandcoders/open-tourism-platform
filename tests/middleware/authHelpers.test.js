@@ -1,4 +1,4 @@
-const { rolePermissionIsSufficient } = require('../../src/middleware/rolePermission.js')
+const { hasSufficientRole } = require('../../src/middleware/permissions.js')
 const { validateUserAndAddId } = require('../../src/middleware/validateUser.js')
 const { getToken } = require('../../src/middleware/validateJWT.js')
 const roles = require('../../src/constants/roles.js')
@@ -24,59 +24,59 @@ tape('test getToken function where no token anywhere', t => {
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole SUPER, user role BASIC', t => {
-  const minRole = { minRole: roles.SUPER }
+tape('hasSufficientRole with minRole SUPER, user role BASIC', t => {
+  const opts = { minRole: roles.SUPER }
   const user = { role: roles.BASIC }
-  t.notOk(rolePermissionIsSufficient(minRole)(user), 'Unauthorized role returns false')
+  t.notOk(hasSufficientRole(opts)(user), 'Unauthorized role returns false')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole SUPER, user role ADMIN', t => {
-  const minRole = { minRole: roles.SUPER }
+tape('hasSufficientRole with minRole SUPER, user role ADMIN', t => {
+  const opts = { minRole: roles.SUPER }
   const user = { role: roles.ADMIN }
-  t.notOk(rolePermissionIsSufficient(minRole)(user), 'Unauthorized role returns false')
+  t.notOk(hasSufficientRole(opts)(user), 'Unauthorized role returns false')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole SUPER, user role SUPER', t => {
-  const minRole = { minRole: roles.SUPER }
+tape('hasSufficientRole with minRole SUPER, user role SUPER', t => {
+  const opts = { minRole: roles.SUPER }
   const user = { role: roles.SUPER }
-  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
+  t.ok(hasSufficientRole(opts)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole ADMIN, user role BASIC', t => {
-  const minRole = { minRole: roles.ADMIN }
+tape('hasSufficientRole with minRole ADMIN, user role BASIC', t => {
+  const opts = { minRole: roles.ADMIN }
   const user = { role: roles.BASIC }
-  t.notOk(rolePermissionIsSufficient(minRole)(user), 'Unauthorized role returns false')
+  t.notOk(hasSufficientRole(opts)(user), 'Unauthorized role returns false')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole ADMIN, user role ADMIN', t => {
-  const minRole = { minRole: roles.ADMIN }
+tape('hasSufficientRole with minRole ADMIN, user role ADMIN', t => {
+  const opts = { minRole: roles.ADMIN }
   const user = { role: roles.ADMIN }
-  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
+  t.ok(hasSufficientRole(opts)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole ADMIN, user role SUPER', t => {
-  const minRole = { minRole: roles.ADMIN }
+tape('hasSufficientRole with minRole ADMIN, user role SUPER', t => {
+  const opts = { minRole: roles.ADMIN }
   const user = { role: roles.SUPER }
-  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
+  t.ok(hasSufficientRole(opts)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole BASIC, user role BASIC', t => {
-  const minRole = { minRole: roles.BASIC }
+tape('hasSufficientRole with minRole BASIC, user role BASIC', t => {
+  const opts = { minRole: roles.BASIC }
   const user = { role: roles.BASIC }
-  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
+  t.ok(hasSufficientRole(opts)(user), 'Authorized role returns true')
   t.end()
 })
 
-tape('rolePermissionIsSufficient with minRole BASIC, user role SUPER', t => {
-  const minRole = { minRole: roles.BASIC }
+tape('hasSufficientRole with minRole BASIC, user role SUPER', t => {
+  const opts = { minRole: roles.BASIC }
   const user = { role: roles.SUPER }
-  t.ok(rolePermissionIsSufficient(minRole)(user), 'Authorized role returns true')
+  t.ok(hasSufficientRole(opts)(user), 'Authorized role returns true')
   t.end()
 })
 
