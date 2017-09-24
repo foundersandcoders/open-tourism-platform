@@ -4,9 +4,12 @@ const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
 const validateJWT = require('../middleware/validateJWT')
 const validateHeaderToken = require('../middleware/validateHeaderToken')
+const objectToDotNotation = require('../middleware/objectToDotNotation')
 
 const router = require('express').Router()
 
+// Use custom middleware that flattens req.body objects
+router.use(objectToDotNotation)
 // user routes
 router.route('/users')
   .get(userController.getAll)

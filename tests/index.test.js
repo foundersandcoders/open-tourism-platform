@@ -43,6 +43,9 @@ dbConnection.once('open', () => {
 
   require('./middleware/permissions.test.js')
 
+  // test object manipulation middleware
+  require('./middleware/flattenObject.test.js')
+
   // test auth routes
   require('./auth.test.js')
 
