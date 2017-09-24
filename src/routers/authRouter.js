@@ -4,8 +4,8 @@ const oauthClientController = require('../controllers/oauthClient')
 
 const validateJWT = require('../middleware/validateJWT.js')
 const validateUser = require('../middleware/validateUser.js')
-
 const permissions = require('../middleware/permissions.js')
+
 const roles = require('../constants/roles.js')
 
 const router = require('express').Router()
@@ -29,7 +29,7 @@ router.route('/oauth/token')
   .post(oauthController.getToken)
 
 router.route('/oauth/clients')
-  .get(validateJWT({ credentialsRequired: true }), validateUser(), oauthClientController.getAll)
-  .post(validateJWT({ credentialsRequired: true }), validateUser(), oauthClientController.create)
+  .get(validateJWT({ credentialsRequired: true }), validateUser(), permissions({ authorizedRoles: [roles.SUPER] }), oauthClientController.getAll)
+  .post(validateJWT({ credentialsRequired: true }), validateUser(), permissions({ authorizedRoles: [roles.SUPER] }), oauthClientController.create)
 
 module.exports = router
