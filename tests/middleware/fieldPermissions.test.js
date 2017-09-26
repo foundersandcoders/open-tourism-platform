@@ -42,7 +42,7 @@ tape('filling db.', t => {
     User.create(validBasicUser),
     User.create(validAdminUser)
   ])
-  .then(([ basicUser, adminUser]) => {
+  .then(([ basicUser, adminUser ]) => {
     basicUserId = basicUser.id
     adminUserId = adminUser.id
     validEvent2.owner = adminUserId
@@ -81,7 +81,7 @@ server.post('/test/events/:id',
     f3: [ roles.BASIC ],
     f4: [ roles.SUPER, roles.OWNER ],
     f5: [ roles.ADMIN, roles.OWNER ],
-    f6: [ roles.BASIC, roles.OWNER ],
+    f6: [ roles.BASIC, roles.OWNER ]
   }),
   (req, res, next) => res.send('success!'),
   boomErrorHandler

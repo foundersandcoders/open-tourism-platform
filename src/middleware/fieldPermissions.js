@@ -30,7 +30,7 @@ module.exports = fieldPermissions => {
     const resourceId = req.params.id
 
     if (!user) {
-      return next(boom.unauthorized())  
+      return next(boom.unauthorized())
     }
 
     checkUserOwnsResource(resourceType)(resourceId)(user)
