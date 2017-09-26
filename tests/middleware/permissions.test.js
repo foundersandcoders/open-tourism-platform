@@ -1,7 +1,6 @@
 const tape = require('tape')
-const permissions = require('../../src/middleware/permissions.js')
-
-const checkUserOwnsResource = permissions.checkUserOwnsResource
+const permissions = require('../../src/middleware/permissions')
+const { checkUserOwnsResource } = require('../../src/helpers/permissions')
 
 const User = require('../../src/models/User')
 const Event = require('../../src/models/Event')

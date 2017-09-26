@@ -1,7 +1,7 @@
 const tape = require('tape')
 
-const fieldPermissions = require('../../src/middleware/fieldPermissions.js')
-const getUnauthorizedFields = fieldPermissions.getUnauthorizedFields
+const fieldPermissions = require('../../src/middleware/fieldPermissions')
+const { getUnauthorizedFields } = require('../../src/helpers/permissions')
 
 const roles = require('../../src/constants/roles.js')
 
