@@ -15,8 +15,8 @@ const { validAdminUser, validBasicUser } = require('../fixtures/users.json')
 const { validEvent2 } = require('../fixtures/events.json')
 const { token } = require('../fixtures/auth/tokens.json')
 
-const adminUserToken = Object.assign({}, token)
-const basicUserToken = Object.assign({}, token)
+const adminUserToken = { accessToken: '456'}
+const basicUserToken = { accessToken: '123'}
 
 const roles = require('../../src/constants/roles.js')
 
@@ -58,7 +58,6 @@ tape('filling db.', t => {
   .then(([ event, adminUserToken, basicUserToken ]) => {
     adminToken = adminUserToken.accessToken
     basicToken = basicUserToken.accessToken
-    console.log(event)
     eventId = event.id
   })
   .then(() => t.end())
@@ -67,7 +66,7 @@ tape('filling db.', t => {
 
 // dummy route for testing
 
-server.post('/test/events/:id',
+server.put('/test/events/:id',
   validateHeaderToken,
   // remove '/test' from req url so middleware can get resource type from it
   (req, res, next) => {
@@ -87,11 +86,11 @@ server.post('/test/events/:id',
   boomErrorHandler
 )
 
-// tests
+// integration tests for the middleware
 
 tape('fieldPermissions with no user', t => {
   supertest(server)
-  .post(`/test/events/${eventId}`)
+  .put(`/test/events/${eventId}`)
   .expect(401)
   .then(res => t.end())
   .catch(err => t.end(err))
@@ -99,14 +98,67 @@ tape('fieldPermissions with no user', t => {
 
 tape('fieldPermissions without editing any fields', t => {
   supertest(server)
-  .post(`/test/events/${eventId}`)
+  .put(`/test/events/${eventId}`)
   .set('Authorization', 'Bearer ' + adminToken)
   .expect(200)
   .then(res => t.end())
   .catch(err => t.end(err))
 })
 
-// the tests
+tape('fieldPermissions editing various fields, as admin user and owner', t => {
+  supertest(server)
+  .put(`/test/events/${eventId}`)
+  .send({
+    f1: 'a',
+    f2: 'a',
+    f3: 'a',
+    f4: 'a',
+    f5: 'a',
+    f6: 'a'
+  })
+  .set('Authorization', 'Bearer ' + adminToken)
+  .expect(401)
+  .then(res => {
+    // res.body should be a message including which fields are unauthorized
+    t.ok(
+      res.body.message.includes('f1'),
+      'message should list fields which are unauthorized')
+    t.notOk(
+      ['f2', 'f3', 'f4', 'f5', 'f6'].some(field => res.body.message.includes(field)),
+      'message should not list fields which are authorized')
+    t.end()
+  })
+  .catch(err => t.end(err))
+})
+
+tape('fieldPermissions editing various fields, as basic user and not owner', t => {
+  supertest(server)
+  .put(`/test/events/${eventId}`)
+  .send({
+    f1: 'a',
+    f2: 'a',
+    f3: 'a',
+    f4: 'a',
+    f5: 'a',
+    f6: 'a'
+  })
+  .set('Authorization', 'Bearer ' + basicToken)
+  .expect(401)
+  .then(res => {
+    // res.body should be a message including which fields are unauthorized
+    t.ok(
+      ['f1', 'f2', 'f4', 'f5'].every(field => res.body.message.includes(field)),
+      'message should list fields which are unauthorized')
+    t.notOk(
+      ['f3', 'f6'].some(field => res.body.message.includes(field)),
+      'message should not list fields which are authorized')
+    t.end()
+  })
+  .catch(err => t.end(err))
+})
+
+// test for functions
+
 tape('test getUnauthorizedFields with no fields', t => {
   const user = {}
   const fieldPermissions = {}

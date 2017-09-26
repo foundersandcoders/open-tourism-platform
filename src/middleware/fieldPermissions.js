@@ -36,10 +36,9 @@ module.exports = fieldPermissions => {
     checkUserOwnsResource(resourceType)(resourceId)(user)
     .then(() => {
       req.user.isResourceOwner = true
-      return Promise.resolve()
     })
-    // we want to continue even if the user doesn't own the resource
-    .catch(() => Promise.resolve())
+    // here we want to continue even if the user doesn't own the resource
+    .catch(() => {})
     .then(() => {
       const unauthorizedFields =
         getUnauthorizedFields(fieldPermissions)(fieldsToChange)(user)
@@ -50,5 +49,6 @@ module.exports = fieldPermissions => {
       }
       next()
     })
+    .catch(next)
   }
 }
