@@ -14,7 +14,6 @@ module.exports = fieldPermissions => {
   // check supplied fieldPermissions are in correct form
   permissionedFields.forEach(field => {
     const [ minRole, owner ] = fieldPermissions[field]
-    // const ownerIsPermitted = !!owner
 
     if (!orderedRoles.includes(minRole)) {
       throw boom.badImplementation()
@@ -29,6 +28,10 @@ module.exports = fieldPermissions => {
     const user = req.user
     const resourceType = getResourceType(req)
     const resourceId = req.params.id
+
+    if (!user) {
+      return next(boom.unauthorized())  
+    }
 
     checkUserOwnsResource(resourceType)(resourceId)(user)
     .then(() => {
