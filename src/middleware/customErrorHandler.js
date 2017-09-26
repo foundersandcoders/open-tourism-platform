@@ -20,6 +20,6 @@ module.exports = (err, req, res, next) => {
 
     // unhandled custom error
     default:
-      res.boom.badImplementation(errMessages.UNHANDLED_CUSTOM)
+      next(err)
   }
 }

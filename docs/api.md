@@ -371,7 +371,7 @@ Status: 200 OK
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
-location | array of numbers | Location coordinates.
+location | array of numbers | Location coordinates, [ <longitude>, <latitude> ]. [Mongo's 2dsphere Index](https://docs.mongodb.com/manual/geospatial-queries/#geospatial-legacy)
 categories | array of strings | Place [categories](#place-categories).
 accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
 imageUrl | string | Link to image of place.
