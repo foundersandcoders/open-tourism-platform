@@ -63,9 +63,8 @@ tape('customErrorHandler with UNHANDLED', t => {
   const badImplementationError = new Error(errMessages.UNHANDLED_CUSTOM)
   badImplementationError.name = errNames.CUSTOM
 
-  const { resSpy } = generateSpiesAndCallMiddleware(badImplementationError)
+  const { nextSpy } = generateSpiesAndCallMiddleware(badImplementationError)
 
-  t.ok(resSpy.boom.badImplementation.called, `badImplementation method was called`)
-  t.equal(resSpy.boom.badImplementation.args[0][0], badImplementationError.message, `badImplementation was called with the error message`)
+  t.ok(nextSpy.called, `next method was called`)
   t.end()
 })
