@@ -1,8 +1,8 @@
 const boom = require('boom')
 const { messages: errMessages } = require('../constants/errors.json')
 const roles = require('../constants/roles.js')
-const { orderedRoles, getUnauthorizedFields, getResourceType, checkUserOwnsResource }
-  = require('../helpers/permissions')
+const { orderedRoles, getUnauthorizedFields, getResourceType, checkUserOwnsResource } =
+  require('../helpers/permissions')
 
 module.exports = fieldPermissions => {
   // fieldPermissions should be an object with the following form
@@ -47,6 +47,5 @@ module.exports = fieldPermissions => {
       }
       next()
     })
-
   }
 }

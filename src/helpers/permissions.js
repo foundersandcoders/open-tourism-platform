@@ -57,7 +57,7 @@ const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
       // filter down to fields which user is not permitted to change
     .filter(field => {
       const [ minRole, ownerIsPermitted ] = fieldPermissions[field]
-      
+
       if (hasSufficientRole({ minRole })(user)) {
         return false
       }
