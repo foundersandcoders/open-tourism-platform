@@ -13,14 +13,13 @@ const Token = require('../../src/models/auth/Token.js')
 
 const { validAdminUser, validBasicUser } = require('../fixtures/users.json')
 const { validEvent2 } = require('../fixtures/events.json')
-const { token } = require('../fixtures/auth/tokens.json')
 
-const adminUserToken = { accessToken: '456'}
-const basicUserToken = { accessToken: '123'}
+const adminUserToken = { accessToken: '456' }
+const basicUserToken = { accessToken: '123' }
 
 const roles = require('../../src/constants/roles.js')
 
-// prepare the db
+// 1) prepare the db
 
 tape('emptying db.', t => {
   Promise.all([
@@ -64,31 +63,42 @@ tape('filling db.', t => {
   .catch(err => t.end(err))
 })
 
-// dummy route for testing
+// 2) add dummy routes for testing purposes
 
-server.put('/test/events/:id',
+const testPermissions = {
+  f1: [ roles.SUPER ],
+  f2: [ roles.ADMIN ],
+  f3: [ roles.BASIC ],
+  f4: [ roles.SUPER, roles.OWNER ],
+  f5: [ roles.ADMIN, roles.OWNER ],
+  f6: [ roles.BASIC, roles.OWNER ]
+}
+
+// remove '/test' from req urls so fieldPermissions can get resource type from it
+const urlSlice = (req, res, next) => {
+  req.url = req.url.slice(5)
+  next()
+}
+
+server.post('/test/events',
   validateHeaderToken,
-  // remove '/test' from req url so middleware can get resource type from it
-  (req, res, next) => {
-    req.url = req.url.slice(5)
-    next()
-  },
-  // middleware to test
-  fieldPermissions({
-    f1: [ roles.SUPER ],
-    f2: [ roles.ADMIN ],
-    f3: [ roles.BASIC ],
-    f4: [ roles.SUPER, roles.OWNER ],
-    f5: [ roles.ADMIN, roles.OWNER ],
-    f6: [ roles.BASIC, roles.OWNER ]
-  }),
+  urlSlice,
+  fieldPermissions(testPermissions),
   (req, res, next) => res.send('success!'),
   boomErrorHandler
 )
 
-// integration tests for the middleware
+server.put('/test/events/:id',
+  validateHeaderToken,
+  urlSlice,
+  fieldPermissions(testPermissions),
+  (req, res, next) => res.send('success!'),
+  boomErrorHandler
+)
 
-tape('fieldPermissions with no user', t => {
+// 3) integration tests for the middleware
+
+tape('fieldPermissions PUT with no user', t => {
   supertest(server)
   .put(`/test/events/${eventId}`)
   .expect(401)
@@ -96,7 +106,7 @@ tape('fieldPermissions with no user', t => {
   .catch(err => t.end(err))
 })
 
-tape('fieldPermissions without editing any fields', t => {
+tape('fieldPermissions PUT without editing any fields', t => {
   supertest(server)
   .put(`/test/events/${eventId}`)
   .set('Authorization', 'Bearer ' + adminToken)
@@ -105,7 +115,32 @@ tape('fieldPermissions without editing any fields', t => {
   .catch(err => t.end(err))
 })
 
-tape('fieldPermissions editing various fields, as admin user and owner', t => {
+tape('fieldPermissions POST as basic user', t => {
+  supertest(server)
+  .post('/test/events')
+  .set('Authorization', 'Bearer ' + basicToken)
+  .send({
+    f1: 'a',
+    f2: 'a',
+    f3: 'a',
+    f4: 'a',
+    f5: 'a',
+    f6: 'a'
+  })
+  .expect(401)
+  .then(res => {
+    t.ok(
+      ['f1', 'f2', 'f4', 'f5'].every(field => res.body.message.includes(field)),
+      'message should list fields which are unauthorized')
+    t.notOk(
+      ['f3', 'f6'].some(field => res.body.message.includes(field)),
+      'message should not list fields which are authorized')
+    t.end()
+  })
+  .catch(err => t.end(err))
+})
+
+tape('fieldPermissions PUT editing various fields, as admin user and owner', t => {
   supertest(server)
   .put(`/test/events/${eventId}`)
   .send({
@@ -131,7 +166,7 @@ tape('fieldPermissions editing various fields, as admin user and owner', t => {
   .catch(err => t.end(err))
 })
 
-tape('fieldPermissions editing various fields, as basic user and not owner', t => {
+tape('fieldPermissions PUT editing various fields, as basic user and not owner', t => {
   supertest(server)
   .put(`/test/events/${eventId}`)
   .send({
@@ -157,7 +192,7 @@ tape('fieldPermissions editing various fields, as basic user and not owner', t =
   .catch(err => t.end(err))
 })
 
-// test for functions
+// 4) tests for individual functions
 
 tape('test getUnauthorizedFields with no fields', t => {
   const user = {}
