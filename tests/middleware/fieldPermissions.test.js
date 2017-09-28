@@ -109,7 +109,7 @@ tape('fieldPermissions PUT with no user', t => {
 tape('fieldPermissions PUT without editing any fields', t => {
   supertest(server)
   .put(`/test/events/${eventId}`)
-  .set('Authorization', 'Bearer ' + adminToken)
+  .set('authorization', 'Bearer ' + adminToken)
   .expect(200)
   .then(res => t.end())
   .catch(err => t.end(err))
