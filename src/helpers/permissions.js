@@ -50,7 +50,6 @@ const getResourceType = req => {
 
 const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
   const permissionedFields = Object.keys(fieldPermissions)
-  console.log('fields', fieldPermissions)
 
   return fieldsToChange
     // filter out fields which are not permissioned

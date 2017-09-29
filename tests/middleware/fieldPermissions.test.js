@@ -13,9 +13,10 @@ const Token = require('../../src/models/auth/Token.js')
 
 const { validAdminUser, validBasicUser } = require('../fixtures/users.json')
 const { validEvent2 } = require('../fixtures/events.json')
+const { token } = require('../fixtures/auth/tokens.json')
 
-const adminUserToken = { accessToken: '456' }
-const basicUserToken = { accessToken: '123' }
+const adminUserToken = Object.assign({}, token, { accessToken: '456' })
+const basicUserToken = Object.assign({}, token, { accessToken: '123' })
 
 const roles = require('../../src/constants/roles.js')
 
@@ -107,7 +108,6 @@ tape('fieldPermissions PUT with no user', t => {
 })
 
 tape('fieldPermissions PUT without editing any fields', t => {
-  console.log({ adminToken })
   supertest(server)
   .put(`/test/events/${eventId}`)
   .set('Authorization', 'Bearer ' + adminToken)
