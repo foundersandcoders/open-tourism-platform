@@ -1,23 +1,8 @@
 const boom = require('boom')
 const { messages: errMessages } = require('../constants/errors.json')
-const { hasSufficientRole } = require('./permissions')
 const roles = require('../constants/roles.js')
-
-const orderedRoles = [roles.BASIC, roles.ADMIN, roles.SUPER]
-
-const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
-  const permissionedFields = Object.keys(fieldPermissions)
-
-  return fieldsToChange
-    // filter out fields which are not permissioned
-    .filter(field => permissionedFields.includes(field))
-      // filter down to fields which user is not permitted to write to
-    .filter(field => {
-      const [ minRole, ownerIsPermitted ] = fieldPermissions[field]
-      return !hasSufficientRole({ minRole })(user) &&
-        !(ownerIsPermitted && user && user.isResourceOwner)
-    })
-}
+const { orderedRoles, getUnauthorizedFields, getResourceType, checkUserOwnsResource } =
+  require('../helpers/permissions')
 
 module.exports = fieldPermissions => {
   // fieldPermissions should be an object with the following form
@@ -29,7 +14,6 @@ module.exports = fieldPermissions => {
   // check supplied fieldPermissions are in correct form
   permissionedFields.forEach(field => {
     const [ minRole, owner ] = fieldPermissions[field]
-    const ownerIsPermitted = !!owner
 
     if (!orderedRoles.includes(minRole)) {
       throw boom.badImplementation()
@@ -41,17 +25,30 @@ module.exports = fieldPermissions => {
 
   return (req, res, next) => {
     const fieldsToChange = Object.keys(req.body)
+    const user = req.user
+    const resourceType = getResourceType(req)
+    const resourceId = req.params.id
 
-    const unauthorizedFields =
-      getUnauthorizedFields(fieldPermissions)(fieldsToChange)(req.user)
-
-    if (unauthorizedFields.length > 0) {
-      const message = errMessages.FIELD_UNAUTHORIZED + unauthorizedFields.join(', ')
-      return next(boom.unauthorized(message))
+    if (!user) {
+      return next(boom.unauthorized())
     }
 
-    next()
+    checkUserOwnsResource(resourceType)(resourceId)(user)
+    .then(() => {
+      req.user.isResourceOwner = true
+    })
+    // here we want to continue even if the user doesn't own the resource
+    .catch(() => {})
+    .then(() => {
+      const unauthorizedFields =
+        getUnauthorizedFields(fieldPermissions)(fieldsToChange)(user)
+
+      if (unauthorizedFields.length > 0) {
+        const message = errMessages.FIELD_UNAUTHORIZED + unauthorizedFields.join(', ')
+        return next(boom.unauthorized(message))
+      }
+      next()
+    })
+    .catch(next)
   }
 }
-
-module.exports.getUnauthorizedFields = getUnauthorizedFields
