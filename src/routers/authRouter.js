@@ -4,8 +4,8 @@ const oauthClientController = require('../controllers/oauthClient')
 
 const validateJWT = require('../middleware/validateJWT.js')
 const validateUser = require('../middleware/validateUser.js')
-const permissions = require('../middleware/permissions.js')
-const roles = require('../constants/roles.js')
+// const permissions = require('../middleware/permissions.js')
+// const roles = require('../constants/roles.js')
 
 const router = require('express').Router()
 
