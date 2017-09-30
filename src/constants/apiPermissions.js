@@ -2,25 +2,16 @@ const roles = require('./roles')
 
 module.exports = {
   User: {
-    getAll: { minRole: roles.SUPER },
-    getById: {
-      minRole: roles.SUPER,
-      ownerIsPermitted: true
-    },
-    create: { minRole: roles.SUPER },
-    update: {
-      minRole: roles.ADMIN,
-      ownerIsPermitted: true
-    },
-    delete: {
-      minRole: roles.SUPER,
-      ownerIsPermitted: false
-    },
+    getAll: [roles.SUPER],
+    getById: [ roles.SUPER, roles.OWNER ],
+    create: [ roles.SUPER ],
+    update: [ roles.ADMIN, roles.OWNER ],
+    delete: [ roles.SUPER ],
     fields: {
-      _id: { minRole: roles.SUPER },
-      username: { minRole: roles.SUPER, ownerIsPermitted: true },
-      role: { minRole: roles.SUPER },
-      password: { minRole: roles.SUPER }
+      _id: [ roles.SUPER ],
+      username: [ roles.SUPER, roles.OWNER ],
+      role: [ roles.SUPER ],
+      password: [ roles.SUPER ]
     }
   },
   Event: {

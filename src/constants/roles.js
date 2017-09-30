@@ -1,5 +1,7 @@
 module.exports = {
   BASIC: 'BASIC',
   ADMIN: 'ADMIN',
-  SUPER: 'SUPER'
+  SUPER: 'SUPER',
+
+  OWNER: 'OWNER'
 }

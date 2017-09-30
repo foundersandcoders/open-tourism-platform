@@ -19,14 +19,14 @@ router.route('/users')
     validateJWT(),
     validateUser(),
     validateHeaderToken,
-    permissions(api.User.getAll),
+    permissions({ authorizedRoles: api.User.getAll }),
     userController.getAll
   )
   .post(
     validateJWT(),
     validateUser(),
     validateHeaderToken,
-    permissions(api.User.create),
+    permissions({ authorizedRoles: api.User.create }),
     userController.create
   )
 
@@ -35,14 +35,14 @@ router.route('/users/:id')
     validateJWT(),
     validateUser(),
     validateHeaderToken,
-    permissions(api.User.getById),
+    permissions({ authorizedRoles: api.User.getById }),
     userController.getById
   )
   .put(
     validateJWT(),
     validateUser(),
     validateHeaderToken,
-    permissions(api.User.update),
+    permissions({ authorizedRoles: api.User.update }),
     fieldPermissions(api.User.fields),
     userController.update
   )
@@ -50,7 +50,7 @@ router.route('/users/:id')
     validateJWT(),
     validateUser(),
     validateHeaderToken,
-    permissions(api.User.delete),
+    permissions({ authorizedRoles: api.User.delete }),
     userController.delete
   )
 

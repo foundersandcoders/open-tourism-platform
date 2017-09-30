@@ -3,7 +3,8 @@
     "CUSTOM": "CustomDbError",
     "MONGO": "MongoError",
     "MONGOOSE_VALIDATION": "ValidationError",
-    "MONGOOSE_CAST": "CastError"
+    "MONGOOSE_CAST": "CastError",
+    "UNAUTHORISED_JWT": "UnauthorizedError"
   },
   "codes": {
     "MONGO_DUPLICATE_KEY": 11000
@@ -26,7 +27,8 @@
     "NO_STATE": "No state provided",
     "INCORRECT_CLIENT_ID": "Incorrect client_id",
 
-    "FIELD_UNAUTHORIZED": "You are not authorized to write to the requested fields: "
+    "FIELD_UNAUTHORIZED": "You are not authorized to write to the requested fields: ",
+    "EXPIRED_JWT": "jwt expired"
   },
   "auth": {
     "UNAUTHORIZED":"You are not authorised to access this resource",
