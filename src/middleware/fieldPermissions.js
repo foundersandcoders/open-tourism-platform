@@ -5,10 +5,19 @@ const { orderedRoles, getUnauthorizedFields, getResourceType, checkUserOwnsResou
   require('../helpers/permissions')
 
 module.exports = fieldPermissions => {
-  // fieldPermissions should be an object with the following form
-  // {
-  //   fieldName: [ minRole [, OWNER] ]
-  // }
+  /*
+  * Given a set of field permissions, return middleware that will
+  * either let a user through or reject as unauthorised
+  *
+  * fieldPermissions should be an object with the following form
+  * {
+  *   fieldName: [ minRole [, OWNER] ]
+  * }
+  *
+  * can be used independently or in conjunction with the permission.js
+  * middlewarae
+  */
+
   const permissionedFields = Object.keys(fieldPermissions)
 
   // check supplied fieldPermissions are in correct form

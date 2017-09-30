@@ -1,3 +1,6 @@
+// A middleware to check whether a user is authorised to access a route, whether as owner or an
+// authorised role
+
 const boom = require('boom')
 const { auth } = require('../constants/errors.json')
 const roles = require('../constants/roles')
@@ -9,11 +12,19 @@ const {
 } = require('../helpers/permissions')
 
 module.exports = ({ authorizedRoles }) => {
-  // authorizedRoles should be an array [ minRole [, OWNER] ]
-  // - minRole should be one of the fixed roles
-  // - OWNER is optional, its appearance indicating the resource owner is also permitted
-  //   even if not having the given minRole
-
+  /*
+  *
+  * Given the authorized roles, return a middleware to either let a
+  * user through, or reject as unauthorized.
+  *
+  * authorizedRoles should be an array [ minRole [, OWNER] ]
+  *  - minRole should be one of the fixed roles
+  *  - OWNER is optional, its appearance indicating the resource owner
+  * is also permitted even if not having the given minRole
+  *
+  * can be used independently or in conjunction with the
+  * fieldPermission.js middlewarae
+  */
   const [ minRole, owner ] = authorizedRoles
   const ownerIsPermitted = !!owner
 
@@ -29,7 +40,7 @@ module.exports = ({ authorizedRoles }) => {
     const resourceType = getResourceType(req)
 
     if (ownerIsPermitted && !resourceType) {
-      next(boom.badImplementation())
+      return next(boom.badImplementation())
     }
 
     if (!req.user || !req.user.id) {
