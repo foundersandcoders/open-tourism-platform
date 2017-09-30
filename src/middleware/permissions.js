@@ -46,9 +46,13 @@ module.exports = ({ authorizedRoles }) => {
 
     const resourceId = req.params.id
     return checkUserOwnsResource(resourceType)(resourceId)(req.user)
-    .then(() => {
-      req.user.isResourceOwner = true
-      next()
+    .then((isOwner) => {
+      if (isOwner) {
+        req.user.isResourceOwner = true
+        return next()
+      } else {
+        return next(boom.unauthorized(auth.UNAUTHORIZED))
+      }
     })
     .catch(err => next(err))
   }

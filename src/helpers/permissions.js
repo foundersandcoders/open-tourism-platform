@@ -1,8 +1,10 @@
+// Set of helper functions to help with the permissioning middlewares
+
 const url = require('url')
 const boom = require('boom')
 const roles = require('../constants/roles.js')
 const { rejectIfNull } = require('../db/utils')
-const { auth, messages: errMessages } = require('../constants/errors.json')
+const { messages: errMessages } = require('../constants/errors.json')
 
 const Event = require('../models/Event')
 const Place = require('../models/Place')
@@ -22,18 +24,14 @@ const hasSufficientRole = ({ minRole }) => user => {
 
 const checkUserOwnsResource = resourceType => resourceId => user => {
   if (resourceType === User) {
-    return resourceId === user.id.toString()
-      ? Promise.resolve()
-      : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
+    return Promise.resolve(resourceId === user.id.toString())
   }
 
   return resourceType.findById(resourceId)
   .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
-  // currently using toString(), may be better to use <mongoid>.equals(<mongoid>)
-  .then(doc => doc.owner.toString() === user.id.toString()
-    ? Promise.resolve()
-    : Promise.reject(boom.unauthorized(auth.UNAUTHORIZED))
-  )
+  .then(doc => {
+    return doc.owner.toString() === user.id.toString()
+  })
 }
 
 const getResourceType = req => {
