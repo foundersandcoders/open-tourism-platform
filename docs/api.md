@@ -109,7 +109,7 @@ Status: 200 OK
   "updatedAt": "2017-08-02T14:48:20.989Z",
   "createdAt": "2017-08-02T14:48:20.989Z",
   "owner": "8496873ea34958810182138c",
-  "place": "place": {
+  "place": {
     _id: '599152711fd6dc190c9940c1',
     "updatedAt": "2017-08-14T07:34:09.985Z",
     "createdAt": "2017-08-14T07:34:09.985Z",
@@ -149,9 +149,9 @@ Status: 200 OK
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of event owner.
-categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+categories | array of strings | **Required**. Event [categories](#event-categories).
 place | mongoose ObjectId | id of event location.
-accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+accessibilityOptions | array of strings | Event [accessibility options](#accessibility-options).
 startTime | date | Event start time.
 endTime | date | Event end time.
 cost | string | Rough estimation of event cost.
@@ -223,9 +223,9 @@ Status: 201 Created
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of event owner.
-categories | array of strings | **Required**. Event [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+categories | array of strings | **Required**. Event [categories](#event-categories).
 place | mongoose ObjectId | id of event location.
-accessibilityOptions | array of strings | Event [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+accessibilityOptions | array of strings | Event [accessibility options](#accessibility-options).
 startTime | date | Event start time.
 endTime | date | Event end time.
 cost | string | Rough estimation of event cost.
@@ -372,8 +372,8 @@ Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
 location | array of numbers | Location coordinates.
-categories | array of strings | Place [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
-accessibilityOptions | array of strings | Place [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+categories | array of strings | Place [categories](#place-categories).
+accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
 imageUrl | string | Link to image of place.
 website | string | Link to place's website.
 phone | string | Place phone number.
@@ -458,8 +458,8 @@ Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
 location | array of numbers | Location coordinates.
-categories | array of strings | Place [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
-accessibilityOptions | array of strings | Place [accessibility options](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+categories | array of strings | Place [categories](#place-categories).
+accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
 imageUrl | string | Link to image of place.
 website | string | Link to place's website.
 phone | string | Place phone number.
@@ -588,7 +588,7 @@ Status: 200 OK
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
-categories | array of strings | Product [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+categories | array of strings | Product [categories](#product-categories).
 imageUrl | string | Link to image of product.
 cost | number | Product cost.
 name* | string | **Required**. Product name.
@@ -644,7 +644,7 @@ Status: 201 Created
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
-categories | array of strings | Product [categories](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+categories | array of strings | Product [categories](#product-categories).
 imageUrl | string | Link to image of product.
 cost | number | Product cost.
 name* | string | **Required**. Product name.
@@ -759,7 +759,7 @@ Name | Type | Description
 username | string | Username.
 password | string | User's password.
 email | string | User's email.
-role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 isPublic | boolean | Whether the user's profile is public or not.
 imageUrl | string | Link to image of user.
 name* | string | **Required**. User's name.
@@ -818,7 +818,7 @@ Name | Type | Description
 username | string | Username.
 password | string | User's password.
 email | string | User's email.
-role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/67d654c4fbe74cdcbad5650d9d110c004673e6f2/src/models/constants.json).
+role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
 isPublic | boolean | Whether the user's profile is public or not.
 imageUrl | string | Link to image of user.
 name* | string | **Required**. User's name.
@@ -899,100 +899,55 @@ Status: 200 OK
 ]
 ```
 
-### Create client
-`POST /oauth/client`
-
-This is a secure route and requires users to be logged in directly on the platform to access it.
-
-Users can make clients when logged into the platform, and will recieve a response with the details of the client to be used when setting up oauth.
-
-**Input**
-
-Name | Type | Description
----|---|---
-name | string | **Required** Name of the App/client you are setting up.
-redirectUris | Array of strings | **Required** At least one redirect URL that OTP can send back the Authorization code used in Oauth2 flow to as a query parameter
-
-**Sample Request**
-```
-{
-  "name": "My First Client",
-  "redirectUris": ["www.foundersandcoders.com"]
-}
-```
-
-**Sample Response**
-
-```
-Status: 201 Created
-
-{
-    "__v": 0,
-    "name": "My First Client",
-    "user": "59b691f30ca38514c8a53235",
-    "secret": "qvFwiPe2A5L15zFs",
-    "_id": "59be4750860f29104898c992",
-    "redirectUris": [
-        "www.foundersandcoders.com"
-    ],
-    "grants": [
-        "authorization_code"
-    ]
-}
-```
-
-The `user` refers to the ID of the logged in user who created this client. The `id` and `secret` are the `client_id` and `client_secret` to be used in the Oauth2 authorization code flow. The client secret will be 16 digit alphanumeric randomly generated.
-
 ## Categories
 
 Below are listed the options avaliable for each of the categories across the API:
 
 ### Accessibility options
   - Audio recordings
-  - Braille
   - Big fonts
+  - Braille
   - Carer
-  - Place for guide dog
-  - SMS messaging
-  - Sign language
-  - Good lighting
-  - Carer
-  - WheelChair access
   - Disabled parking
   - Disabled toilets
-  - Carer
-### Place Categories
+  - Good lighting
+  - Place for guide dog
+  - Sign language
+  - SMS messaging
+  - Wheelchair access
+
+### Place categories
   - cafe
+  - education
+  - food and drink
+  - healthcare
+  - municipal
   - music venue
   - religious site
-  - food and drink
-  - education
   - retail
   - sport
-  - municipal
-  - healthcare
 
-### Event Categories
-  - music
+### Event categories
+  - competition
+  - conference
+  - cultural event
   - dining
   - educational
-  - conference
-  - sport
-  - competition
   - launch
-  - party
-  - wedding
-  - cultural event
+  - music
   - miscellaneous-
+  - party
+  - sport
+  - wedding
 
-### Product Categories
-  - jewellery
+### Product categories
+  - calligraphy
   - clothing
   - crochet
-  - calligraphy
-  - embroidery
-  - metalwork
-  - food
   - drink
-  - pottery
+  - embroidery
+  - food
   - glassware
+  - jewellery
+  - metalwork
+  - pottery

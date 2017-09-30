@@ -6,7 +6,8 @@
 
 If you want to get involved, check out the [contributing file](./CONTRIBUTING.md).
 
-Read the API docs [here](./docs.md).
+See the API docs [here](./docs/api.md).
+See the guide for app developers using OAuth [here](./docs/oauth.md).
 
 ## What?
 An open backend to help support and facilitate the creation of apps and websites aimed at developing tourism in Nazareth.
