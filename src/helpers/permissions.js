@@ -36,7 +36,8 @@ const checkUserOwnsResource = resourceType => resourceId => user => {
   * returns a Promise that resolves to true or false, or rejects if
   * resourceId is not found in DB (404)
   *
-  * N.B. when the resource type itself is a User, the method is       * different but the returns are the same
+  * N.B. when the resource type itself is a User, the method is
+  * different but the returns are the same
   */
 
   if (resourceType === User) {
@@ -73,13 +74,16 @@ const getResourceType = req => {
 
 const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
   /*
-  * check an array of the fields a user is trying to change against   * against an array of those fields and their permission levels
+  * check an array of the fields a user is trying to change against
+  * an array of those fields and their permission levels
   *
-  * fieldPermissions should be an object with fields of a resource as  * the keys and the authorised roles as the values (in an array)
+  * fieldPermissions should be an object with fields of a resource as
+  * the keys and the authorised roles as the values (in an array)
   * fieldsToChange should be an array of fields
   * user is a user object that needs to have role and isResourceOwner
   *
-  * returns an array of fields which the given user is attempting to  * change but is not authorised to do so
+  * returns an array of fields which the given user is attempting to
+  * change but is not authorised to do so
   */
 
   const permissionedFields = Object.keys(fieldPermissions)
