@@ -46,9 +46,7 @@ const checkUserOwnsResource = resourceType => resourceId => user => {
 
   return resourceType.findById(resourceId)
   .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
-  .then(doc => {
-    return doc.owner.toString() === user.id.toString()
-  })
+  .then(doc => doc.owner.toString() === user.id.toString())
 }
 
 const getResourceType = req => {
@@ -75,7 +73,7 @@ const getResourceType = req => {
 const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
   /*
   * check an array of the fields a user is trying to change against
-  * an array of those fields and their permission levels
+  * a permissioned fields object
   *
   * fieldPermissions should be an object with fields of a resource as
   * the keys and the authorised roles as the values (in an array)
@@ -91,7 +89,7 @@ const getUnauthorizedFields = fieldPermissions => fieldsToChange => user => {
   return fieldsToChange
     // filter out fields which are not permissioned
     .filter(field => permissionedFields.includes(field))
-      // filter down to fields which user is not permitted to change
+    // filter down to fields which user is not permitted to change
     .filter(field => {
       const [ minRole, ownerIsPermitted ] = fieldPermissions[field]
 
