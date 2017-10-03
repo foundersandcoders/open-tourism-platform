@@ -3,13 +3,13 @@ const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
 
-const validateJWT = require('../middleware/validateJWT')
-const validateHeaderToken = require('../middleware/validateHeaderToken')
-const validateUser = require('../middleware/validateUser')
-const permissions = require('../middleware/permissions')
-const fieldPermissions = require('../middleware/fieldPermissions')
+// const validateJWT = require('../middleware/validateJWT')
+// const validateHeaderToken = require('../middleware/validateHeaderToken')
+// const validateUser = require('../middleware/validateUser')
+// const permissions = require('../middleware/permissions')
+// const fieldPermissions = require('../middleware/fieldPermissions')
 
-const api = require('../constants/apiPermissions')
+// const api = require('../constants/apiPermissions')
 
 const router = require('express').Router()
 

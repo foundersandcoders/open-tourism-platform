@@ -32,26 +32,38 @@ tape('filling db.', t => {
 // the tests
 tape('checkUserOwnsResource with resource \'User\', and the correct user', t => {
   checkUserOwnsResource(User)(user.id)(user)
-  .then(() => t.end())
+  .then((ownerStatus) => {
+    t.ok(ownerStatus, 'ownerStatus is true')
+    t.end()
+  })
   .catch(err => t.end(err))
 })
 
 tape('checkUserOwnsResource with resource \'User\', and an incorrect user', t => {
   checkUserOwnsResource(User)(user.id)(wrongUser)
-  .then(() => t.end('promise should reject, as user is wrong'))
-  .catch(() => t.end())
+  .then((ownerStatus) => {
+    t.notOk(ownerStatus, 'ownerStatus is false')
+    t.end()
+  })
+  .catch(err => t.end(err))
 })
 
 tape('checkUserOwnsResource with resource \'Event\', and the correct user', t => {
   checkUserOwnsResource(Event)(validEvent1.id)(user)
-  .then(() => t.end())
+  .then((ownerStatus) => {
+    t.ok(ownerStatus, 'ownerStatus is true')
+    t.end()
+  })
   .catch(err => t.end(err))
 })
 
 tape('checkUserOwnsResource with resource \'Event\', and an incorrect user', t => {
   checkUserOwnsResource(Event)(validEvent1.id)(wrongUser)
-  .then(() => t.end('promise should reject, as user is wrong'))
-  .catch(() => t.end())
+  .then((ownerStatus) => {
+    t.notOk(ownerStatus, 'ownerStatus is false')
+    t.end()
+  })
+  .catch((err) => t.end(err))
 })
 
 tape('permissions initialization with bad implementation', t => {

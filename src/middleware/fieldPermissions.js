@@ -5,10 +5,19 @@ const { orderedRoles, getUnauthorizedFields, getResourceType, checkUserOwnsResou
   require('../helpers/permissions')
 
 module.exports = fieldPermissions => {
-  // fieldPermissions should be an object with the following form
-  // {
-  //   fieldName: [ minRole [, OWNER] ]
-  // }
+  /*
+  * Given a set of field permissions, return middleware that will
+  * either let a user through or reject as unauthorised
+  *
+  * fieldPermissions should be an object with the following form
+  * {
+  *   fieldName: [ minRole [, OWNER] ]
+  * }
+  *
+  * can be used independently or in conjunction with the permission.js
+  * middlewarae
+  */
+
   const permissionedFields = Object.keys(fieldPermissions)
 
   // check supplied fieldPermissions are in correct form
@@ -33,12 +42,16 @@ module.exports = fieldPermissions => {
       return next(boom.unauthorized())
     }
 
-    checkUserOwnsResource(resourceType)(resourceId)(user)
-    .then(() => {
-      req.user.isResourceOwner = true
+    Promise.resolve().then(() => {
+      // for POST requests, req.params.id will be undefined and we do
+      // not need to check user owns resource anyway
+      if (resourceId) {
+        return checkUserOwnsResource(resourceType)(resourceId)(user)
+        .then(ownerStatus => {
+          req.user.isResourceOwner = ownerStatus
+        })
+      }
     })
-    // here we want to continue even if the user doesn't own the resource
-    .catch(() => {})
     .then(() => {
       const unauthorizedFields =
         getUnauthorizedFields(fieldPermissions)(fieldsToChange)(user)
