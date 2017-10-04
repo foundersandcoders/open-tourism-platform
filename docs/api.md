@@ -917,8 +917,8 @@ Below are listed the options avaliable for each of the categories across the API
     "Disabled toilets",
     "Carer"
   ]
-    ```
-  ```json
+ ```
+ ```json
   "placeCategories": [
     "cafe",
     "music venue",
@@ -930,8 +930,8 @@ Below are listed the options avaliable for each of the categories across the API
     "municipal",
     "healthcare"
   ]
-    ```
-  ```json
+```
+```json
   "eventCategories": [
     "music",
     "dining",
