@@ -916,7 +916,9 @@ Below are listed the options avaliable for each of the categories across the API
     "Disabled parking",
     "Disabled toilets",
     "Carer"
-  ],
+  ]
+    ```
+  ```json
   "placeCategories": [
     "cafe",
     "music venue",
@@ -927,7 +929,9 @@ Below are listed the options avaliable for each of the categories across the API
     "sport",
     "municipal",
     "healthcare"
-  ],
+  ]
+    ```
+  ```json
   "eventCategories": [
     "music",
     "dining",
@@ -940,7 +944,9 @@ Below are listed the options avaliable for each of the categories across the API
     "wedding",
     "culture",
     "miscellaneous"
-  ],
+  ]
+  ```
+  ```json
   "productCategories": [
     "jewellery",
     "clothing",
