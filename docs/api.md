@@ -903,51 +903,54 @@ Status: 200 OK
 
 Below are listed the options avaliable for each of the categories across the API:
 
-### Accessibility options
-  - Audio recordings
-  - Big fonts
-  - Braille
-  - Carer
-  - Disabled parking
-  - Disabled toilets
-  - Good lighting
-  - Place for guide dog
-  - Sign language
-  - SMS messaging
-  - Wheelchair access
-
-### Place categories
-  - cafe
-  - education
-  - food and drink
-  - healthcare
-  - municipal
-  - music venue
-  - religious site
-  - retail
-  - sport
-
-### Event categories
-  - competition
-  - conference
-  - cultural event
-  - dining
-  - educational
-  - launch
-  - music
-  - miscellaneous-
-  - party
-  - sport
-  - wedding
-
-### Product categories
-  - calligraphy
-  - clothing
-  - crochet
-  - drink
-  - embroidery
-  - food
-  - glassware
-  - jewellery
-  - metalwork
-  - pottery
+```json
+"accessibilityOptions": [
+    "Audio recordings",
+    "Braille",
+    "Big fonts",
+    "Place for guide dog",
+    "SMS messaging",
+    "Sign language",
+    "Good lighting",
+    "Wheelchair access",
+    "Disabled parking",
+    "Disabled toilets",
+    "Carer"
+  ],
+  "placeCategories": [
+    "cafe",
+    "music venue",
+    "religious site",
+    "food and drink",
+    "education",
+    "retail",
+    "sport",
+    "municipal",
+    "healthcare"
+  ],
+  "eventCategories": [
+    "music",
+    "dining",
+    "educational",
+    "conference",
+    "sport",
+    "competition",
+    "launch",
+    "party",
+    "wedding",
+    "culture",
+    "miscellaneous"
+  ],
+  "productCategories": [
+    "jewellery",
+    "clothing",
+    "crochet",
+    "calligraphy",
+    "embroidery",
+    "metalwork",
+    "food",
+    "drink",
+    "pottery",
+    "glassware"
+  ]
+```
