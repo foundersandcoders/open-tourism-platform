@@ -38,10 +38,10 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Create clients](#create-clients)
 
 **Categories**
-- [Accessibility Options](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L7-L19)
-- [Places](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L20-L30)
-- [Event](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L31-L43)
-- [Producs](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L44-L55)
+- [Accessibility Options](../src/models/constants.json#L7-L19)
+- [Places](../src/models/constants.json#L20-L30)
+- [Event](../src/models/constants.json#L31-L43)
+- [Products](../src/models/constants.json#L44-L55)
 ## Events
 
 ### Get all events
@@ -897,66 +897,4 @@ Status: 200 OK
   ]
 }
 ]
-```
-
-## Categories
-
-Below are listed the options avaliable for each of the categories across the API:
-
-```json
-"accessibilityOptions": [
-    "Audio recordings",
-    "Braille",
-    "Big fonts",
-    "Place for guide dog",
-    "SMS messaging",
-    "Sign language",
-    "Good lighting",
-    "Wheelchair access",
-    "Disabled parking",
-    "Disabled toilets",
-    "Carer"
-  ]
- ```
- ```json
-  "placeCategories": [
-    "cafe",
-    "music venue",
-    "religious site",
-    "food and drink",
-    "education",
-    "retail",
-    "sport",
-    "municipal",
-    "healthcare"
-  ]
-```
-```json
-  "eventCategories": [
-    "music",
-    "dining",
-    "educational",
-    "conference",
-    "sport",
-    "competition",
-    "launch",
-    "party",
-    "wedding",
-    "culture",
-    "miscellaneous"
-  ]
-  ```
-  ```json
-  "productCategories": [
-    "jewellery",
-    "clothing",
-    "crochet",
-    "calligraphy",
-    "embroidery",
-    "metalwork",
-    "food",
-    "drink",
-    "pottery",
-    "glassware"
-  ]
 ```
