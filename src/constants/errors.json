@@ -27,6 +27,7 @@
     "NO_STATE": "No state provided",
     "INCORRECT_CLIENT_ID": "Incorrect client_id",
 
+    "FIELD_UNAUTHORIZED": "You are not authorized to write to the requested fields: ",
     "EXPIRED_JWT": "jwt expired"
   },
   "auth": {
