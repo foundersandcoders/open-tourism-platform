@@ -38,10 +38,10 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Create clients](#create-clients)
 
 **Categories**
-- [Accessibility Options](#accessibility-options)
-- [Places](#place-categories)
-- [Event](#event-categories)
-- [Producs](#product-categories)
+- [Accessibility Options](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L7-L19)
+- [Places](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L20-L30)
+- [Event](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L31-L43)
+- [Producs](https://github.com/foundersandcoders/open-tourism-platform/blob/edit-api-docs/src/models/constants.json#L44-L55)
 ## Events
 
 ### Get all events
