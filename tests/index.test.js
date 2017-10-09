@@ -17,41 +17,41 @@ dbConnection.once('open', () => {
     .then(() => t.end())
     .catch(err => t.end(err))
   })
-  // // test the test helper functions
-  // require('./helpers/index.test.js')
+  // test the test helper functions
+  require('./helpers/index.test.js')
 
-  // // test api controllers
-  // require('./controllers/user.test.js')
-  // require('./controllers/place.test.js')
+  // test api controllers
+  require('./controllers/user.test.js')
+  require('./controllers/place.test.js')
   require('./controllers/event.test.js')
-  // require('./controllers/product.test.js')
+  require('./controllers/product.test.js')
 
   // test sessions controller
-  // require('./controllers/sessions.test.js')
-  // require('./controllers/oauthClient.test.js')
+  require('./controllers/sessions.test.js')
+  require('./controllers/oauthClient.test.js')
 
-  // // test error handlers
-  // require('./middleware/customErrorHandler.test.js')
-  // require('./middleware/mongoErrorHandler.test.js')
-  // require('./middleware/mongooseErrorHandler.test.js')
-  // require('./middleware/boomErrorHandler.test.js')
+  // test error handlers
+  require('./middleware/customErrorHandler.test.js')
+  require('./middleware/mongoErrorHandler.test.js')
+  require('./middleware/mongooseErrorHandler.test.js')
+  require('./middleware/boomErrorHandler.test.js')
 
-  // // test auth middleware
-  // require('./middleware/authHelpers.test.js')
-  // require('./middleware/validateHeaderToken.test.js')
-  // require('./middleware/sessionMiddleware.test.js')
+  // test auth middleware
+  require('./middleware/authHelpers.test.js')
+  require('./middleware/validateHeaderToken.test.js')
+  require('./middleware/sessionMiddleware.test.js')
 
-  // require('./middleware/permissions.test.js')
-  // require('./middleware/fieldPermissions.test.js')
+  require('./middleware/permissions.test.js')
+  require('./middleware/fieldPermissions.test.js')
 
-  // // test auth routes
-  // require('./auth.test.js')
+  // test auth routes
+  require('./auth.test.js')
 
-  // // test oauth routes
-  // require('./oauth/authorize.test.js')
+  // test oauth routes
+  require('./oauth/authorize.test.js')
 
-  // // test oauth flow
-  // require('./oauth/integration.test.js')
+  // test oauth flow
+  require('./oauth/integration.test.js')
 
   tape.onFinish(() => {
     dbConnection.close()
