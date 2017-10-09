@@ -3,37 +3,16 @@ const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
 
-// const validateJWT = require('../middleware/validateJWT')
-// const validateHeaderToken = require('../middleware/validateHeaderToken')
-// const validateUser = require('../middleware/validateUser')
-// const permissions = require('../middleware/permissions')
-// const fieldPermissions = require('../middleware/fieldPermissions')
-
-// const api = require('../constants/apiPermissions')
-
 const router = require('express').Router()
 
 // user routes
 router.route('/users')
   .get(userController.getAll)
-  .post(
-    // validateJWT(),
-    // validateUser(),
-    // validateHeaderToken,
-    // fieldPermissions(api.User.fields),
-    userController.create
-  )
+  .post(userController.create)
 
 router.route('/users/:id')
   .get(userController.getById)
-  .put(
-    // validateJWT(),
-    // validateUser(),
-    // validateHeaderToken,
-    // permissions(api.User.put),
-    // fieldPermissions(api.User.fields),
-    userController.update
-  )
+  .put(userController.update)
   .delete(userController.delete)
 
   // place routes

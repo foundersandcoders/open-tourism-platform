@@ -244,24 +244,18 @@ tape('test getUnauthorizedFields with varied fields', t => {
 })
 
 tape('fieldPermissions initialization with bad implementation', t => {
-  try {
-    fieldPermissions({
-      id: [ roles.SUPER, roles.ADMIN ]
-    })
-    t.end('should throw bad implementation')
-  } catch (err) {
-    t.end()
+  const badInput = {
+    id: [ roles.SUPER, roles.ADMIN ]
   }
+  t.throws(() => fieldPermissions(badInput), 'should throw bad implementation')
+  t.end()
 })
 
 tape('fieldPermissions initialization', t => {
-  try {
-    fieldPermissions({
-      id: [ roles.SUPER, roles.OWNER ],
-      name: [ roles.BASIC ]
-    })
-    t.end()
-  } catch (err) {
-    t.end(err)
+  const goodInput = {
+    id: [ roles.SUPER, roles.OWNER ],
+    name: [ roles.BASIC ]
   }
+  t.doesNotThrow(() => fieldPermissions(goodInput), 'should not throw an error')
+  t.end()
 })
