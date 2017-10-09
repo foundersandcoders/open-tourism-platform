@@ -8,7 +8,7 @@ const Token = require('../../src/models/auth/Token.js')
 
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 const { validPlace1 } = require('../fixtures/places.json')
-const { validUser1, validBasicUser, user } = require('../fixtures/users.json')
+const { validBasicUser, user } = require('../fixtures/users.json')
 const { token } = require('../fixtures/auth/tokens.json')
 
 const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
@@ -256,7 +256,7 @@ tape('PUT /events/:id with invalid id', t => {
     User.create(validBasicUser),
     makeLoggedInToken(validBasicUser)
   ])
-  .then(([ _, token]) => supertest(server)
+  .then(([ _, token ]) => supertest(server)
     .put('/events/invalidId')
     .set('Cookie', `token=${token}`)
     .send(validEvent1)
@@ -274,9 +274,9 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
   Promise.all([
     User.create(user),
     Token.create(token),
-    Event.create(validEvent1)  
+    Event.create(validEvent1)
   ])
-  .then(([ _, token, createdEvent ]) => 
+  .then(([ _, token, createdEvent ]) =>
     supertest(server)
     .put(`/events/${createdEvent.id}`)
     .set('Authorization', 'Bearer ' + token.accessToken)

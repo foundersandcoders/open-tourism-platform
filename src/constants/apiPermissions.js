@@ -1,4 +1,4 @@
-// const roles = require('./roles')
+const roles = require('./roles')
 
 module.exports = {
   User: {
