@@ -8,7 +8,7 @@ const Token = require('../../src/models/auth/Token.js')
 
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 const { validPlace1 } = require('../fixtures/places.json')
-const { validBasicUser, user } = require('../fixtures/users.json')
+const { validBasicUser, superUser, user } = require('../fixtures/users.json')
 const { token } = require('../fixtures/auth/tokens.json')
 
 const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
@@ -307,13 +307,12 @@ tape('DELETE /events/:id, unauthorized as not logged in', t => {
 
 tape('DELETE /events/:id with invalid id', t => {
   Promise.all([
-    User.create(validBasicUser),
-    makeLoggedInToken(validBasicUser)
+    User.create(superUser),
+    makeLoggedInToken(superUser)
   ])
   .then(([ _, token ]) => supertest(server)
-    .put('/events/invalidId')
+    .delete('/events/invalidId')
     .set('Cookie', `token=${token}`)
-    .send(validEvent1)
     .expect(400)
     .expect('Content-Type', /json/)
   )
@@ -321,48 +320,51 @@ tape('DELETE /events/:id with invalid id', t => {
     t.ok(res.body.message, 'Error message sent back')
     t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
   })
-  .then(() => Promise.all([
-    User.remove({}),
-    Token.remove({})
-  ]))
-  .then(() => t.end())
+  .then(() => dropCollectionsAndEnd([ Token, User ], t))
   .catch(err => t.end(err))
 })
 
 tape('DELETE /events/:id with id of something not in the database', t => {
-  supertest(server)
+  Promise.all([
+    User.create(superUser),
+    makeLoggedInToken(superUser)
+  ])
+  .then(([ _, token ]) => supertest(server)
     .delete('/events/507f1f77bcf86cd799439011')
+    .set('Cookie', `token=${token}`)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.ok(res.body.message, 'Message sent back')
-      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
-      t.end()
-    })
+  )
+  .then(res => {
+    t.ok(res.body.message, 'Message sent back')
+    t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
+  })
+  .then(() => dropCollectionsAndEnd([ Token, User ], t))
+  .catch(err => t.end(err))
 })
 
 tape('DELETE /events/:id with valid ID', t => {
-  Event.create(validEvent1, validEvent2)
-    .then(eventToBeDeleted => {
-      supertest(server)
-        .delete(`/events/${eventToBeDeleted.id}`)
-        .expect(204)
-        .end((err, res) => {
-          if (err) t.fail(err)
-          t.deepEqual(res.body, {}, 'Nothing returned after deletion')
-          // check our database now has one fewer event
-          Event.find()
-            .then(events => {
-              t.equal(events.length, 1, 'Events should now be length 1')
-              t.ok(events[0].id !== eventToBeDeleted.id, 'deleted event no longer in DB')
-              dropCollectionAndEnd(Event, t)
-            })
-            .catch(err => {
-              t.fail(err)
-              dropCollectionAndEnd(Event, t)
-            })
-        })
-    })
-    .catch(err => t.end(err))
+  let eventId
+  Promise.all([
+    User.create(superUser),
+    makeLoggedInToken(superUser),
+    Event.create(validEvent1, validEvent2)
+  ])
+  .then(([ _, token, eventToBeDeleted ]) => {
+    eventId = eventToBeDeleted.id
+    return supertest(server)
+      .delete(`/events/${eventId}`)
+      .set('Cookie', `token=${token}`)
+      .expect(204)
+  })
+  .then(res => {
+    t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+    return Event.find()
+  })
+  .then(events => {
+    t.equal(events.length, 1, 'Events should now be length 1')
+    t.ok(events[0].id !== eventId, 'deleted event no longer in DB')
+    dropCollectionsAndEnd([ Event, Token, User ], t)
+  })
+  .catch(err => t.end(err))
 })
