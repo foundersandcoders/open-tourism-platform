@@ -291,23 +291,42 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
   })
   .then(([ event, res ]) => {
     t.equal(event.categories[0], res.body.categories[0], 'Event is in the database')
-    dropCollectionsAndEnd([ Event, Token ], t)
+    dropCollectionsAndEnd([ Event, Token, User ], t)
   })
   .catch(err => t.end(err))
 })
 
 // Tests for: DELETE /events/:id
-tape('DELETE /events/:id with invalid id', t => {
+tape('DELETE /events/:id, unauthorized as not logged in', t => {
   supertest(server)
-    .delete('/events/invalid')
+    .delete('/events/id')
+    .expect(401)
+  .then(() => t.end())
+  .catch(err => t.end(err))
+})
+
+tape('DELETE /events/:id with invalid id', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ])
+  .then(([ _, token ]) => supertest(server)
+    .put('/events/invalidId')
+    .set('Cookie', `token=${token}`)
+    .send(validEvent1)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
-      t.ok(res.body.message, 'Error message sent back')
-      t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
-      t.end()
-    })
+  )
+  .then(res => {
+    t.ok(res.body.message, 'Error message sent back')
+    t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
+  })
+  .then(() => Promise.all([
+    User.remove({}),
+    Token.remove({})
+  ]))
+  .then(() => t.end())
+  .catch(err => t.end(err))
 })
 
 tape('DELETE /events/:id with id of something not in the database', t => {
