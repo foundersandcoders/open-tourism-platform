@@ -42,10 +42,14 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Places](../src/models/constants.json#L20-L30)
 - [Event](../src/models/constants.json#L31-L43)
 - [Products](../src/models/constants.json#L44-L55)
+
 ## Events
 
 ### Get all events
 `GET /events`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Query parameters**
 
@@ -100,6 +104,9 @@ Status: 200 OK
 ### Get event by id
 `GET /events/:id`
 
+**Permissions**
+There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -143,6 +150,9 @@ Status: 200 OK
 
 ### Create event
 `POST /events`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Input**
 
@@ -218,20 +228,23 @@ Status: 201 Created
 ### Update event
 `PUT /events/:id`
 
+**Permissions**
+This route is only accessible to admin users or the owner of the event. See the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-owner | mongoose ObjectId | id of event owner.
-categories | array of strings | **Required**. Event [categories](#event-categories).
-place | mongoose ObjectId | id of event location.
-accessibilityOptions | array of strings | Event [accessibility options](#accessibility-options).
-startTime | date | Event start time.
-endTime | date | Event end time.
-cost | string | Rough estimation of event cost.
-imageUrl | string | Link to image of event.
-name* | string | **Required**. Name of event.
-description* | string | More information about event.
+Name | Type | Description | Field Permissions
+---|---|--- | ---
+owner | mongoose ObjectId | id of event owner. | can only be updated by admin users.
+categories | array of strings | **Required**. Event [categories](#event-categories). | ---
+place | mongoose ObjectId | id of event location. | ---
+accessibilityOptions | array of strings. | Event [accessibility options](#accessibility-options). | ---
+startTime | date | Event start time. | ---
+endTime | date | Event end time. | ---
+cost | string | Rough estimation of event cost. | ---
+imageUrl | string | Link to image of event. | ---
+name* | string | **Required**. Name of event. | ---
+description* | string | More information about event. | ---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -259,8 +272,7 @@ Status: 200 OK
   "cost": "100 shekels",
   "imageUrl": "imgIsHere.com/12345",
   "en": {
-    "name": "Party at the guesthouse V2",
-    "description": "Really cool"
+    "name": "Party at the guesthouse V2"
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
@@ -276,6 +288,9 @@ Status: 200 OK
 
 ### Delete event
 `DELETE /events/:id`
+
+**Permissions**
+This route is only accessible to super users or the owner of the event.
 
 **Sample Response**
 
