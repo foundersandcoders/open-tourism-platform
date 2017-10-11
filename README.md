@@ -23,10 +23,11 @@ git clone https://github.com/foundersandcoders/open-tourism-platform.git && cd o
 npm i
 ```
 
-Create a .env file containing two variables in the root directory:
+Create a `.env` file containing three variables in the root directory:
 ```
 MONGODB_URI_DEV=mongodb://localhost/open-platform-dev
 MONGODB_URI_TEST=mongodb://localhost/open-platform-test
+JWT_SECRET=devEnvironmentSecret
 ```
 
 Ensure mongodb is running.
