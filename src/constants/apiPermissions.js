@@ -6,7 +6,7 @@ module.exports = {
   },
   Event: {
     update: { authorizedRoles: [ roles.ADMIN, roles.OWNER ] },
-    delete: { authorizedRoles: [ roles.SUPER ] },
+    delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
     fields: {
       _id: [ roles.SUPER ],
       owner: [ roles.ADMIN ]
