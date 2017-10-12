@@ -6,6 +6,8 @@ const Event = require('../../src/models/Event.js')
 const User = require('../../src/models/User.js')
 const Token = require('../../src/models/auth/Token.js')
 
+const { auth: authErrMessages } = require('../../src/constants/errors')
+
 const { validEvent1, validEvent2, validEvent3, invalidEvent1, invalidEvent2, invalidEvent3, invalidEvent4 } = require('../fixtures/events.json')
 const { validPlace1 } = require('../fixtures/places.json')
 const { validBasicUser, superUser, user } = require('../fixtures/users.json')
@@ -227,7 +229,13 @@ tape('PUT /events/:id, unauthorized as not logged in', t => {
     .put('/events/id')
     .send(validEvent1)
     .expect(401)
-  .then(() => t.end())
+  .then(res => {
+    t.equal(
+      res.body.message,
+      authErrMessages.UNAUTHORIZED,
+      'should return correct error message')
+    t.end()
+  })
   .catch(err => t.end(err))
 })
 
@@ -301,7 +309,13 @@ tape('DELETE /events/:id, unauthorized as not logged in', t => {
   supertest(server)
     .delete('/events/id')
     .expect(401)
-  .then(() => t.end())
+  .then(res => {
+    t.equal(
+     res.body.message,
+     authErrMessages.UNAUTHORIZED,
+     'should return correct error message')
+    t.end()
+  })
   .catch(err => t.end(err))
 })
 
