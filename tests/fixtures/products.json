@@ -1,5 +1,19 @@
 {
-   "validProduct1": { "en":{"name":"hand-made mug"}, "categories":"pottery" },
-   "validProduct2": { "en":{"name":"small knitted scarf"}, "categories":"clothing" },
-   "invalidProduct1": { "description":"super cheap sunglasses $$$" }
+  "validProduct1": {
+    "en": {
+      "name": "hand-made mug"
+    },
+    "categories": "pottery",
+    "owner": "5986abad5e2d852cb1ee6bcd"
+  },
+  "validProduct2": {
+    "en": {
+      "name": "small knitted scarf"
+    },
+    "categories": "clothing",
+    "owner": "5986abad5e2d852cb1ee6bce"
+  },
+  "invalidProduct1": {
+    "description": "super cheap sunglasses $$$"
+  }
 }
