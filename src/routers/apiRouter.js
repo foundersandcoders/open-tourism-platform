@@ -53,7 +53,14 @@ router.route('/products/:id')
     validateHeaderToken,
     permissions(api.Product.update),
     fieldPermissions(api.Product.fields),
-    productController.update)
-  .delete(productController.delete)
+    productController.update
+  )
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Product.delete),
+    productController.delete
+  )
 
 module.exports = router
