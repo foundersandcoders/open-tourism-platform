@@ -2,6 +2,9 @@ const tape = require('tape')
 const supertest = require('supertest')
 const server = require('../../src/server.js')
 const User = require('../../src/models/User.js')
+
+const { auth: authErrMessages } = require('../../src/constants/errors')
+
 const { dropCollectionAndEnd } = require('../helpers/index.js')
 const { validUser1, validUser2, invalidUser1, validAdminUser } = require('../fixtures/users.json')
 
@@ -14,7 +17,7 @@ tape('GET /users when not logged in', t => {
     .expect(401)
     .expect('Content-Type', /json/)
     .then(res => {
-      t.equal(res.body.message, 'You are not authorised to access this resource', 'unauthorised error message sent')
+      t.equal(res.body.message, authErrMessages.UNAUTHORIZED, 'unauthorised error message sent')
       t.end()
     })
     .catch(err => t.end(err))
@@ -66,13 +69,13 @@ tape('GET /users, when logged in, with query parameters', t => {
 })
 
 // GET /users/:id
-tape('GET /users/:id wwhen not logged in', t => {
+tape('GET /users/:id when not logged in', t => {
   supertest(server)
     .get('/users/507f1f77bcf86cd799439011')
     .expect(401)
     .expect('Content-Type', /json/)
     .then(res => {
-      t.equal(res.body.message, 'You are not authorised to access this resource', 'unauthorised error message sent')
+      t.equal(res.body.message, authErrMessages.UNAUTHORIZED, 'unauthorised error message sent')
       t.end()
     })
     .catch(err => t.end(err))
@@ -132,7 +135,7 @@ tape('GET /users/:id with id of not the logged in user (i.e. as not owner)', t =
       .expect('Content-Type', /json/)
   })
   .then(res => {
-    t.equal(res.body.message, 'You are not authorised to access this resource', 'unauthorised error message sent')
+    t.equal(res.body.message, authErrMessages.UNAUTHORIZED, 'unauthorised error message sent')
     dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
@@ -180,7 +183,7 @@ tape('POST /users adding user with unauthorised role (admin)', t => {
       .expect('Content-Type', /json/)
   })
   .then(res => {
-    t.equal(res.body.message, 'You are not authorised to access this resource', 'unauthorised error message sent')
+    t.equal(res.body.message, authErrMessages.UNAUTHORIZED, 'unauthorised error message sent')
     dropCollectionAndEnd(User, t)
   })
   .catch(err => t.end(err))
