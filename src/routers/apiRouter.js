@@ -3,6 +3,14 @@ const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
 
+const validateJWT = require('../middleware/validateJWT')
+const validateHeaderToken = require('../middleware/validateHeaderToken')
+const validateUser = require('../middleware/validateUser')
+const permissions = require('../middleware/permissions')
+const fieldPermissions = require('../middleware/fieldPermissions')
+
+const api = require('../constants/apiPermissions')
+
 const router = require('express').Router()
 
 // user routes
@@ -39,7 +47,13 @@ router.route('/products')
   .post(productController.create)
 router.route('/products/:id')
   .get(productController.getById)
-  .put(productController.update)
+  .put(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Product.update),
+    fieldPermissions(api.Product.fields),
+    productController.update)
   .delete(productController.delete)
 
 module.exports = router
