@@ -18,7 +18,7 @@
     "VALIDATION_FAILED": "Validation Failed",
     "DUPLICATE_KEY": "Data violates unique constraints validation",
     "INVALID_ID": "Invalid id",
-    "BAD_LOCATION": "The location co-ordinates do follow the correct format: [Longitude, Latitude]",
+    "BAD_LOCATION": "The location co-ordinates do not follow the correct format: [Longitude, Latitude] Valid longitude values are between -180 and 180. Valid latitude values are between -90 and 90 (both inclusive).",
 
     "UNHANDLED_CUSTOM": "An internal server error occurred",
     "UNHANDLED_MONGO": "An internal mongo server error occurred",
