@@ -457,7 +457,7 @@ Status: 201 Created
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
-location | array of numbers | Location coordinates, [ longitude, latitude ]. [Mongo's 2dsphere Index](https://docs.mongodb.com/manual/geospatial-queries/#geospatial-legacy)
+location | array of numbers | Location coordinates, [ longitude, latitude ]. Valid longitude values are between -180 and 180, Valid latitude values are between -90 and 90 (both inclusive).
 categories | array of strings | Place [categories](#place-categories).
 accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
 imageUrl | string | Link to image of place.
