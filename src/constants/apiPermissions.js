@@ -1,4 +1,4 @@
-// const roles = require('./roles')
+const roles = require('./roles')
 
 module.exports = {
   User: {
@@ -11,6 +11,11 @@ module.exports = {
 
   },
   Place: {
-
+    update: { authorizedRoles: [ roles.ADMIN, roles.OWNER ] },
+    delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
+    fields: {
+      _id: [ roles.SUPER ],
+      owner: [ roles.ADMIN ]
+    }
   }
 }
