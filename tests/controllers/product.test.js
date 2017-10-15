@@ -7,7 +7,7 @@ const Token = require('../../src/models/auth/Token.js')
 
 const { auth: authErrMessages } = require('../../src/constants/errors')
 
-const { validProduct1, validProduct2, invalidProduct1 } = require('../fixtures/products.json')
+const { validProduct1, validProduct2, validProduct3, invalidProduct1 } = require('../fixtures/products.json')
 const { validAdminUser, user, superUser } = require('../fixtures/users.json')
 const { token } = require('../fixtures/auth/tokens.json')
 
@@ -291,30 +291,25 @@ tape('DELETE /products/:id with good ID', t => {
 tape('DELETE /products/:id with good ID as non super owner of resource', t => {
   Promise.all([
     Product.create(validProduct1),
-    Product.create(validProduct2),
+    Product.create(validProduct3),
     User.create(user),
     makeLoggedInToken(user)
   ])
   .then(([product, productToBeDeleted, userSuper, token]) => {
-    supertest(server)
+    return supertest(server)
     .delete(`/products/${productToBeDeleted.id}`)
     .set('Cookie', `token=${token}`)
     .expect(204)
-    .then(res => {
-      t.deepEqual(res.body, {}, 'Nothing returned after deletion')
-      // check our database now has one fewer product
-      Product.find()
-      .then(productsAfterDeletion => {
-        t.equal(productsAfterDeletion.length, 1, 'Products should now be length 1')
-        t.ok(productsAfterDeletion[0].id !== productToBeDeleted.id, 'deleted product should no longer be in the database')
-        dropCollectionsAndEnd([Product, User], t)
-      })
-      .catch(err => {
-        t.fail(err)
-        dropCollectionsAndEnd([Product, User], t)
-      })
-    })
-    .catch(err => t.end(err))
+  })
+  .then(res => {
+    t.deepEqual(res.body, {}, 'Nothing returned after deletion')
+    // check our database now has one fewer product
+    return Product.find()
+  })
+  .then(productsAfterDeletion => {
+    t.equal(productsAfterDeletion.length, 1, 'Products should now be length 1')
+    t.ok(productsAfterDeletion[0].id !== validProduct3.id, 'deleted product should no longer be in the database')
+    dropCollectionsAndEnd([Product, User], t)
   })
   .catch(err => t.end(err))
 })
