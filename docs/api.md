@@ -38,10 +38,10 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Create clients](#create-clients)
 
 **Categories**
-- [Accessibility Options](#accessibility-options)
-- [Places](#place-categories)
-- [Event](#event-categories)
-- [Producs](#product-categories)
+- [Accessibility Options](../src/models/constants.json#L7-L19)
+- [Places](../src/models/constants.json#L20-L30)
+- [Event](../src/models/constants.json#L31-L43)
+- [Products](../src/models/constants.json#L44-L55)
 ## Events
 
 ### Get all events
@@ -898,56 +898,3 @@ Status: 200 OK
 }
 ]
 ```
-
-## Categories
-
-Below are listed the options avaliable for each of the categories across the API:
-
-### Accessibility options
-  - Audio recordings
-  - Big fonts
-  - Braille
-  - Carer
-  - Disabled parking
-  - Disabled toilets
-  - Good lighting
-  - Place for guide dog
-  - Sign language
-  - SMS messaging
-  - Wheelchair access
-
-### Place categories
-  - cafe
-  - education
-  - food and drink
-  - healthcare
-  - municipal
-  - music venue
-  - religious site
-  - retail
-  - sport
-
-### Event categories
-  - competition
-  - conference
-  - cultural event
-  - dining
-  - educational
-  - launch
-  - music
-  - miscellaneous-
-  - party
-  - sport
-  - wedding
-
-### Product categories
-  - calligraphy
-  - clothing
-  - crochet
-  - drink
-  - embroidery
-  - food
-  - glassware
-  - jewellery
-  - metalwork
-  - pottery

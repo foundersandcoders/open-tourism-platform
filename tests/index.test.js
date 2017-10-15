@@ -42,6 +42,7 @@ dbConnection.once('open', () => {
   require('./middleware/sessionMiddleware.test.js')
 
   require('./middleware/permissions.test.js')
+  require('./middleware/fieldPermissions.test.js')
 
   // test auth routes
   require('./auth.test.js')
