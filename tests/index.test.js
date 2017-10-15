@@ -10,12 +10,13 @@ const Token = require('../src/models/auth/Token.js')
 
 dbConnection.once('open', () => {
   tape('emptying test db.', t => {
-    Promise.resolve()
-    .then(() => User.remove({}))
-    .then(() => Place.remove({}))
-    .then(() => Event.remove({}))
-    .then(() => Product.remove({}))
-    .then(() => Token.remove({}))
+    Promise.all([
+      User.remove({}),
+      Place.remove({}),
+      Event.remove({}),
+      Product.remove({}),
+      Token.remove({})
+    ])
     .then(() => t.end())
     .catch(err => t.end(err))
   })
