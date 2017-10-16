@@ -531,7 +531,7 @@ Status: 200 OK
 `DELETE /places/:id`
 
 **Permissions**
- This route is only accessible to super users or the owner of the event.
+ This route is only accessible to super users or the owner of the place.
  
 **Sample Response**
 
