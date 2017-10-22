@@ -713,6 +713,9 @@ Status: 204 No Content
 ### Get all users
 `GET /users`
 
+**Permissions**
+  This route is only accessible to super users.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -741,6 +744,9 @@ Status: 200 OK
 ### Get user by id
 `GET /users/:id`
 
+**Permissions**
+  This route is only accessible to super users or the user with the id trying to be accessed.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -766,6 +772,9 @@ Status: 200 OK
 
 ### Create user
 `POST /users`
+
+**Permissions**
+This route is only accessible to super users.
 
 **Input**
 
@@ -826,19 +835,22 @@ Status: 201 Created
 ### Update user
 `PUT /users/:id`
 
+**Permissions**
+This role is only accessible to admin users or the user with id trying to be accessed. Some fields can only be changed by a super user - see the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-username | string | Username.
-password | string | User's password.
-email | string | User's email.
-role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+Name | Type | Description | Field Permissions
+---|---|---|---
+username | string | Username. | can only be updated by a super user or the user themselves.
+password | string | User's password. | can only be updated by a super user.
+email | string | User's email. | ---
+role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json). | can only be updated by a super user.
 isPublic | boolean | Whether the user's profile is public or not.
-imageUrl | string | Link to image of user.
-name* | string | **Required**. User's name.
-organisationName | string | Organisation name.
-organisationDescription | string | Organisation description.
+imageUrl | string | Link to image of user. | ---
+name* | string | **Required**. User's name. | ---
+organisationName | string | Organisation name. | ---
+organisationDescription | string | Organisation description. | ---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -877,6 +889,9 @@ Status: 200 OK
 ### Delete user
 `DELETE /users/:id`
 
+**Permissions**
+ This route is only accessible to super users.
+ 
 **Sample Response**
 
 ```

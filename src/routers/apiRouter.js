@@ -15,13 +15,44 @@ const router = require('express').Router()
 
 // user routes
 router.route('/users')
-  .get(userController.getAll)
-  .post(userController.create)
+  .get(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.getAll }),
+    userController.getAll
+  )
+  .post(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.create }),
+    userController.create
+  )
 
 router.route('/users/:id')
-  .get(userController.getById)
-  .put(userController.update)
-  .delete(userController.delete)
+  .get(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.getById }),
+    userController.getById
+  )
+  .put(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.update }),
+    fieldPermissions(api.User.fields),
+    userController.update
+  )
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.delete }),
+    userController.delete
+  )
 
   // place routes
 router.route('/places')
