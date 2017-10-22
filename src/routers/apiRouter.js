@@ -3,17 +3,56 @@ const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
 
+const validateJWT = require('../middleware/validateJWT')
+const validateHeaderToken = require('../middleware/validateHeaderToken')
+const validateUser = require('../middleware/validateUser')
+const permissions = require('../middleware/permissions')
+const fieldPermissions = require('../middleware/fieldPermissions')
+
+const api = require('../constants/apiPermissions')
+
 const router = require('express').Router()
 
 // user routes
 router.route('/users')
-  .get(userController.getAll)
-  .post(userController.create)
+  .get(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.getAll }),
+    userController.getAll
+  )
+  .post(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.create }),
+    userController.create
+  )
 
 router.route('/users/:id')
-  .get(userController.getById)
-  .put(userController.update)
-  .delete(userController.delete)
+  .get(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.getById }),
+    userController.getById
+  )
+  .put(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.update }),
+    fieldPermissions(api.User.fields),
+    userController.update
+  )
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions({ authorizedRoles: api.User.delete }),
+    userController.delete
+  )
 
   // place routes
 router.route('/places')
