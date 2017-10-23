@@ -91,7 +91,20 @@ router.route('/products')
   .post(productController.create)
 router.route('/products/:id')
   .get(productController.getById)
-  .put(productController.update)
-  .delete(productController.delete)
+  .put(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Product.update),
+    fieldPermissions(api.Product.fields),
+    productController.update
+  )
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Product.delete),
+    productController.delete
+  )
 
 module.exports = router

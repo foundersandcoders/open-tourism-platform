@@ -544,6 +544,9 @@ Status: 204 No Content
 ### Get all products
 `GET /products`
 
+**Permissions**
+There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -572,6 +575,9 @@ Status: 200 OK
 ### Get product by id
 `GET /products/:id`
 
+**Permissions**
+There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -597,6 +603,9 @@ Status: 200 OK
 
 ### Create product
 `POST /product`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Input**
 
@@ -654,16 +663,19 @@ Status: 201 Created
 ### Update product
 `PUT /products/:id`
 
+**Permissions**
+ This route is only accessible to admin users or the owner of the event. See the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-owner | mongoose ObjectId | id of owner in user table.
-categories | array of strings | Product [categories](#product-categories).
-imageUrl | string | Link to image of product.
-cost | number | Product cost.
-name* | string | **Required**. Product name.
-description* | string | Product description.
+Name | Type | Description | Field Permissions
+---|---|---|---
+owner | mongoose ObjectId | id of owner in user table. | can only be updated by admin users.
+categories | array of strings | Product [categories](#product-categories). | ---
+imageUrl | string | Link to image of product. | ---
+cost | number | Product cost. | ---
+name* | string | **Required**. Product name. | ---
+description* | string | Product description. | ---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -701,6 +713,9 @@ Status: 200 OK
 
 ### Delete product
 `DELETE /products/:id`
+
+**Permissions**
+ This route is only accessible to super users or the owner of the event.
 
 **Sample Response**
 

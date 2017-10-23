@@ -6,14 +6,17 @@ const User = require('../src/models/User.js')
 const Place = require('../src/models/Place.js')
 const Event = require('../src/models/Event.js')
 const Product = require('../src/models/Product.js')
+const Token = require('../src/models/auth/Token.js')
 
 dbConnection.once('open', () => {
   tape('emptying test db.', t => {
-    Promise.resolve()
-    .then(() => User.remove({}))
-    .then(() => Place.remove({}))
-    .then(() => Event.remove({}))
-    .then(() => Product.remove({}))
+    Promise.all([
+      User.remove({}),
+      Place.remove({}),
+      Event.remove({}),
+      Product.remove({}),
+      Token.remove({})
+    ])
     .then(() => t.end())
     .catch(err => t.end(err))
   })
