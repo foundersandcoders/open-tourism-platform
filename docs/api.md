@@ -303,6 +303,9 @@ Status: 204 No Content
 ### Get all places
 `GET /places`
 
+**Permissions**
+ There are no restrictions on this route.
+ 
 **Sample Response**
 ```
 Status: 200 OK
@@ -343,6 +346,9 @@ Status: 200 OK
 ### Get place by id
 `GET /places/:id`
 
+**Permissions**
+ There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -380,6 +386,9 @@ Status: 200 OK
 
 ### Create place
 `POST /places`
+
+**Permissions**
+ There are no restrictions on this route.
 
 **Input**
 
@@ -467,22 +476,25 @@ Status: 201 Created
 ### Update place
 `PUT /places/:id`
 
+**Permissions**
+ This route is only accessible to admin users or the owner of the place. See the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-owner | mongoose ObjectId | id of owner in user table.
-location | array of numbers | Location coordinates.
-categories | array of strings | Place [categories](#place-categories).
-accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
-imageUrl | string | Link to image of place.
-website | string | Link to place's website.
-phone | string | Place phone number.
-email | string | Place email.
-name* | string | **Required**. Place name.
-description* | string | Place description.
-address* | string | Place address.
-openingHours* | string | Place opening hours.
+Name | Type | Description | Field Permissions
+---|---|---|---
+owner | mongoose ObjectId | id of owner in user table-|can only be updated by admin users
+location | array of numbers | Location coordinates-|---
+categories | array of strings | Place [categories](#place-categories)-|---
+accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options)-|---
+imageUrl | string | Link to image of place-|---
+website | string | Link to place's website-|---
+phone | string | Place phone number-|---
+email | string | Place email-|---
+name* | string | **Required**. Place name-|---
+description* | string | Place description-|---
+address* | string | Place address-|---
+openingHours* | string | Place opening hours-|---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -533,6 +545,9 @@ Status: 200 OK
 ### Delete place
 `DELETE /places/:id`
 
+**Permissions**
+ This route is only accessible to super users or the owner of the place.
+ 
 **Sample Response**
 
 ```

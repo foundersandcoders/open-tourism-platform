@@ -60,8 +60,21 @@ router.route('/places')
   .post(placeController.create)
 router.route('/places/:id')
   .get(placeController.getById)
-  .put(placeController.update)
-  .delete(placeController.delete)
+    .put(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Place.update),
+    fieldPermissions(api.Place.fields),
+    placeController.update
+  )
+  .delete(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Place.delete),
+    placeController.delete
+  )
 
   // event routes
 router.route('/events')
