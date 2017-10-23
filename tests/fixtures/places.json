@@ -1,5 +1,25 @@
 {
-   "validPlace1": {"en":{"name":"Basilica", "description":"biggest church in the middle east"}},
-   "validPlace2": {"en":{"name":"Khan El Basha"}},
-   "invalidPlace1": {"description":"The best place in Nazareth!"}
+  "validPlace1": {
+    "en": {
+      "name": "Basilica",
+      "description": "biggest church in the middle east"
+    },
+    "owner": "5986abad5e2d852cb1ee6bcd"
+  },
+  "validPlace2": {
+    "en": {
+      "name": "Khan El Basha"
+    },
+    "owner": "5986abad5e2d852cb1ee6bcd"
+  },
+  "validPlace3": {
+    "_id":"5986abad5e2d852cb1ee6bcf",
+    "en": {
+      "name": "Khan El Bashaa"
+    },
+    "owner": "5986abad5e2d852cb1ee6bce"
+  },
+  "invalidPlace1": {
+    "description": "The best place in Nazareth!"
+  }
 }

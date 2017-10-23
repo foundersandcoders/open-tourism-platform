@@ -42,10 +42,14 @@ Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
 - [Places](../src/models/constants.json#L20-L30)
 - [Event](../src/models/constants.json#L31-L43)
 - [Products](../src/models/constants.json#L44-L55)
+
 ## Events
 
 ### Get all events
 `GET /events`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Query parameters**
 
@@ -100,6 +104,9 @@ Status: 200 OK
 ### Get event by id
 `GET /events/:id`
 
+**Permissions**
+There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -143,6 +150,9 @@ Status: 200 OK
 
 ### Create event
 `POST /events`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Input**
 
@@ -218,20 +228,23 @@ Status: 201 Created
 ### Update event
 `PUT /events/:id`
 
+**Permissions**
+This route is only accessible to admin users or the owner of the event. See the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-owner | mongoose ObjectId | id of event owner.
-categories | array of strings | **Required**. Event [categories](#event-categories).
-place | mongoose ObjectId | id of event location.
-accessibilityOptions | array of strings | Event [accessibility options](#accessibility-options).
-startTime | date | Event start time.
-endTime | date | Event end time.
-cost | string | Rough estimation of event cost.
-imageUrl | string | Link to image of event.
-name* | string | **Required**. Name of event.
-description* | string | More information about event.
+Name | Type | Description | Field Permissions
+---|---|--- | ---
+owner | mongoose ObjectId | id of event owner. | can only be updated by admin users.
+categories | array of strings | **Required**. Event [categories](#event-categories). | ---
+place | mongoose ObjectId | id of event location. | ---
+accessibilityOptions | array of strings. | Event [accessibility options](#accessibility-options). | ---
+startTime | date | Event start time. | ---
+endTime | date | Event end time. | ---
+cost | string | Rough estimation of event cost. | ---
+imageUrl | string | Link to image of event. | ---
+name* | string | **Required**. Name of event. | ---
+description* | string | More information about event. | ---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -259,8 +272,7 @@ Status: 200 OK
   "cost": "100 shekels",
   "imageUrl": "imgIsHere.com/12345",
   "en": {
-    "name": "Party at the guesthouse V2",
-    "description": "Really cool"
+    "name": "Party at the guesthouse V2"
   },
   "_id": "5981e634b6e958614d64e111",
   "accessibilityOptions": [
@@ -277,6 +289,9 @@ Status: 200 OK
 ### Delete event
 `DELETE /events/:id`
 
+**Permissions**
+This route is only accessible to super users or the owner of the event.
+
 **Sample Response**
 
 ```
@@ -288,6 +303,9 @@ Status: 204 No Content
 ### Get all places
 `GET /places`
 
+**Permissions**
+ There are no restrictions on this route.
+ 
 **Sample Response**
 ```
 Status: 200 OK
@@ -328,6 +346,9 @@ Status: 200 OK
 ### Get place by id
 `GET /places/:id`
 
+**Permissions**
+ There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -365,6 +386,9 @@ Status: 200 OK
 
 ### Create place
 `POST /places`
+
+**Permissions**
+ There are no restrictions on this route.
 
 **Input**
 
@@ -452,22 +476,25 @@ Status: 201 Created
 ### Update place
 `PUT /places/:id`
 
+**Permissions**
+ This route is only accessible to admin users or the owner of the place. See the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-owner | mongoose ObjectId | id of owner in user table.
-location | array of numbers | Location coordinates, [ longitude, latitude ]. Valid longitude values are between -180 and 180, Valid latitude values are between -90 and 90 (both inclusive).
-categories | array of strings | Place [categories](#place-categories).
-accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
-imageUrl | string | Link to image of place.
-website | string | Link to place's website.
-phone | string | Place phone number.
-email | string | Place email.
-name* | string | **Required**. Place name.
-description* | string | Place description.
-address* | string | Place address.
-openingHours* | string | Place opening hours.
+Name | Type | Description | Field Permissions
+---|---|---|---
+owner | mongoose ObjectId | id of owner in user table-|can only be updated by admin users
+location | array of numbers | Location coordinates, [ longitude, latitude ]. Valid longitude values are between -180 and 180, Valid latitude values are between -90 and 90 (both inclusive). |---
+categories | array of strings | Place [categories](#place-categories)-|---
+accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options)-|---
+imageUrl | string | Link to image of place-|---
+website | string | Link to place's website-|---
+phone | string | Place phone number-|---
+email | string | Place email-|---
+name* | string | **Required**. Place name-|---
+description* | string | Place description-|---
+address* | string | Place address-|---
+openingHours* | string | Place opening hours-|---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -518,6 +545,9 @@ Status: 200 OK
 ### Delete place
 `DELETE /places/:id`
 
+**Permissions**
+ This route is only accessible to super users or the owner of the place.
+ 
 **Sample Response**
 
 ```
@@ -528,6 +558,9 @@ Status: 204 No Content
 
 ### Get all products
 `GET /products`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Sample Response**
 ```
@@ -557,6 +590,9 @@ Status: 200 OK
 ### Get product by id
 `GET /products/:id`
 
+**Permissions**
+There are no restrictions on this route.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -582,6 +618,9 @@ Status: 200 OK
 
 ### Create product
 `POST /product`
+
+**Permissions**
+There are no restrictions on this route.
 
 **Input**
 
@@ -639,16 +678,19 @@ Status: 201 Created
 ### Update product
 `PUT /products/:id`
 
+**Permissions**
+ This route is only accessible to admin users or the owner of the event. See the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-owner | mongoose ObjectId | id of owner in user table.
-categories | array of strings | Product [categories](#product-categories).
-imageUrl | string | Link to image of product.
-cost | number | Product cost.
-name* | string | **Required**. Product name.
-description* | string | Product description.
+Name | Type | Description | Field Permissions
+---|---|---|---
+owner | mongoose ObjectId | id of owner in user table. | can only be updated by admin users.
+categories | array of strings | Product [categories](#product-categories). | ---
+imageUrl | string | Link to image of product. | ---
+cost | number | Product cost. | ---
+name* | string | **Required**. Product name. | ---
+description* | string | Product description. | ---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -687,6 +729,9 @@ Status: 200 OK
 ### Delete product
 `DELETE /products/:id`
 
+**Permissions**
+ This route is only accessible to super users or the owner of the event.
+
 **Sample Response**
 
 ```
@@ -697,6 +742,9 @@ Status: 204 No Content
 
 ### Get all users
 `GET /users`
+
+**Permissions**
+  This route is only accessible to super users.
 
 **Sample Response**
 ```
@@ -726,6 +774,9 @@ Status: 200 OK
 ### Get user by id
 `GET /users/:id`
 
+**Permissions**
+  This route is only accessible to super users or the user with the id trying to be accessed.
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -751,6 +802,9 @@ Status: 200 OK
 
 ### Create user
 `POST /users`
+
+**Permissions**
+This route is only accessible to super users.
 
 **Input**
 
@@ -811,19 +865,22 @@ Status: 201 Created
 ### Update user
 `PUT /users/:id`
 
+**Permissions**
+This role is only accessible to admin users or the user with id trying to be accessed. Some fields can only be changed by a super user - see the table below for specific field permissions.
+
 **Input**
 
-Name | Type | Description
----|---|---
-username | string | Username.
-password | string | User's password.
-email | string | User's email.
-role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json).
+Name | Type | Description | Field Permissions
+---|---|---|---
+username | string | Username. | can only be updated by a super user or the user themselves.
+password | string | User's password. | can only be updated by a super user.
+email | string | User's email. | ---
+role | string | User's [role](https://github.com/foundersandcoders/open-tourism-platform/blob/master/src/models/constants.json). | can only be updated by a super user.
 isPublic | boolean | Whether the user's profile is public or not.
-imageUrl | string | Link to image of user.
-name* | string | **Required**. User's name.
-organisationName | string | Organisation name.
-organisationDescription | string | Organisation description.
+imageUrl | string | Link to image of user. | ---
+name* | string | **Required**. User's name. | ---
+organisationName | string | Organisation name. | ---
+organisationDescription | string | Organisation description. | ---
 
 \* These inputs are language-specific, and should be placed inside an object, either `en` or `ar`, at least one of which is required.
 
@@ -862,6 +919,9 @@ Status: 200 OK
 ### Delete user
 `DELETE /users/:id`
 
+**Permissions**
+ This route is only accessible to super users.
+ 
 **Sample Response**
 
 ```

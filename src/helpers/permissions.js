@@ -46,7 +46,7 @@ const checkUserOwnsResource = resourceType => resourceId => user => {
 
   return resourceType.findById(resourceId)
   .then(rejectIfNull(errMessages.GET_ID_NOT_FOUND))
-  .then(doc => doc.owner.toString() === user.id.toString())
+  .then(doc => doc.owner && doc.owner.toString() === user.id.toString())
 }
 
 const getResourceType = req => {
