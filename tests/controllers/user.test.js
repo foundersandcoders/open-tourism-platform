@@ -13,7 +13,7 @@ const { makeLoggedInToken } = require('../../src/controllers/session.js')
 // Tests for: GET /users
 tape('GET /users when not logged in', t => {
   supertest(server)
-    .get('/users')
+    .get('/api/v1/users')
     .expect(401)
     .expect('Content-Type', /json/)
     .then(res => {
@@ -31,7 +31,7 @@ tape('GET /users, when logged in, without query parameters', t => {
   ])
   .then(([user1, user2, token]) => {
     return supertest(server)
-      .get('/users')
+      .get('/api/v1/users')
       .expect(200)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -54,7 +54,7 @@ tape('GET /users, when logged in, with query parameters', t => {
   ])
   .then(([user1, user2, token]) => {
     return supertest(server)
-      .get('/users?username=mattlub')
+      .get('/api/v1/users?username=mattlub')
       .expect(200)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -71,7 +71,7 @@ tape('GET /users, when logged in, with query parameters', t => {
 // GET /users/:id
 tape('GET /users/:id when not logged in', t => {
   supertest(server)
-    .get('/users/507f1f77bcf86cd799439011')
+    .get('/api/v1/users/507f1f77bcf86cd799439011')
     .expect(401)
     .expect('Content-Type', /json/)
     .then(res => {
@@ -88,7 +88,7 @@ tape('GET /users/:id with valid id of something not in the database', t => {
   ])
   .then(([user1, token]) => {
     return supertest(server)
-      .get('/users/507f1f77bcf86cd799439011')
+      .get('/api/v1/users/507f1f77bcf86cd799439011')
       .expect(404)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -108,7 +108,7 @@ tape('GET /users/:id with id of logged in user (i.e. as the owner)', t => {
   ])
   .then(([user1, token]) => {
     return supertest(server)
-      .get(`/users/${user1.id}`)
+      .get(`/api/v1/users/${user1.id}`)
       .expect(200)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -129,7 +129,7 @@ tape('GET /users/:id with id of not the logged in user (i.e. as not owner)', t =
   ])
   .then(([user1, userAdmin, token]) => {
     return supertest(server)
-      .get(`/users/${user1.id}`)
+      .get(`/api/v1/users/${user1.id}`)
       .expect(401)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -149,7 +149,7 @@ tape('POST /users adding user with authorised role (super)', t => {
   ])
   .then(([user2, token]) => {
     return supertest(server)
-      .post('/users')
+      .post('/api/v1/users')
       .send(validUser1)
       .expect(201)
       .set('Cookie', `token=${token}`)
@@ -176,7 +176,7 @@ tape('POST /users adding user with unauthorised role (admin)', t => {
   ])
   .then(([userAdmin, token]) => {
     return supertest(server)
-      .post('/users')
+      .post('/api/v1/users')
       .send(validUser1)
       .set('Cookie', `token=${token}`)
       .expect(401)
@@ -196,7 +196,7 @@ tape('POST /users adding invalid user', t => {
   ])
   .then(([user2, token]) => {
     return supertest(server)
-      .post('/users')
+      .post('/api/v1/users')
       .send(invalidUser1)
       .expect(400)
       .set('Cookie', `token=${token}`)
@@ -217,7 +217,7 @@ tape('POST /users/ with user violating unique username constraint', t => {
   ])
   .then(([user1, user2, token]) => {
     return supertest(server)
-      .post('/users')
+      .post('/api/v1/users')
       .send(validUser1)
       .expect(400)
       .set('Cookie', `token=${token}`)
@@ -238,7 +238,7 @@ tape('PUT /users/:id with invalid id', t => {
   ])
   .then(([user2, token]) => {
     return supertest(server)
-      .put('/users/invalidid')
+      .put('/api/v1/users/invalidid')
       .send(validUser1)
       .expect(400)
       .set('Cookie', `token=${token}`)
@@ -257,7 +257,7 @@ tape('PUT /users/:id with id of something not in the database', t => {
   ])
   .then(([user2, token]) => {
     return supertest(server)
-      .put('/users/507f1f77bcf86cd799439014')
+      .put('/api/v1/users/507f1f77bcf86cd799439014')
       .send(validUser1)
       .expect(400)
       .set('Cookie', `token=${token}`)
@@ -277,7 +277,7 @@ tape('PUT /users/:id with valid id and valid new user data', t => {
   ])
   .then(([user1, token]) => {
     return supertest(server)
-      .put(`/users/${user1.id}`)
+      .put(`/api/v1/users/${user1.id}`)
       .send(validUser2)
       .expect(200)
       .expect('Content-Type', /json/)
@@ -298,7 +298,7 @@ tape('DELETE /users/:id with invalid id', t => {
   ])
   .then(([user2, token]) => {
     return supertest(server)
-      .delete('/users/invalidid')
+      .delete('/api/v1/users/invalidid')
       .expect(400)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -317,7 +317,7 @@ tape('DELETE /users/:id returns error with id of something not in the database',
   ])
   .then(([user2, token]) => {
     return supertest(server)
-      .delete('/users/507f1f77bcf86cd799439014')
+      .delete('/api/v1/users/507f1f77bcf86cd799439014')
       .expect(400)
       .set('Cookie', `token=${token}`)
       .expect('Content-Type', /json/)
@@ -337,7 +337,7 @@ tape('DELETE /users/:id with good ID', t => {
   ])
   .then(([user1, user2, token]) => {
     return supertest(server)
-      .delete(`/users/${user1.id}`)
+      .delete(`/api/v1/users/${user1.id}`)
       .expect(204)
       .set('Cookie', `token=${token}`)
   })

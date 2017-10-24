@@ -34,7 +34,7 @@ server.use(bodyParser.json({ extended: true }))
 server.use(boom())
 server.use(cookieParser())
 
-server.use(apiRouter)
+server.use('/api/v1/', apiRouter)
 server.use(authRouter)
 
 server.use(jwtExpiredErrorHandler)

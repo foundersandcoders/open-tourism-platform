@@ -20,7 +20,7 @@ const { makeLoggedInToken } = require('../../src/controllers/session.js')
 // Tests for: GET /events
 tape('GET /events when nothing in database', t => {
   supertest(server)
-    .get('/events')
+    .get('/api/v1/events')
     .expect(200)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -34,7 +34,7 @@ tape('GET /events, with and without query parameters', t => {
   Event.create(validEvent1, validEvent2, validEvent3)
     .then(() => {
       supertest(server)
-        .get('/events')
+        .get('/api/v1/events')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -49,7 +49,7 @@ tape('GET /events, with and without query parameters', t => {
           t.deepEqual(eventStartTimes, eventStartTimes.sort(), 'returned events should be sorted by startTime')
         })
       supertest(server)
-        .get('/events?date_from=2017-05-01&date_to=2017-05-10')
+        .get('/api/v1/events?date_from=2017-05-01&date_to=2017-05-10')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -70,7 +70,7 @@ tape('GET /events, check place field is populated', t => {
     })
     .then(createdEvent => {
       supertest(server)
-        .get('/events')
+        .get('/api/v1/events')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -85,7 +85,7 @@ tape('GET /events, check place field is populated', t => {
 // Tests for: GET /events/:id
 tape('GET /events/:id with invalid id', t => {
   supertest(server)
-    .get('/events/10')
+    .get('/api/v1/events/10')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -97,7 +97,7 @@ tape('GET /events/:id with invalid id', t => {
 
 tape('GET /events/:id with valid id of something not in the database', t => {
   supertest(server)
-    .get('/events/507f1f77bcf86cd799439011')
+    .get('/api/v1/events/507f1f77bcf86cd799439011')
     .expect(404)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -115,7 +115,7 @@ tape('GET /events/:id, check place field is populated', t => {
     })
     .then(createdEvent => {
       supertest(server)
-        .get(`/events/${createdEvent.id}`)
+        .get(`/api/v1/events/${createdEvent.id}`)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -131,7 +131,7 @@ tape('GET /events/:id, check place field is populated', t => {
 // Tests for: POST /events
 tape('POST /events adding invalid event', t => {
   supertest(server)
-    .post('/events')
+    .post('/api/v1/events')
     .send(invalidEvent1)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -146,7 +146,7 @@ tape('POST /events adding invalid event', t => {
 
 tape('POST /events adding event with invalid place field', t => {
   supertest(server)
-    .post('/events')
+    .post('/api/v1/events')
     .send(invalidEvent2)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -160,7 +160,7 @@ tape('POST /events adding event with invalid place field', t => {
 
 tape('POST /events adding valid event', t => {
   supertest(server)
-    .post('/events')
+    .post('/api/v1/events')
     .send(validEvent1)
     .expect(201)
     .expect('Content-Type', /json/)
@@ -183,7 +183,7 @@ tape('POST /events adding valid event', t => {
 
 tape('POST /events adding events with invalid categories - wrong categories', t => {
   supertest(server)
-    .post('/events')
+    .post('/api/v1/events')
     .send(invalidEvent2)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -197,7 +197,7 @@ tape('POST /events adding events with invalid categories - wrong categories', t 
 
 tape('POST /events adding events with invalid categories - null in array', t => {
   supertest(server)
-    .post('/events')
+    .post('/api/v1/events')
     .send(invalidEvent3)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -211,7 +211,7 @@ tape('POST /events adding events with invalid categories - null in array', t => 
 
 tape('POST /events adding events with invalid categories - empty array', t => {
   supertest(server)
-    .post('/events')
+    .post('/api/v1/events')
     .send(invalidEvent4)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -226,7 +226,7 @@ tape('POST /events adding events with invalid categories - empty array', t => {
 // Tests for: PUT /events/:id
 tape('PUT /events/:id, unauthorized as not logged in', t => {
   supertest(server)
-    .put('/events/id')
+    .put('/api/v1/events/id')
     .send(validEvent1)
     .expect(401)
   .then(res => {
@@ -246,7 +246,7 @@ tape('PUT /events/:id, unauthorized as basic user', t => {
     Event.create(validEvent1)
   ])
   .then(([ _, token, event ]) => supertest(server)
-    .put(`/events/${event.id}`)
+    .put(`/api/v1/events/${event.id}`)
     .set('Cookie', `token=${token}`)
     .send(validEvent1)
     .expect(401)
@@ -265,7 +265,7 @@ tape('PUT /events/:id with invalid id', t => {
     makeLoggedInToken(validBasicUser)
   ])
   .then(([ _, token ]) => supertest(server)
-    .put('/events/invalidId')
+    .put('/api/v1/events/invalidId')
     .set('Cookie', `token=${token}`)
     .send(validEvent1)
     .expect(400)
@@ -286,7 +286,7 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
   ])
   .then(([ _, token, createdEvent ]) =>
     supertest(server)
-    .put(`/events/${createdEvent.id}`)
+    .put(`/api/v1/events/${createdEvent.id}`)
     .set('Authorization', 'Bearer ' + token.accessToken)
     .send(validEvent2)
     .expect(200)
@@ -307,7 +307,7 @@ tape('PUT /events/:id with valid id and valid new event data', t => {
 // Tests for: DELETE /events/:id
 tape('DELETE /events/:id, unauthorized as not logged in', t => {
   supertest(server)
-    .delete('/events/id')
+    .delete('/api/v1/events/id')
     .expect(401)
   .then(res => {
     t.equal(
@@ -325,7 +325,7 @@ tape('DELETE /events/:id with invalid id', t => {
     makeLoggedInToken(superUser)
   ])
   .then(([ _, token ]) => supertest(server)
-    .delete('/events/invalidId')
+    .delete('/api/v1/events/invalidId')
     .set('Cookie', `token=${token}`)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -344,7 +344,7 @@ tape('DELETE /events/:id with id of something not in the database', t => {
     makeLoggedInToken(superUser)
   ])
   .then(([ _, token ]) => supertest(server)
-    .delete('/events/507f1f77bcf86cd799439011')
+    .delete('/api/v1/events/507f1f77bcf86cd799439011')
     .set('Cookie', `token=${token}`)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -367,7 +367,7 @@ tape('DELETE /events/:id with valid ID', t => {
   .then(([ _, token, eventToBeDeleted ]) => {
     eventId = eventToBeDeleted.id
     return supertest(server)
-      .delete(`/events/${eventId}`)
+      .delete(`/api/v1/events/${eventId}`)
       .set('Cookie', `token=${token}`)
       .expect(204)
   })
