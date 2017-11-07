@@ -16,19 +16,19 @@ const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/inde
 const { makeLoggedInToken } = require('../../src/controllers/session.js')
 
 tape('emptying test db.', t => {
-    Promise.all([
-      User.remove({}),
-      Place.remove({}),
-      Token.remove({})
-    ])
+  Promise.all([
+    User.remove({}),
+    Place.remove({}),
+    Token.remove({})
+  ])
     .then(() => t.end())
     .catch(err => t.end(err))
-  })
+})
 
 // Tests for: GET /places
 tape('GET /places when nothing in database', t => {
   supertest(server)
-    .get('/places')
+    .get('/api/v1/places')
     .expect(200)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -42,7 +42,7 @@ tape('GET /places, with and without query parameters', t => {
   Place.create(validPlace1, validPlace2)
     .then(() => {
       supertest(server)
-        .get('/places')
+        .get('/api/v1/places')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -53,7 +53,7 @@ tape('GET /places, with and without query parameters', t => {
           t.ok(res.body.map(place => place.en.name).includes(validPlace2.en.name), 'second place has been added')
         })
       supertest(server)
-        .get('/places?en.name=Basilica')
+        .get('/api/v1/places?en.name=Basilica')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -70,7 +70,7 @@ tape('GET /places, with and without query parameters', t => {
 // Tests for: GET /places/:id
 tape('GET /places/:id with invalid id', t => {
   supertest(server)
-    .get('/places/10')
+    .get('/api/v1/places/10')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -84,7 +84,7 @@ tape('GET /places/:id with id of something in the database', t => {
   Place.create(validPlace1)
     .then(result => {
       supertest(server)
-        .get(`/places/${result.id}`)
+        .get(`/api/v1/places/${result.id}`)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -99,7 +99,7 @@ tape('GET /places/:id with id of something in the database', t => {
 // Tests for: POST /places
 tape('POST /places with valid place data', t => {
   supertest(server)
-    .post('/places')
+    .post('/api/v1/places')
     .send(validPlace1)
     .expect(201)
     .expect('Content-Type', /json/)
@@ -122,7 +122,7 @@ tape('POST /places with valid place data', t => {
 
 tape('POST /places with invalid place data', t => {
   supertest(server)
-    .post('/places')
+    .post('/api/v1/places')
     .send(invalidPlace1)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -137,7 +137,7 @@ tape('POST /places with invalid place data', t => {
 // Tests for: PUT /places/:id
 tape('PUT /places/:id unauthorized as not logged in', t => {
   return supertest(server)
-    .put('/places/507f1f77bcf86cd799439011')
+    .put('/api/v1/places/507f1f77bcf86cd799439011')
     .expect(401)
     .expect('Content-Type', /json/)
   .then(res => {
@@ -157,7 +157,7 @@ tape('PUT /places/:id with id of something not in the database, logged in direct
   ])
   .then(([user, token]) => {
     return supertest(server)
-      .put('/places/507f1f77bcf86cd799439011')
+      .put('/api/v1/places/507f1f77bcf86cd799439011')
       .set('Cookie', `token=${token}`)
       .send(validPlace1)
       .expect(404)
@@ -178,12 +178,12 @@ tape('PUT /places/:id with valid id and valid new place data logged in directly 
   ])
   .then(([place, admin, token]) => {
     return supertest(server)
-      .put(`/places/${place.id}`)
+      .put(`/api/v1/places/${place.id}`)
       .set('Cookie', `token=${token}`)
       .send(validPlace2)
       .expect(200)
       .expect('Content-Type', /json/)
-    })
+  })
   .then(res => {
     t.equal(res.body.en.name, validPlace2.en.name, 'place should be correctly updated, and the updated place returned')
     // check place was updated in db
@@ -204,12 +204,12 @@ tape('PUT /places/:id with valid id and valid new place data logged in directly 
   ])
   .then(([place, admin, token]) => {
     return supertest(server)
-      .put(`/places/${place.id}`)
+      .put(`/api/v1/places/${place.id}`)
       .set('Cookie', `token=${token}`)
       .send(validPlace3)
       .expect(401)
       .expect('Content-Type', /json/)
-    })
+  })
   .then(res => {
     t.equal(
       res.body.message,
@@ -228,15 +228,15 @@ tape('DELETE /places/:id with id of something not in the database logged in as S
   ])
   .then(([userSuper, authToken]) => {
     return supertest(server)
-    .delete('/places/507f1f77bcf86cd799439011')
+    .delete('/api/v1/places/507f1f77bcf86cd799439011')
     .set('Authorization', 'Bearer ' + authToken.accessToken)
     .expect(400)
     .expect('Content-Type', /json/)
   })
   .then(res => {
-      t.ok(res.body.message, 'Message sent back')
-      t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
-      dropCollectionsAndEnd([User, Token], t)
+    t.ok(res.body.message, 'Message sent back')
+    t.equal(res.body.message, 'Cannot find document to delete', 'Correct message is sent back')
+    dropCollectionsAndEnd([User, Token], t)
   })
   .catch(err => t.end(err))
 })
@@ -250,7 +250,7 @@ tape('DELETE /places/:id with good ID, logged in as owner via OAuth', t => {
   ])
   .then(([place, placeToBeDeleted, userBasic, authToken]) => {
     return supertest(server)
-    .delete(`/places/${placeToBeDeleted._id}`)
+    .delete(`/api/v1/places/${placeToBeDeleted._id}`)
     .set('Authorization', 'Bearer ' + authToken.accessToken)
     .expect(204)
   })

@@ -18,7 +18,7 @@ const { makeLoggedInToken } = require('../../src/controllers/session.js')
 // Tests for: GET /products
 tape('GET /products when nothing in database', t => {
   supertest(server)
-    .get('/products')
+    .get('/api/v1/products')
     .expect(200)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -32,7 +32,7 @@ tape('GET /products, with and without query parameters', t => {
   Product.create(validProduct1, validProduct2)
     .then(() => {
       supertest(server)
-        .get('/products')
+        .get('/api/v1/products')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -42,7 +42,7 @@ tape('GET /products, with and without query parameters', t => {
           t.ok(res.body.map(product => product.en.name).includes(validProduct2.en.name), 'second product has been added')
         })
       supertest(server)
-        .get('/products?categories=pottery')
+        .get('/api/v1/products?categories=pottery')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -58,7 +58,7 @@ tape('GET /products, with and without query parameters', t => {
 // Tests for: GET /products/:id
 tape('GET /products/:id with invalid id', t => {
   supertest(server)
-    .get('/products/10')
+    .get('/api/v1/products/10')
     .expect(400)
     .expect('Content-Type', /json/)
     .end((err, res) => {
@@ -72,7 +72,7 @@ tape('GET /products/:id with id of something in the database', t => {
   Product.create(validProduct1)
     .then(result => {
       supertest(server)
-        .get(`/products/${result.id}`)
+        .get(`/api/v1/products/${result.id}`)
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -87,7 +87,7 @@ tape('GET /products/:id with id of something in the database', t => {
 // Tests for: POST /products
 tape('POST /products with valid product data', t => {
   supertest(server)
-    .post('/products')
+    .post('/api/v1/products')
     .send(validProduct1)
     .expect(201)
     .expect('Content-Type', /json/)
@@ -110,7 +110,7 @@ tape('POST /products with valid product data', t => {
 
 tape('POST /products with invalid product data', t => {
   supertest(server)
-    .post('/products')
+    .post('/api/v1/products')
     .send(invalidProduct1)
     .expect(400)
     .expect('Content-Type', /json/)
@@ -125,7 +125,7 @@ tape('POST /products with invalid product data', t => {
 // Tests for: PUT /products/:id
 tape('PUT /products/:id unauthorized as not logged in', t => {
   return supertest(server)
-    .put('/products/507f1f77bcf86cd799439011')
+    .put('/api/v1/products/507f1f77bcf86cd799439011')
     .send(validProduct1)
     .expect(401)
     .expect('Content-Type', /json/)
@@ -146,7 +146,7 @@ tape('PUT /products/:id with id of something not in the database, logged in via 
   ])
   .then(([user, authToken]) => {
     return supertest(server)
-      .put('/products/507f1f77bcf86cd799439011')
+      .put('/api/v1/products/507f1f77bcf86cd799439011')
       .set('Authorization', 'Bearer ' + authToken.accessToken)
       .send(validProduct1)
       .expect(404)
@@ -167,7 +167,7 @@ tape('PUT /products/:id with valid id and valid new product data as Oauth Super'
   ])
   .then(([product, user, authToken]) => {
     return supertest(server)
-      .put(`/products/${product._id}`)
+      .put(`/api/v1/products/${product._id}`)
       .set('Authorization', 'Bearer ' + authToken.accessToken)
       .send(validProduct2)
       .expect(200)
@@ -193,7 +193,7 @@ tape('PUT /products/:id with valid id and valid new product data as logged in ad
   ])
   .then(([product, user, token]) => {
     return supertest(server)
-      .put(`/products/${product._id}`)
+      .put(`/api/v1/products/${product._id}`)
       .set('Cookie', `token=${token}`)
       .send(validProduct2)
       .expect(200)
@@ -219,7 +219,7 @@ tape('PUT /products/:id with valid id and valid new product data as unauthorized
   ])
   .then(([product, user, authToken]) => {
     return supertest(server)
-      .put(`/products/${product._id}`)
+      .put(`/api/v1/products/${product._id}`)
       .set('Authorization', 'Bearer ' + authToken.accessToken)
       .send(validProduct2)
       .expect(401)
@@ -244,7 +244,7 @@ tape('DELETE /products/:id with id of something not in the database', t => {
   ])
   .then(([product, userSuper, token]) => {
     return supertest(server)
-    .delete('/products/507f1f77bcf86cd799439011')
+    .delete('/api/v1/products/507f1f77bcf86cd799439011')
     .set('Cookie', `token=${token}`)
     .expect(404)
     .expect('Content-Type', /json/)
@@ -266,7 +266,7 @@ tape('DELETE /products/:id with good ID', t => {
   ])
   .then(([product, productToBeDeleted, userSuper, token]) => {
     supertest(server)
-    .delete(`/products/${productToBeDeleted.id}`)
+    .delete(`/api/v1/products/${productToBeDeleted.id}`)
     .set('Cookie', `token=${token}`)
     .expect(204)
     .then(res => {
@@ -297,7 +297,7 @@ tape('DELETE /products/:id with good ID as non super owner of resource', t => {
   ])
   .then(([product, productToBeDeleted, userSuper, token]) => {
     return supertest(server)
-    .delete(`/products/${productToBeDeleted.id}`)
+    .delete(`/api/v1/products/${productToBeDeleted.id}`)
     .set('Cookie', `token=${token}`)
     .expect(204)
   })
@@ -323,7 +323,7 @@ tape('DELETE /products/:id with good ID as non super non owner of resource', t =
   ])
   .then(([productToBeDeleted, product, userSuper, token]) => {
     return supertest(server)
-    .delete(`/products/${productToBeDeleted.id}`)
+    .delete(`/api/v1/products/${productToBeDeleted.id}`)
     .set('Cookie', `token=${token}`)
     .expect(401)
     .expect('Content-Type', /json/)

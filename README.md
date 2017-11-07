@@ -4,6 +4,13 @@
 [![Build Status](https://travis-ci.org/foundersandcoders/open-tourism-platform.svg?branch=master)](https://travis-ci.org/foundersandcoders/open-tourism-platform)
 [![Coverage Status](https://coveralls.io/repos/github/foundersandcoders/open-tourism-platform/badge.svg?branch=master)](https://coveralls.io/github/foundersandcoders/open-tourism-platform?branch=master)
 
+**Release History:**
+
+| Version Number  | Release Date |
+| ------------- | ------------- |
+|  0.0.0 | Summer 2017 |
+|  1.0.0  | 07/11/2017  |
+
 If you want to get involved, check out the [contributing file](./CONTRIBUTING.md).
 
 See the API docs [here](./docs/api.md).
