@@ -2,7 +2,7 @@
 
 An API providing data for the four apps on the Nazareth Open Tourism Platform, built by graduates of [Founders and Coders](https://foundersandcoders.com/about/).
 
-Base URL: https://nazareth-open-tourism-platform.herokuapp.com/
+Base URL: https://nazareth-open-tourism-platform.herokuapp.com/api/v1
 
 ## Contents
 **Events**
