@@ -1,9 +1,5 @@
 {
-  "roles": [
-    "BASIC",
-    "ADMIN",
-    "SUPER"
-  ],
+  "roles": ["BASIC", "ADMIN", "SUPER"],
   "accessibilityOptions": [
     "Audio recordings",
     "Braille",
@@ -39,6 +35,10 @@
     "party",
     "wedding",
     "culture",
+    "kids",
+    "movie",
+    "theater",
+    "workshop",
     "miscellaneous"
   ],
   "productCategories": [
