@@ -5,7 +5,7 @@ const AuthorizationCode = require('./models/auth/AuthorizationCode')
 module.exports = {
   getAccessToken: accessToken =>
     Token.findOne({ accessToken })
-      .populate('user'),
+      .populate('user client'),
 
   getAuthorizationCode: authCode =>
     AuthorizationCode.findOne({ authorizationCode: authCode })
@@ -18,8 +18,8 @@ module.exports = {
   },
 
   getRefreshToken: refreshToken =>
-    Token.find({ refreshToken })
-      .populate('user'),
+    Token.findOne({ refreshToken })
+      .populate('user client'),
 
   // should return true if successful
   revokeAuthorizationCode: authCode =>
