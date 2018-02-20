@@ -27,7 +27,8 @@ const placeSchema = mongoose.Schema(
     phone: String,
     email: String,
     en: placeTranslatedFieldsSchema,
-    ar: placeTranslatedFieldsSchema
+    ar: placeTranslatedFieldsSchema,
+    verified: { type: Boolean, default: false }
   },
   {
     timestamps: true
