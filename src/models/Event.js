@@ -26,7 +26,8 @@ const eventSchema = mongoose.Schema(
     cost: String,
     imageUrl: String,
     en: eventTranslatedFieldsSchema,
-    ar: eventTranslatedFieldsSchema
+    ar: eventTranslatedFieldsSchema,
+    verified: { type: Boolean, default: false }
   },
   {
     timestamps: true
