@@ -37,5 +37,6 @@ module.exports = {
       _id: [ roles.SUPER ],
       owner: [ roles.ADMIN ]
     }
-  }
+  },
+  Verify: { authorizedRoles: [ roles.ADMIN ] }
 }
