@@ -2,7 +2,6 @@ const userController = require('../controllers/user')
 const placeController = require('../controllers/place')
 const eventController = require('../controllers/event')
 const productController = require('../controllers/product')
-const verifyController = require('../controllers/verify')
 
 const validateJWT = require('../middleware/validateJWT')
 const validateHeaderToken = require('../middleware/validateHeaderToken')
@@ -119,25 +118,6 @@ router.route('/products/:id')
     validateHeaderToken,
     permissions(api.Product.delete),
     productController.delete
-  )
-
-  // verify content routes
-router.route('/verify/places/:id')
-  .put(
-    validateJWT(),
-    validateUser(),
-    validateHeaderToken,
-    permissions(api.Verify),
-    verifyController.place
-  )
-
-router.route('/verify/events/:id')
-  .put(
-    validateJWT(),
-    validateUser(),
-    validateHeaderToken,
-    permissions(api.Verify),
-    verifyController.event
   )
 
 module.exports = router

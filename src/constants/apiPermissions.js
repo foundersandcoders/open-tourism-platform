@@ -19,7 +19,8 @@ module.exports = {
     delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
     fields: {
       _id: [ roles.SUPER ],
-      owner: [ roles.ADMIN ]
+      owner: [ roles.ADMIN ],
+      verified: [ roles.ADMIN ]
     }
   },
   Product: {
@@ -35,7 +36,8 @@ module.exports = {
     delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
     fields: {
       _id: [ roles.SUPER ],
-      owner: [ roles.ADMIN ]
+      owner: [ roles.ADMIN ],
+      verified: [ roles.ADMIN ]
     }
   },
   Verify: { authorizedRoles: [ roles.ADMIN ] }
