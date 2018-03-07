@@ -39,6 +39,5 @@ module.exports = {
       owner: [ roles.ADMIN ],
       verified: [ roles.ADMIN ]
     }
-  },
-  Verify: { authorizedRoles: [ roles.ADMIN ] }
+  }
 }
