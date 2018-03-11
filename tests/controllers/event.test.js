@@ -130,42 +130,54 @@ tape('GET /events/:id, check place field is populated', t => {
 
 // Tests for: POST /events
 tape('POST /events adding invalid event', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
+    .set('Cookie', `token=${token}`)
     .send(invalidEvent1)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
       t.equal(res.body.reasons[0], 'one of Path `en` or Path `ar` required', 'Correct reason is sent back')
-      dropCollectionAndEnd(Event, t)
-    })
+      dropCollectionsAndEnd([Event, User], t)
+    }).catch(err => t.fail(err))
 })
 
 tape('POST /events adding event with invalid place field', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
+    .set('Cookie', `token=${token}`)
     .send(invalidEvent2)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
-      dropCollectionAndEnd(Event, t)
-    })
+      dropCollectionsAndEnd([Event, User], t)
+    }).catch(err => t.fail(err))
 })
 
 tape('POST /events adding valid event', t => {
+  Promise.all([
+    User.create(superUser),
+    makeLoggedInToken(superUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
+    .set('Cookie', `token=${token}`)
     .send(validEvent1)
     .expect(201)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.equal(res.body.en.name, validEvent1.en.name, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
@@ -176,51 +188,63 @@ tape('POST /events adding valid event', t => {
         })
         .catch(err => {
           t.fail(err)
-          dropCollectionAndEnd(Event, t)
+          dropCollectionsAndEnd([Event, User], t)
         })
-    })
+    }).catch(err => t.fail(err))
 })
 
 tape('POST /events adding events with invalid categories - wrong categories', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
+    .set('Cookie', `token=${token}`)
     .send(invalidEvent2)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.reasons[0], '`eating` is not a valid enum value for path `categories`.', 'Correct reason is sent back')
-      dropCollectionAndEnd(Event, t)
-    })
+      dropCollectionsAndEnd([Event, User], t)
+    }).catch(err => t.fail(err))
 })
 
 tape('POST /events adding events with invalid categories - null in array', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
+    .set('Cookie', `token=${token}`)
     .send(invalidEvent3)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.reasons[0], '`null` is not a valid enum value for path `categories`.', 'Correct reason is sent back')
-      dropCollectionAndEnd(Event, t)
-    })
+      dropCollectionsAndEnd([Event, User], t)
+    }).catch(err => t.fail(err))
 })
 
 tape('POST /events adding events with invalid categories - empty array', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
+    .set('Cookie', `token=${token}`)
     .send(invalidEvent4)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.reasons[0], 'Path `categories` is required.', 'Correct message is sent back')
-      dropCollectionAndEnd(Event, t)
-    })
+      dropCollectionsAndEnd([Event, User], t)
+    }).catch(err => t.fail(err))
 })
 
 // Tests for: PUT /events/:id
