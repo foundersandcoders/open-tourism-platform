@@ -14,7 +14,8 @@ const api = require('../constants/apiPermissions')
 const router = require('express').Router()
 
 // user routes
-router.route('/users')
+router
+  .route('/users')
   .get(
     validateJWT(),
     validateUser(),
@@ -30,7 +31,8 @@ router.route('/users')
     userController.create
   )
 
-router.route('/users/:id')
+router
+  .route('/users/:id')
   .get(
     validateJWT(),
     validateUser(),
@@ -54,13 +56,21 @@ router.route('/users/:id')
     userController.delete
   )
 
-  // place routes
-router.route('/places')
+// place routes
+router
+  .route('/places')
   .get(placeController.getAll)
-  .post(placeController.create)
-router.route('/places/:id')
+  .post(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Place.create),
+    placeController.create
+  )
+router
+  .route('/places/:id')
   .get(placeController.getById)
-    .put(
+  .put(
     validateJWT(),
     validateUser(),
     validateHeaderToken,
@@ -76,11 +86,19 @@ router.route('/places/:id')
     placeController.delete
   )
 
-  // event routes
-router.route('/events')
+// event routes
+router
+  .route('/events')
   .get(eventController.getAll)
-  .post(eventController.create)
-router.route('/events/:id')
+  .post(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Event.create),
+    eventController.create
+  )
+router
+  .route('/events/:id')
   .get(eventController.getById)
   .put(
     validateJWT(),
@@ -98,11 +116,19 @@ router.route('/events/:id')
     eventController.delete
   )
 
-  // product routes
-router.route('/products')
+// product routes
+router
+  .route('/products')
   .get(productController.getAll)
-  .post(productController.create)
-router.route('/products/:id')
+  .post(
+    validateJWT(),
+    validateUser(),
+    validateHeaderToken,
+    permissions(api.Product.create),
+    productController.create
+  )
+router
+  .route('/products/:id')
   .get(productController.getById)
   .put(
     validateJWT(),

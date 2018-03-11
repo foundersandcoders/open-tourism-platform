@@ -1,6 +1,7 @@
 const Event = require('../models/Event')
 const { rejectIfNull } = require('../db/utils')
 const { messages: errMessages } = require('../constants/errors')
+const roles = require('../constants/roles')
 
 const eventController = module.exports = {}
 
@@ -39,8 +40,17 @@ eventController.getById = (req, res, next) => {
 eventController.create = (req, res, next) => {
   // receives json for event in body
   // sends back created event
-  const newEvent = new Event(req.body)
+  let newEventDetails = req.body
+
+  if (req.user.role !== roles.BASIC) {
+    newEventDetails = Object.assign({}, req.body, { verified: true })
+  } else {
+    newEventDetails = Object.assign({}, req.body, { verified: false })
+  }
+
+  const newEvent = new Event(newEventDetails)
   newEvent.save()
+  // TODO: .then(event => req.user.role !== roles.BASIC ? event : sendEmail(event))
     .then(event => res.status(201).send(event))
     .catch(next)
 }
