@@ -15,14 +15,17 @@ module.exports = {
     }
   },
   Event: {
+    create: { authorizedRoles: [ roles.BASIC ] },
     update: { authorizedRoles: [ roles.ADMIN, roles.OWNER ] },
     delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
     fields: {
       _id: [ roles.SUPER ],
-      owner: [ roles.ADMIN ]
+      owner: [ roles.ADMIN ],
+      verified: [ roles.ADMIN ]
     }
   },
   Product: {
+    create: { authorizedRoles: [ roles.BASIC ] },
     update: { authorizedRoles: [ roles.ADMIN, roles.OWNER ] },
     delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
     fields: {
@@ -31,11 +34,13 @@ module.exports = {
     }
   },
   Place: {
+    create: { authorizedRoles: [ roles.BASIC ] },
     update: { authorizedRoles: [ roles.ADMIN, roles.OWNER ] },
     delete: { authorizedRoles: [ roles.SUPER, roles.OWNER ] },
     fields: {
       _id: [ roles.SUPER ],
-      owner: [ roles.ADMIN ]
+      owner: [ roles.ADMIN ],
+      verified: [ roles.ADMIN ]
     }
   }
 }

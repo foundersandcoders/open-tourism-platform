@@ -8,7 +8,7 @@ const Token = require('../../src/models/auth/Token.js')
 const { auth: authErrMessages } = require('../../src/constants/errors')
 
 const { validProduct1, validProduct2, validProduct3, invalidProduct1 } = require('../fixtures/products.json')
-const { validAdminUser, user, superUser } = require('../fixtures/users.json')
+const { validAdminUser, user, superUser, validBasicUser } = require('../fixtures/users.json')
 const { token } = require('../fixtures/auth/tokens.json')
 
 const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
@@ -86,40 +86,48 @@ tape('GET /products/:id with id of something in the database', t => {
 
 // Tests for: POST /products
 tape('POST /products with valid product data', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/products')
+    .set('Cookie', `token=${token}`)
     .send(validProduct1)
     .expect(201)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.equal(res.body.en.name, validProduct1.en.name, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
       Product.findById(res.body._id)
         .then(product => {
           t.equal(product.en.name, res.body.en.name, 'Product is in the database')
-          dropCollectionAndEnd(Product, t)
+          dropCollectionsAndEnd([Product, User], t)
         })
         .catch(err => {
           t.fail(err)
-          dropCollectionAndEnd(Product, t)
+          dropCollectionsAndEnd([Product, User], t)
         })
-    })
+    }).catch(err => t.fail(err))
 })
 
 tape('POST /products with invalid product data', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/products')
+    .set('Cookie', `token=${token}`)
     .send(invalidProduct1)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       // t.ok(res.body.message.includes('Database error'), 'Correct message is sent back')
-      dropCollectionAndEnd(Product, t)
-    })
+      dropCollectionsAndEnd([Product, User], t)
+    }).catch(err => t.fail(err))
 })
 
 // Tests for: PUT /products/:id

@@ -8,7 +8,7 @@ const Token = require('../../src/models/auth/Token.js')
 const { auth: authErrMessages, messages: errMessages } = require('../../src/constants/errors')
 
 const { validPlace1, validPlace2, validPlace3, invalidPlace1 } = require('../fixtures/places.json')
-const { validAdminUser, user, superUser } = require('../fixtures/users.json')
+const { validAdminUser, user, superUser, validBasicUser } = require('../fixtures/users.json')
 const { token } = require('../fixtures/auth/tokens.json')
 
 const { dropCollectionAndEnd, dropCollectionsAndEnd } = require('../helpers/index.js')
@@ -98,40 +98,47 @@ tape('GET /places/:id with id of something in the database', t => {
 
 // Tests for: POST /places
 tape('POST /places with valid place data', t => {
-  supertest(server)
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) => supertest(server)
     .post('/api/v1/places')
+    .set('Cookie', `token=${token}`)
     .send(validPlace1)
     .expect(201)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.equal(res.body.en.name, validPlace1.en.name, 'Correct object is added')
       t.ok(res.body._id && res.body.createdAt && res.body.updatedAt, 'id and timestamp fields added')
       // Now check whether it is in the database
       Place.findById(res.body._id)
         .then(place => {
           t.equal(place.en.name, res.body.en.name, 'Place is in the database')
-          dropCollectionAndEnd(Place, t)
+          dropCollectionsAndEnd([Place, User], t)
         })
         .catch(err => {
           t.fail(err)
           dropCollectionAndEnd(Place, t)
         })
-    })
+    }).catch(err => t.end(err))
 })
 
 tape('POST /places with invalid place data', t => {
+  Promise.all([
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser)
+  ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/places')
+    .set('Cookie', `token=${token}`)
     .send(invalidPlace1)
     .expect(400)
     .expect('Content-Type', /json/)
-    .end((err, res) => {
-      if (err) t.fail(err)
+    ).then(res => {
       t.ok(res.body.message, 'A message is sent back')
       t.equal(res.body.message, 'Validation Failed', 'Correct message is sent back')
-      dropCollectionAndEnd(Place, t)
-    })
+      dropCollectionsAndEnd([Place, User], t)
+    }).catch(err => t.end(err))
 })
 
 // Tests for: PUT /places/:id

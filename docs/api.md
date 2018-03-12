@@ -152,7 +152,7 @@ Status: 200 OK
 `POST /events`
 
 **Permissions**
-There are no restrictions on this route.
+This route is available for any type of **user**.
 
 **Input**
 
@@ -305,7 +305,7 @@ Status: 204 No Content
 
 **Permissions**
  There are no restrictions on this route.
- 
+
 **Sample Response**
 ```
 Status: 200 OK
@@ -388,7 +388,7 @@ Status: 200 OK
 `POST /places`
 
 **Permissions**
- There are no restrictions on this route.
+ This route is available for any type of **user**.
 
 **Input**
 
@@ -547,7 +547,7 @@ Status: 200 OK
 
 **Permissions**
  This route is only accessible to super users or the owner of the place.
- 
+
 **Sample Response**
 
 ```
@@ -620,7 +620,7 @@ Status: 200 OK
 `POST /product`
 
 **Permissions**
-There are no restrictions on this route.
+This route is available for any type of **user**.
 
 **Input**
 
@@ -921,7 +921,7 @@ Status: 200 OK
 
 **Permissions**
  This route is only accessible to super users.
- 
+
 **Sample Response**
 
 ```

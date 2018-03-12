@@ -1,6 +1,7 @@
 const Place = require('../models/Place')
 const { rejectIfNull } = require('../db/utils')
 const { messages: errMessages } = require('../constants/errors')
+const roles = require('../constants/roles')
 
 const placeController = module.exports = {}
 
@@ -24,7 +25,15 @@ placeController.getById = (req, res, next) => {
 placeController.create = (req, res, next) => {
   // receives json for place in body
   // sends back created place
-  const newPlace = new Place(req.body)
+  let newPlaceDetails = req.body
+
+  if (req.user.role !== roles.BASIC) {
+    newPlaceDetails = Object.assign({}, req.body, { verified: true })
+  } else {
+    newPlaceDetails = Object.assign({}, req.body, { verified: false })
+  }
+
+  const newPlace = new Place(newPlaceDetails)
   newPlace.save()
     .then(place => res.status(201).send(place))
     .catch(next)
