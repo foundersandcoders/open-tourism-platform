@@ -8,7 +8,7 @@ const sendEmails = (emails, content) =>
     const msg = {
       to: emails,
       from: 'opentourismplatform@gmail.com',
-      templateId: '84dc4053-b395-42d3-b204-1770b20995cc',
+      templateId: '0839aec2-dd34-459d-9493-4fd9682b9073',
       substitutions: {
         name: content.en.name,
         id: content._id
