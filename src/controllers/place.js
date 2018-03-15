@@ -2,6 +2,7 @@ const Place = require('../models/Place')
 const { rejectIfNull } = require('../db/utils')
 const { messages: errMessages } = require('../constants/errors')
 const roles = require('../constants/roles')
+const sendEmail = require('../helpers/sendEmail')
 
 const placeController = module.exports = {}
 
@@ -35,6 +36,7 @@ placeController.create = (req, res, next) => {
 
   const newPlace = new Place(newPlaceDetails)
   newPlace.save()
+    .then(place => req.user.role !== roles.BASIC ? place : sendEmail(place))
     .then(place => res.status(201).send(place))
     .catch(next)
 }
