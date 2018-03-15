@@ -168,9 +168,8 @@ tape('POST /events adding event with invalid place field', t => {
 
 tape('POST /events adding valid event', t => {
   Promise.all([
-    User.create(validBasicUser),
-    makeLoggedInToken(validBasicUser),
-    User.create(superUser) // for sending emails
+    User.create([validBasicUser, superUser]), // superUser for sending emails
+    makeLoggedInToken(validBasicUser)
   ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
