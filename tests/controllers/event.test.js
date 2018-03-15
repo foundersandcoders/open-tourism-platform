@@ -298,7 +298,7 @@ tape('PUT /events/:id with invalid id', t => {
   )
   .then(res => {
     t.equal(res.body.message, 'Invalid id', 'Correct message is sent back')
-    dropCollectionAndEnd(Event, t)
+    dropCollectionsAndEnd([Event, User], t)
   })
   .catch(err => t.end(err))
 })
