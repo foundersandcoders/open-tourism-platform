@@ -168,8 +168,9 @@ tape('POST /events adding event with invalid place field', t => {
 
 tape('POST /events adding valid event', t => {
   Promise.all([
-    User.create(superUser),
-    makeLoggedInToken(superUser)
+    User.create(validBasicUser),
+    makeLoggedInToken(validBasicUser),
+    User.create(superUser) // for sending emails
   ]).then(([ _, token ]) =>
   supertest(server)
     .post('/api/v1/events')
@@ -184,7 +185,7 @@ tape('POST /events adding valid event', t => {
       Event.findById(res.body._id)
         .then(event => {
           t.equal(event.categories[0], res.body.categories[0], 'Event is in the database')
-          dropCollectionAndEnd(Event, t)
+          dropCollectionsAndEnd([Event, User], t)
         })
         .catch(err => {
           t.fail(err)

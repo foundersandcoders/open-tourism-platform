@@ -100,7 +100,8 @@ tape('GET /places/:id with id of something in the database', t => {
 tape('POST /places with valid place data', t => {
   Promise.all([
     User.create(validBasicUser),
-    makeLoggedInToken(validBasicUser)
+    makeLoggedInToken(validBasicUser),
+    User.create(superUser) // for sending emails
   ]).then(([ _, token ]) => supertest(server)
     .post('/api/v1/places')
     .set('Cookie', `token=${token}`)
