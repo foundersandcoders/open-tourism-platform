@@ -2,6 +2,7 @@ const Event = require('../models/Event')
 const { rejectIfNull } = require('../db/utils')
 const { messages: errMessages } = require('../constants/errors')
 const roles = require('../constants/roles')
+const sendEmail = require('../helpers/sendEmail')
 
 const eventController = module.exports = {}
 
@@ -50,7 +51,7 @@ eventController.create = (req, res, next) => {
 
   const newEvent = new Event(newEventDetails)
   newEvent.save()
-  // TODO: .then(event => req.user.role !== roles.BASIC ? event : sendEmail(event))
+    .then(event => req.user.role !== roles.BASIC ? event : sendEmail(event))
     .then(event => res.status(201).send(event))
     .catch(next)
 }

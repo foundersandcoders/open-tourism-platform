@@ -99,7 +99,7 @@ tape('GET /places/:id with id of something in the database', t => {
 // Tests for: POST /places
 tape('POST /places with valid place data', t => {
   Promise.all([
-    User.create(validBasicUser),
+    User.create([validBasicUser, superUser]), // superUser for sending emails
     makeLoggedInToken(validBasicUser)
   ]).then(([ _, token ]) => supertest(server)
     .post('/api/v1/places')
@@ -118,7 +118,7 @@ tape('POST /places with valid place data', t => {
         })
         .catch(err => {
           t.fail(err)
-          dropCollectionAndEnd(Place, t)
+          dropCollectionsAndEnd([Place, User], t)
         })
     }).catch(err => t.end(err))
 })
