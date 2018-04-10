@@ -7,7 +7,8 @@
     "UNAUTHORISED_JWT": "UnauthorizedError"
   },
   "codes": {
-    "MONGO_DUPLICATE_KEY": 11000
+    "MONGO_DUPLICATE_KEY": 11000,
+    "MONGO_BAD_LOCATION": 16755
   },
   "messages": {
     "GET_ID_NOT_FOUND": "No document matching that id",
@@ -17,8 +18,9 @@
     "VALIDATION_FAILED": "Validation Failed",
     "DUPLICATE_KEY": "Data violates unique constraints validation",
     "INVALID_ID": "Invalid id",
+    "BAD_LOCATION":
+      "The location co-ordinates do not follow the correct format: [Longitude, Latitude] Valid longitude values are between -180 and 180. Valid latitude values are between -90 and 90 (both inclusive).",
 
-    "UNHANDLED_CUSTOM": "An internal server error occurred",
     "UNHANDLED_MONGO": "An internal mongo server error occurred",
     "UNHANDLED_MONGOOSE": "An internal mongoose server error occurred",
 
@@ -31,9 +33,9 @@
     "EXPIRED_JWT": "jwt expired"
   },
   "auth": {
-    "UNAUTHORIZED":"You are not authorised to access this resource",
+    "UNAUTHORIZED": "You are not authorised to access this resource",
     "WRONGUSERORPW": "username / password combination do not exist",
-    "PASSWORDSDONOTMATCH":"Passwords do not match",
-    "USERNAMEEXISTS":"username already exists"
+    "PASSWORDSDONOTMATCH": "Passwords do not match",
+    "USERNAMEEXISTS": "username already exists"
   }
 }

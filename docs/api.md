@@ -395,7 +395,7 @@ Status: 200 OK
 Name | Type | Description
 ---|---|---
 owner | mongoose ObjectId | id of owner in user table.
-location | array of numbers | Location coordinates.
+location | array of numbers | Location coordinates, [ longitude, latitude ]. Valid longitude values are between -180 and 180, Valid latitude values are between -90 and 90 (both inclusive).
 categories | array of strings | Place [categories](#place-categories).
 accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options).
 imageUrl | string | Link to image of place.
@@ -484,7 +484,7 @@ Status: 201 Created
 Name | Type | Description | Field Permissions
 ---|---|---|---
 owner | mongoose ObjectId | id of owner in user table-|can only be updated by admin users
-location | array of numbers | Location coordinates-|---
+location | array of numbers | Location coordinates, [ longitude, latitude ]. Valid longitude values are between -180 and 180, Valid latitude values are between -90 and 90 (both inclusive). |---
 categories | array of strings | Place [categories](#place-categories)-|---
 accessibilityOptions | array of strings | Place [accessibility options](#accessibility-options)-|---
 imageUrl | string | Link to image of place-|---

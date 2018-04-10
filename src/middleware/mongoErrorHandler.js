@@ -16,9 +16,11 @@ module.exports = (err, req, res, next) => {
     case errCodes.MONGO_DUPLICATE_KEY:
       res.boom.badRequest(errMessages.DUPLICATE_KEY)
       break
-
+    case errCodes.MONGO_BAD_LOCATION:
+      res.boom.badRequest(errMessages.BAD_LOCATION)
+      break
     // unhandled mongo error
     default:
-      res.boom.badImplementation(errMessages.UNHANDLED_MONGO)
+      next(err)
   }
 }
